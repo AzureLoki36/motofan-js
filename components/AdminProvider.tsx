@@ -74,8 +74,8 @@ export function AdminProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     Promise.all([
-      fetch("/api/auth/check").then((r) => r.json()),
-      fetch("/api/content").then((r) => r.json()),
+      fetch("/api/auth/check", { cache: "no-store" }).then((r) => r.json()),
+      fetch("/api/content", { cache: "no-store" }).then((r) => r.json()),
     ]).then(([auth, data]) => {
       setIsAdmin(auth.admin === true);
       setContent(data || {});
