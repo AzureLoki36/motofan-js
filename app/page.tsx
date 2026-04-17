@@ -1,9 +1,12 @@
+"use client";
+
 import Navbar from "@/components/Navbar";
 import HomeFooter from "@/components/HomeFooter";
 import CookieBanner from "@/components/CookieBanner";
 import ScrollEffects from "@/components/ScrollEffects";
 import ContactForm from "@/components/ContactForm";
 import FacebookSection from "@/components/FacebookSection";
+import { Editable, EditableHTML, EditableImage } from "@/components/Editable";
 
 export default function Home() {
   return (
@@ -20,16 +23,10 @@ export default function Home() {
           <div className="hero-overlay"></div>
         </div>
         <div className="hero-content">
-          <h1 className="hero-title">
-            Twoja pasja.
-            <br />
-            <span className="gradient-text">Nasze rzemiosło.</span>
-          </h1>
-          <p className="hero-sub">
-            Autoryzowany dealer Kawasaki, Benelli &amp; Kymco.
-            <br />
-            Serwis, odzież, części i transport – wszystko pod jednym dachem.
-          </p>
+          <EditableHTML id="home.hero.title" as="h1" className="hero-title" defaultHtml='Twoja pasja.<br/><span class="gradient-text">Nasze rzemiosło.</span>' />
+          <Editable id="home.hero.sub" as="p" className="hero-sub" multiline>
+            Autoryzowany dealer Kawasaki, Benelli & Kymco. Serwis, odzież, części i transport – wszystko pod jednym dachem.
+          </Editable>
           <div className="hero-actions">
             <a href="#brands" className="btn btn-primary">
               Poznaj nasze marki
@@ -40,18 +37,18 @@ export default function Home() {
           </div>
           <div className="hero-stats">
             <div className="stat">
-              <span className="stat-num">25+</span>
-              <span className="stat-label">lat doświadczenia</span>
+              <Editable id="home.hero.stat1num" as="span" className="stat-num">25+</Editable>
+              <Editable id="home.hero.stat1label" as="span" className="stat-label">lat doświadczenia</Editable>
             </div>
             <div className="stat-divider"></div>
             <div className="stat">
-              <span className="stat-num">500m²</span>
-              <span className="stat-label">salon motocyklowy</span>
+              <Editable id="home.hero.stat2num" as="span" className="stat-num">500m²</Editable>
+              <Editable id="home.hero.stat2label" as="span" className="stat-label">salon motocyklowy</Editable>
             </div>
             <div className="stat-divider"></div>
             <div className="stat">
-              <span className="stat-num">3</span>
-              <span className="stat-label">autoryzacje marek</span>
+              <Editable id="home.hero.stat3num" as="span" className="stat-num">3</Editable>
+              <Editable id="home.hero.stat3label" as="span" className="stat-label">autoryzacje marek</Editable>
             </div>
           </div>
         </div>
@@ -84,24 +81,20 @@ export default function Home() {
                 width: "100%",
               }}
             >
-              <p className="about-lead">
-                Firma MOTOFAN powstała w <strong>1999 roku</strong> w Opolu i od
-                samego początku stawia na jakość, pasję i profesjonalną obsługę
-                każdego motocyklisty.
-              </p>
-              <p>
-                Dziś MotoFan to nowoczesny salon o powierzchni{" "}
-                <strong>500 m²</strong> przy ul. Partyzanckiej 85, gdzie
-                oferujemy sprzedaż nowych i używanych motocykli, kompletny
-                serwis, sklep z odzieżą oraz transport i wynajem przyczep.
-              </p>
+              <Editable id="home.about.lead" as="p" className="about-lead" multiline>
+                Firma MOTOFAN powstała w 1999 roku w Opolu i od samego początku stawia na jakość, pasję i profesjonalną obsługę każdego motocyklisty.
+              </Editable>
+              <Editable id="home.about.text" as="p" multiline>
+                Dziś MotoFan to nowoczesny salon o powierzchni 500 m² przy ul. Partyzanckiej 85, gdzie oferujemy sprzedaż nowych i używanych motocykli, kompletny serwis, sklep z odzieżą oraz transport i wynajem przyczep.
+              </Editable>
               <div style={{ textAlign: "center", marginTop: 30 }}>
                 <a href="/historia" className="btn btn-primary">
                   Historia firmy
                 </a>
               </div>
               <div style={{ marginTop: 30, textAlign: "center" }}>
-                <img
+                <EditableImage
+                  id="home.about.image"
                   src="/pics/glowna/wejscie.jpg"
                   alt="Wejście do salonu MotoFan"
                   style={{
@@ -259,11 +252,10 @@ export default function Home() {
                   alt="Mechanik pracujący przy motocyklu w warsztacie"
                 />
               </div>
-              <h3>Serwis motocyklowy</h3>
-              <p>
-                Naprawiamy wszelkiego rodzaju motocykle, quady, skutery, skutery
-                wodne i śnieżne. Remonty silników, diagnostyka, regulacje.
-              </p>
+              <Editable id="home.svc.serwis.title" as="h3">Serwis motocyklowy</Editable>
+              <Editable id="home.svc.serwis.desc" as="p" multiline>
+                Naprawiamy wszelkiego rodzaju motocykle, quady, skutery, skutery wodne i śnieżne. Remonty silników, diagnostyka, regulacje.
+              </Editable>
               <ul className="service-list">
                 <li>Remonty silników (2T i 4T)</li>
                 <li>Czyszczenie i synchronizacja gaźników</li>
@@ -280,11 +272,10 @@ export default function Home() {
                   alt="Odzież motocyklowa w sklepie"
                 />
               </div>
-              <h3>Sklep z odzieżą i akcesoriami</h3>
-              <p>
-                Odzież motocyklowa SECA, kaski AGV i Nolan, oleje Motul,
-                rękawice, buty i akcesoria.
-              </p>
+              <Editable id="home.svc.sklep.title" as="h3">Sklep z odzieżą i akcesoriami</Editable>
+              <Editable id="home.svc.sklep.desc" as="p" multiline>
+                Odzież motocyklowa SECA, kaski AGV i Nolan, oleje Motul, rękawice, buty i akcesoria.
+              </Editable>
               <ul className="service-list">
                 <li>Kaski (pełne, szczękowe, turystyczne)</li>
                 <li>Kurtki motocyklowe</li>
@@ -301,11 +292,10 @@ export default function Home() {
                   alt="Silnik motocykla Kawasaki – części"
                 />
               </div>
-              <h3>Sprzedaż części</h3>
-              <p>
-                Szeroki wybór oryginalnych i zamiennikowych części do motocykli,
-                skuterów i quadów.
-              </p>
+              <Editable id="home.svc.czesci.title" as="h3">Sprzedaż części</Editable>
+              <Editable id="home.svc.czesci.desc" as="p" multiline>
+                Szeroki wybór oryginalnych i zamiennikowych części do motocykli, skuterów i quadów.
+              </Editable>
               <ul className="service-list">
                 <li>Oryginalne części Kawasaki, Benelli, Kymco</li>
                 <li>Części do chińskich skuterów i motocykli</li>
@@ -322,11 +312,10 @@ export default function Home() {
                   alt="Nowe motocykle w salonie MotoFan"
                 />
               </div>
-              <h3>Nowe motocykle</h3>
-              <p>
-                Autoryzowany salon Kawasaki, Benelli i Kymco. Pełna gama nowych
-                motocykli, skuterów i quadów z gwarancją producenta.
-              </p>
+              <Editable id="home.svc.nowe.title" as="h3">Nowe motocykle</Editable>
+              <Editable id="home.svc.nowe.desc" as="p" multiline>
+                Autoryzowany salon Kawasaki, Benelli i Kymco. Pełna gama nowych motocykli, skuterów i quadów z gwarancją producenta.
+              </Editable>
               <ul className="service-list">
                 <li>Motocykle Kawasaki – cała gama modeli</li>
                 <li>Motocykle i skutery Benelli</li>
@@ -342,11 +331,10 @@ export default function Home() {
                   alt="Motocykle używane w salonie"
                 />
               </div>
-              <h3>Motocykle używane</h3>
-              <p>
-                Skup i sprzedaż sprawdzonych motocykli używanych. Każdy pojazd
-                dokładnie weryfikowany przez naszych techników.
-              </p>
+              <Editable id="home.svc.uzywane.title" as="h3">Motocykle używane</Editable>
+              <Editable id="home.svc.uzywane.desc" as="p" multiline>
+                Skup i sprzedaż sprawdzonych motocykli używanych. Każdy pojazd dokładnie weryfikowany przez naszych techników.
+              </Editable>
               <ul className="service-list">
                 <li>Sprawdzone pojazdy z historią serwisową</li>
                 <li>Weryfikacja techniczna przed zakupem</li>
@@ -366,11 +354,10 @@ export default function Home() {
                   alt="Transport motocykli i wynajem przyczepy"
                 />
               </div>
-              <h3>Transport i wynajem przyczepy</h3>
-              <p>
-                Profesjonalny transport motocykli na terenie całej Polski oraz
-                wynajem przyczepy do samodzielnego przewozu.
-              </p>
+              <Editable id="home.svc.transport.title" as="h3">Transport i wynajem przyczepy</Editable>
+              <Editable id="home.svc.transport.desc" as="p" multiline>
+                Profesjonalny transport motocykli na terenie całej Polski oraz wynajem przyczepy do samodzielnego przewozu.
+              </Editable>
               <ul className="service-list">
                 <li>Transport motocykli – cała Polska</li>
                 <li>Wynajem przyczepy motocyklowej</li>
@@ -406,11 +393,9 @@ export default function Home() {
                   </div>
                   <div>
                     <strong>Adres</strong>
-                    <p>
-                      ul. Partyzancka 85
-                      <br />
-                      45-801 Opole
-                    </p>
+                    <Editable id="home.contact.address" as="p" multiline>
+                      ul. Partyzancka 85, 45-801 Opole
+                    </Editable>
                   </div>
                 </div>
                 <div className="contact-item">
@@ -421,9 +406,9 @@ export default function Home() {
                   </div>
                   <div>
                     <strong>Telefon</strong>
-                    <a href="tel:601484242" className="contact-link">
+                    <Editable id="home.contact.phone" as="a" className="contact-link">
                       601 48 42 42
-                    </a>
+                    </Editable>
                   </div>
                 </div>
                 <div className="contact-item">
@@ -435,9 +420,9 @@ export default function Home() {
                   </div>
                   <div>
                     <strong>E-mail</strong>
-                    <a href="mailto:motofan@vp.pl" className="contact-link">
+                    <Editable id="home.contact.email" as="a" className="contact-link">
                       motofan@vp.pl
-                    </a>
+                    </Editable>
                   </div>
                 </div>
                 <div className="contact-item">
@@ -463,11 +448,11 @@ export default function Home() {
                 <h3>Godziny otwarcia</h3>
                 <div className="hours-grid">
                   <span>Poniedziałek – Piątek</span>
-                  <span className="hours-time">9:00 – 18:00</span>
+                  <Editable id="home.hours.weekdays" as="span" className="hours-time">9:00 – 18:00</Editable>
                   <span>Sobota</span>
-                  <span className="hours-time">9:00 – 14:00</span>
+                  <Editable id="home.hours.saturday" as="span" className="hours-time">9:00 – 14:00</Editable>
                   <span>Niedziela</span>
-                  <span className="hours-time closed">Zamknięte</span>
+                  <Editable id="home.hours.sunday" as="span" className="hours-time closed">Zamknięte</Editable>
                 </div>
               </div>
             </div>

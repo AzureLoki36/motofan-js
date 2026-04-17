@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import SubpageFooter from "@/components/SubpageFooter";
+import { Editable, EditableHTML } from "@/components/Editable";
 import Lightbox from "@/components/Lightbox";
 import Link from "next/link";
 
@@ -140,8 +141,8 @@ export default function Historia() {
             <span>/</span>
             <span>Historia</span>
           </div>
-          <h1 className="page-title">Nasza <span className="gradient-text">Historia</span></h1>
-          <p className="page-desc">Od małej firmy do nowoczesnego salonu motocyklowego. Poznaj naszą drogę od 1999 roku.</p>
+          <EditableHTML id="historia.title" as="h1" className="page-title" defaultHtml='Nasza <span class="gradient-text">Historia</span>' />
+          <Editable id="historia.desc" as="p" className="page-desc">Od małej firmy do nowoczesnego salonu motocyklowego. Poznaj naszą drogę od 1999 roku.</Editable>
         </div>
       </section>
 

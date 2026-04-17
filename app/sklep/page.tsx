@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Navbar from "@/components/Navbar";
 import SubpageFooter from "@/components/SubpageFooter";
+import { Editable, EditableHTML } from "@/components/Editable";
 import Link from "next/link";
 
 const bannerItems = [
@@ -85,8 +86,8 @@ export default function Sklep() {
             <span>/</span>
             <span>Sklep z odzieżą i akcesoriami</span>
           </div>
-          <h1 className="page-title">Sklep z <span className="gradient-text">Odzieżą i Akcesoriami</span></h1>
-          <p className="page-desc">Bogaty wybór odzieży motocyklowej, kasków, rękawic, butów oraz akcesoriów najlepszych światowych marek.</p>
+          <EditableHTML id="sklep.title" as="h1" className="page-title" defaultHtml='Sklep z <span class="gradient-text">Odzieżą i Akcesoriami</span>' />
+          <Editable id="sklep.desc" as="p" className="page-desc">Bogaty wybór odzieży motocyklowej, kasków, rękawic, butów oraz akcesoriów najlepszych światowych marek.</Editable>
         </div>
       </section>
 

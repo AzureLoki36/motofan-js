@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import SubpageFooter from "@/components/SubpageFooter";
+import { Editable, EditableHTML } from "@/components/Editable";
 import Lightbox from "@/components/Lightbox";
 import Link from "next/link";
 
@@ -29,8 +30,8 @@ export default function TransportIWynajem() {
             <span>/</span>
             <span>Transport i wynajem przyczepy</span>
           </div>
-          <h1 className="page-title">Transport <span className="gradient-text">i Wynajem Przyczepy</span></h1>
-          <p className="page-desc">Profesjonalny transport motocykli na terenie całej Polski oraz wynajem przyczepy – wybierz opcję, która Ci odpowiada.</p>
+          <EditableHTML id="transport.title" as="h1" className="page-title" defaultHtml='Transport <span class="gradient-text">i Wynajem Przyczepy</span>' />
+          <Editable id="transport.desc" as="p" className="page-desc">Profesjonalny transport motocykli na terenie całej Polski oraz wynajem przyczepy – wybierz opcję, która Ci odpowiada.</Editable>
         </div>
       </section>
 

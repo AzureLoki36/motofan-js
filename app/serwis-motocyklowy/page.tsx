@@ -1,11 +1,9 @@
+"use client";
+
 import Navbar from "@/components/Navbar";
 import SubpageFooter from "@/components/SubpageFooter";
 import Link from "next/link";
-
-export const metadata = {
-  title: "Serwis Motocyklowy – MotoFan Opole",
-  description: "Profesjonalny serwis motocyklowy w Opolu. Remonty silników, diagnostyka komputerowa, naprawa motocykli, skuterów i quadów. MotoFan Opole.",
-};
+import { Editable, EditableHTML } from "@/components/Editable";
 
 export default function SerwisMotocyklowy() {
   return (
@@ -21,8 +19,8 @@ export default function SerwisMotocyklowy() {
             <span>/</span>
             <span>Serwis motocyklowy</span>
           </div>
-          <h1 className="page-title">Serwis <span className="gradient-text">Motocyklowy</span></h1>
-          <p className="page-desc">Profesjonalna obsługa i naprawy motocykli, skuterów, quadów oraz pojazdów wodnych i śnieżnych. Ponad 25 lat doświadczenia.</p>
+          <EditableHTML id="serwis.title" as="h1" className="page-title" defaultHtml='Serwis <span class="gradient-text">Motocyklowy</span>' />
+          <Editable id="serwis.desc" as="p" className="page-desc" multiline>Profesjonalna obsługa i naprawy motocykli, skuterów, quadów oraz pojazdów wodnych i śnieżnych. Ponad 25 lat doświadczenia.</Editable>
         </div>
       </section>
 

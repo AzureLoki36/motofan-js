@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import SubpageFooter from "@/components/SubpageFooter";
+import { Editable, EditableHTML } from "@/components/Editable";
 import Lightbox from "@/components/Lightbox";
 import Link from "next/link";
 
@@ -143,8 +144,8 @@ export default function MotocykleUzywane() {
             <span>/</span>
             <span>Motocykle używane</span>
           </div>
-          <h1 className="page-title">Motocykle <span className="gradient-text">Używane</span></h1>
-          <p className="page-desc">Sprawdzone motocykle z historią serwisową. Każdy pojazd przed sprzedażą przechodzi szczegółowy przegląd techniczny w naszym warsztacie.</p>
+          <EditableHTML id="uzywane.title" as="h1" className="page-title" defaultHtml='Motocykle <span class="gradient-text">Używane</span>' />
+          <Editable id="uzywane.desc" as="p" className="page-desc">Sprawdzone motocykle z historią serwisową. Każdy pojazd przed sprzedażą przechodzi szczegółowy przegląd techniczny w naszym warsztacie.</Editable>
         </div>
       </section>
 

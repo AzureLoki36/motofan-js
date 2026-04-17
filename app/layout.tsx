@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./style.css";
 import "./subpage.css";
+import { AdminProvider } from "@/components/AdminProvider";
+import AdminToolbar from "@/components/AdminToolbar";
 
 export const metadata: Metadata = {
   title: "MotoFan Opole – Kawasaki · Benelli · Kymco",
@@ -27,7 +29,12 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body>{children}</body>
+      <body>
+        <AdminProvider>
+          {children}
+          <AdminToolbar />
+        </AdminProvider>
+      </body>
     </html>
   );
 }

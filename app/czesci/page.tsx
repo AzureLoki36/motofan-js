@@ -1,11 +1,9 @@
+"use client";
+
 import Navbar from "@/components/Navbar";
 import SubpageFooter from "@/components/SubpageFooter";
 import Link from "next/link";
-
-export const metadata = {
-  title: "Sprzedaż Części – MotoFan Opole",
-  description: "Oryginalne części zamienne do motocykli Kawasaki, Benelli, Kymco. Zamów części do swojego motocykla w MotoFan Opole.",
-};
+import { Editable, EditableHTML } from "@/components/Editable";
 
 export default function Czesci() {
   return (
@@ -21,8 +19,8 @@ export default function Czesci() {
             <span>/</span>
             <span>Sprzedaż części</span>
           </div>
-          <h1 className="page-title">Sprzedaż <span className="gradient-text">Części Zamiennych</span></h1>
-          <p className="page-desc">Oryginalne części OEM oraz wysokiej jakości zamienniki do motocykli Kawasaki, Benelli, Kymco i innych marek.</p>
+          <EditableHTML id="czesci.title" as="h1" className="page-title" defaultHtml='Sprzedaż <span class="gradient-text">Części Zamiennych</span>' />
+          <Editable id="czesci.desc" as="p" className="page-desc" multiline>Oryginalne części OEM oraz wysokiej jakości zamienniki do motocykli Kawasaki, Benelli, Kymco i innych marek.</Editable>
         </div>
       </section>
 

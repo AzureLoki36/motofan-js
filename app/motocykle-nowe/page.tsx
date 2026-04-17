@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import SubpageFooter from "@/components/SubpageFooter";
+import { Editable, EditableHTML } from "@/components/Editable";
 import Lightbox from "@/components/Lightbox";
 import Link from "next/link";
 
@@ -138,8 +139,8 @@ export default function MotocykleNowe() {
             <span>/</span>
             <span>Motocykle nowe</span>
           </div>
-          <h1 className="page-title">Nowe <span className="gradient-text">Motocykle</span></h1>
-          <p className="page-desc">Autoryzowany salon Kawasaki, Benelli i Kymco w Opolu. Pełna gama nowych motocykli, skuterów i quadów z gwarancją producenta.</p>
+          <EditableHTML id="nowe.title" as="h1" className="page-title" defaultHtml='Nowe <span class="gradient-text">Motocykle</span>' />
+          <Editable id="nowe.desc" as="p" className="page-desc">Autoryzowany salon Kawasaki, Benelli i Kymco w Opolu. Pełna gama nowych motocykli, skuterów i quadów z gwarancją producenta.</Editable>
         </div>
       </section>
 
