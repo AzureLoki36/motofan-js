@@ -32,7 +32,7 @@ export async function isAdmin(): Promise<boolean> {
 }
 
 export function getAdminPassword(): string {
-  return process.env.ADMIN_PASSWORD || "motofan2026";
+  return (process.env.ADMIN_PASSWORD || "motofan2026").trim();
 }
 
 export { COOKIE_NAME };
