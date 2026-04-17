@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isAdmin } from "@/lib/auth";
-import fs from "fs";
-import path from "path";
+import { put } from "@vercel/blob";
 
 export async function POST(req: NextRequest) {
   if (!(await isAdmin())) {
@@ -24,12 +23,12 @@ export async function POST(req: NextRequest) {
   }
 
   const ext = file.name.split(".").pop() || "jpg";
-  const safeName = `upload-${Date.now()}.${ext.replace(/[^a-zA-Z0-9]/g, "")}`;
-  const uploadDir = path.join(process.cwd(), "public", "uploads");
-  if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+  const safeName = `uploads/upload-${Date.now()}.${ext.replace(/[^a-zA-Z0-9]/g, "")}`;
 
-  const buffer = Buffer.from(await file.arrayBuffer());
-  fs.writeFileSync(path.join(uploadDir, safeName), buffer);
+  const blob = await put(safeName, file, {
+    access: "public",
+    contentType: file.type,
+  });
 
-  return NextResponse.json({ url: `/uploads/${safeName}` });
+  return NextResponse.json({ url: blob.url });
 }

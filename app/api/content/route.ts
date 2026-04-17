@@ -3,7 +3,7 @@ import { isAdmin } from "@/lib/auth";
 import { readContent, writeContent } from "@/lib/content";
 
 export async function GET() {
-  const data = readContent();
+  const data = await readContent();
   return NextResponse.json(data);
 }
 
@@ -15,6 +15,6 @@ export async function PUT(req: NextRequest) {
   if (!body || typeof body !== "object") {
     return NextResponse.json({ error: "Invalid data" }, { status: 400 });
   }
-  writeContent(body);
+  await writeContent(body);
   return NextResponse.json({ ok: true });
 }

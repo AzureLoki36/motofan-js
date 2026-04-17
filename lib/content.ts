@@ -1,25 +1,37 @@
-import fs from "fs";
-import path from "path";
+import { put, list, del } from "@vercel/blob";
 
 export type ContentData = Record<string, unknown>;
 
-const DATA_FILE = path.join(process.cwd(), "data", "content.json");
+const CONTENT_BLOB = "content.json";
 
-export function readContent(): ContentData {
+export async function readContent(): Promise<ContentData> {
   try {
-    if (fs.existsSync(DATA_FILE)) {
-      return JSON.parse(fs.readFileSync(DATA_FILE, "utf-8"));
+    const { blobs } = await list({ prefix: CONTENT_BLOB });
+    if (blobs.length > 0) {
+      const res = await fetch(blobs[0].url);
+      if (res.ok) return await res.json();
     }
   } catch {
-    /* ignore */
+    /* ignore – return empty */
   }
   return {};
 }
 
-export function writeContent(data: ContentData): void {
-  const dir = path.dirname(DATA_FILE);
-  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-  fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2), "utf-8");
+export async function writeContent(data: ContentData): Promise<void> {
+  // Delete old blob(s) first
+  try {
+    const { blobs } = await list({ prefix: CONTENT_BLOB });
+    if (blobs.length > 0) {
+      await del(blobs.map((b) => b.url));
+    }
+  } catch {
+    /* ignore */
+  }
+  await put(CONTENT_BLOB, JSON.stringify(data, null, 2), {
+    access: "public",
+    contentType: "application/json",
+    addRandomSuffix: false,
+  });
 }
 
 export function getNestedValue(obj: Record<string, unknown>, keyPath: string): unknown {
