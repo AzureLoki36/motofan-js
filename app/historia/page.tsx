@@ -154,12 +154,12 @@ export default function Historia() {
             <Editable id="historia.firma.p1" as="p" multiline>Początkowo zajmowaliśmy się współorganizowaniem imprez integracyjnych dla firm i osób prywatnych, dostarczając rozrywkę w formie quadów. Kolejnym etapem było rozszerzenie usług o wypożyczalnię skuterów. Od początku działalności firma opiera się na sprawdzonym sprzęcie firmy Yamaha.</Editable>
             <Editable id="historia.firma.p2" as="p">W chwili obecnej firma podzielona jest na kilka działów:</Editable>
             <ul style={{ margin: "20px 0 30px", paddingLeft: "24px", color: "var(--text-m)", lineHeight: 2 }}>
-              <li>Serwis motocyklowy</li>
-              <li>Transport motocykli</li>
-              <li>Sprzedaż części i motocykli</li>
-              <li>Sprzedaż części do skuterów i motocykli chińskich</li>
-              <li>Sklep z odzieżą motocyklową (buty, kaski, kurtki, rękawice, spodnie)</li>
-              <li>Wypożyczenie przyczepy motocyklowej</li>
+              <Editable id="historia.dept.li1" as="li">Serwis motocyklowy</Editable>
+              <Editable id="historia.dept.li2" as="li">Transport motocykli</Editable>
+              <Editable id="historia.dept.li3" as="li">Sprzedaż części i motocykli</Editable>
+              <Editable id="historia.dept.li4" as="li">Sprzedaż części do skuterów i motocykli chińskich</Editable>
+              <Editable id="historia.dept.li5" as="li">Sklep z odzieżą motocyklową (buty, kaski, kurtki, rękawice, spodnie)</Editable>
+              <Editable id="historia.dept.li6" as="li">Wypożyczenie przyczepy motocyklowej</Editable>
             </ul>
             <Editable id="historia.firma.closing" as="p" multiline>Zakończyliśmy prace budowlane w pełni profesjonalnego salonu motocyklowego o powierzchni 500 m² przy ul. Partyzanckiej 85 w Opolu.</Editable>
           </div>
@@ -174,9 +174,9 @@ export default function Historia() {
               {timelineItems.map((item, i) => (
                 <div className="vtl-item" key={i}>
                   <div className="vtl-content">
-                    <span className="vtl-date">{item.date}</span>
-                    <h3>{item.title}</h3>
-                    <p>{item.desc}</p>
+                    <Editable id={`historia.tl${i}.date`} as="span" className="vtl-date">{item.date}</Editable>
+                    <Editable id={`historia.tl${i}.title`} as="h3">{item.title}</Editable>
+                    <Editable id={`historia.tl${i}.desc`} as="p" multiline>{item.desc}</Editable>
                   </div>
                   <span className="vtl-dot"></span>
                   <div className="vtl-thumb" onClick={() => setLightboxIdx(i)}>

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import SubpageFooter from "@/components/SubpageFooter";
-import { Editable, EditableHTML } from "@/components/Editable";
+import { Editable, EditableHTML, EditableImage } from "@/components/Editable";
 import Lightbox from "@/components/Lightbox";
 import Link from "next/link";
 
@@ -43,13 +43,13 @@ export default function TransportIWynajem() {
             <div className="tw-block" id="transport">
               <div className="tw-photos">
                 <div className="tw-photo" onClick={() => setLightboxIdx(0)}>
-                  <img src="/pics/glowna/bus1.jpg" alt="Bus transportowy MotoFan – widok z boku" />
-                  <span className="tw-photo-label">Nasz bus</span>
+                  <EditableImage id="transport.img.bus1" src="/pics/glowna/bus1.jpg" alt="Bus transportowy MotoFan – widok z boku" />
+                  <Editable id="transport.photo1.label" as="span" className="tw-photo-label">Nasz bus</Editable>
                   <span className="tw-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /><line x1="11" y1="8" x2="11" y2="14" /><line x1="8" y1="11" x2="14" y2="11" /></svg></span>
                 </div>
                 <div className="tw-photo" onClick={() => setLightboxIdx(1)}>
-                  <img src="/pics/glowna/bus2.jpg" alt="Wymiary przestrzeni ładunkowej busa" />
-                  <span className="tw-photo-label">Przestrzeń ładunkowa</span>
+                  <EditableImage id="transport.img.bus2" src="/pics/glowna/bus2.jpg" alt="Wymiary przestrzeni ładunkowej busa" />
+                  <Editable id="transport.photo2.label" as="span" className="tw-photo-label">Przestrzeń ładunkowa</Editable>
                   <span className="tw-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /><line x1="11" y1="8" x2="11" y2="14" /><line x1="8" y1="11" x2="14" y2="11" /></svg></span>
                 </div>
               </div>
@@ -98,13 +98,13 @@ export default function TransportIWynajem() {
             <div className="tw-block" id="wynajem">
               <div className="tw-photos">
                 <div className="tw-photo" onClick={() => setLightboxIdx(2)}>
-                  <img src="/pics/glowna/przyczepa1.jpg" alt="Przyczepa do transportu motocykli – widok z boku" />
-                  <span className="tw-photo-label">Nasza przyczepa</span>
+                  <EditableImage id="transport.img.przyczepa1" src="/pics/glowna/przyczepa1.jpg" alt="Przyczepa do transportu motocykli – widok z boku" />
+                  <Editable id="transport.photo3.label" as="span" className="tw-photo-label">Nasza przyczepa</Editable>
                   <span className="tw-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /><line x1="11" y1="8" x2="11" y2="14" /><line x1="8" y1="11" x2="14" y2="11" /></svg></span>
                 </div>
                 <div className="tw-photo" onClick={() => setLightboxIdx(3)}>
-                  <img src="/pics/glowna/przyczepa2.jpg" alt="Przyczepa – widok z tyłu, prowadnice" />
-                  <span className="tw-photo-label">Prowadnice na koła</span>
+                  <EditableImage id="transport.img.przyczepa2" src="/pics/glowna/przyczepa2.jpg" alt="Przyczepa – widok z tyłu, prowadnice" />
+                  <Editable id="transport.photo4.label" as="span" className="tw-photo-label">Prowadnice na koła</Editable>
                   <span className="tw-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /><line x1="11" y1="8" x2="11" y2="14" /><line x1="8" y1="11" x2="14" y2="11" /></svg></span>
                 </div>
               </div>

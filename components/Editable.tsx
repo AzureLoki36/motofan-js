@@ -56,6 +56,7 @@ export function Editable({
     suppressContentEditableWarning: true,
     onBlur: handleBlur,
     onKeyDown: handleKeyDown,
+    onClick: (e: React.MouseEvent) => { e.preventDefault(); e.stopPropagation(); },
     dangerouslySetInnerHTML: { __html: value },
   });
 }
@@ -105,6 +106,7 @@ export function EditableHTML({
     contentEditable: true,
     suppressContentEditableWarning: true,
     onBlur: handleBlur,
+    onClick: (e: React.MouseEvent) => { e.preventDefault(); e.stopPropagation(); },
     dangerouslySetInnerHTML: { __html: html },
   });
 }
@@ -157,7 +159,7 @@ export function EditableImage({
       <img src={currentSrc} alt={alt} className={className} style={style} />
       <div
         className="editable-image-overlay"
-        onClick={() => inputRef.current?.click()}
+        onClick={(e) => { e.preventDefault(); e.stopPropagation(); inputRef.current?.click(); }}
       >
         {uploading ? (
           <span>Wgrywam...</span>

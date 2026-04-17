@@ -3,7 +3,7 @@
 import Navbar from "@/components/Navbar";
 import SubpageFooter from "@/components/SubpageFooter";
 import Link from "next/link";
-import { Editable, EditableHTML } from "@/components/Editable";
+import { Editable, EditableHTML, EditableImage } from "@/components/Editable";
 
 export default function Czesci() {
   return (
@@ -77,62 +77,62 @@ export default function Czesci() {
               <div className="service-features">
                 <div className="feature-box">
                   <div className="feature-photo">
-                    <img src="/pics/czesci/katalogczesci.png" alt="Katalog części na magazynie" />
+                    <EditableImage id="czesci.img.box1" src="/pics/czesci/katalogczesci.png" alt="Katalog części na magazynie" />
                   </div>
                   <Editable id="czesci.box1.title" as="h3">Katalog części na magazynie</Editable>
                   <Editable id="czesci.box1.desc" as="p" multiline>Stały zapas najpopularniejszych części eksploatacyjnych gotowych do odbioru od ręki.</Editable>
                 </div>
                 <div className="feature-box">
                   <div className="feature-photo">
-                    <img src="/pics/czesci/dostawa.png" alt="Szybka dostawa" />
+                    <EditableImage id="czesci.img.box2" src="/pics/czesci/dostawa.png" alt="Szybka dostawa" />
                   </div>
                   <Editable id="czesci.box2.title" as="h3">Szybka dostawa</Editable>
                   <Editable id="czesci.box2.desc" as="p" multiline>Większość części dostarczamy w ciągu 2-5 dni roboczych.</Editable>
                 </div>
                 <div className="feature-box">
                   <div className="feature-photo">
-                    <img src="/pics/czesci/doborczesci.png" alt="Dobór części po numerze VIN" />
+                    <EditableImage id="czesci.img.box3" src="/pics/czesci/doborczesci.png" alt="Dobór części po numerze VIN" />
                   </div>
                   <Editable id="czesci.box3.title" as="h3">Dobór części po numerze VIN</Editable>
                   <Editable id="czesci.box3.desc" as="p" multiline>Podaj VIN motocykla, a znajdziemy dokładnie pasującą część z katalogu producenta.</Editable>
                 </div>
                 <div className="feature-box">
                   <div className="feature-photo">
-                    <img src="/pics/czesci/montaz.png" alt="Montaż w naszym serwisie" />
+                    <EditableImage id="czesci.img.box4" src="/pics/czesci/montaz.png" alt="Montaż w naszym serwisie" />
                   </div>
                   <Editable id="czesci.box4.title" as="h3">Montaż w naszym serwisie</Editable>
                   <Editable id="czesci.box4.desc" as="p" multiline>Zamówione części zamontujemy od razu na miejscu w naszym warsztacie.</Editable>
                 </div>
               </div>
 
-              <h3 id="jak-zamowic">Jak zamówić część?</h3>
+              <Editable id="czesci.steps.title" as="h3">Jak zamówić część?</Editable>
               <ol className="steps-list">
                 <li>
                   <span className="step-number">1</span>
                   <div>
-                    <strong>Podaj dane motocykla</strong>
-                    <p>Marka, model, rok produkcji, numer VIN (jeśli dostępny)</p>
+                    <Editable id="czesci.step1.title" as="strong">Podaj dane motocykla</Editable>
+                    <Editable id="czesci.step1.desc" as="p">Marka, model, rok produkcji, numer VIN (jeśli dostępny)</Editable>
                   </div>
                 </li>
                 <li>
                   <span className="step-number">2</span>
                   <div>
-                    <strong>Opisz potrzebną część</strong>
-                    <p>Nazwa, numer katalogowy lub zdjęcie części</p>
+                    <Editable id="czesci.step2.title" as="strong">Opisz potrzebną część</Editable>
+                    <Editable id="czesci.step2.desc" as="p">Nazwa, numer katalogowy lub zdjęcie części</Editable>
                   </div>
                 </li>
                 <li>
                   <span className="step-number">3</span>
                   <div>
-                    <strong>Otrzymaj wycenę</strong>
-                    <p>Przygotujemy ofertę z ceną i czasem dostawy</p>
+                    <Editable id="czesci.step3.title" as="strong">Otrzymaj wycenę</Editable>
+                    <Editable id="czesci.step3.desc" as="p">Przygotujemy ofertę z ceną i czasem dostawy</Editable>
                   </div>
                 </li>
                 <li>
                   <span className="step-number">4</span>
                   <div>
-                    <strong>Odbierz lub zamów dostawę</strong>
-                    <p>Możesz odebrać część w salonie lub zamówić wysyłkę</p>
+                    <Editable id="czesci.step4.title" as="strong">Odbierz lub zamów dostawę</Editable>
+                    <Editable id="czesci.step4.desc" as="p">Możesz odebrać część w salonie lub zamówić wysyłkę</Editable>
                   </div>
                 </li>
               </ol>
@@ -140,29 +140,29 @@ export default function Czesci() {
 
             <aside className="content-sidebar">
               <div className="sidebar-card">
-                <h4>Godziny otwarcia</h4>
+                <Editable id="czesci.hours.title" as="h4">Godziny otwarcia</Editable>
                 <div className="hours-list">
                   <div className="hours-row">
-                    <span>Poniedziałek – Piątek</span>
-                    <span>9:00 – 17:00</span>
+                    <Editable id="czesci.hours.label1" as="span">Poniedziałek – Piątek</Editable>
+                    <Editable id="czesci.hours.val1" as="span">9:00 – 17:00</Editable>
                   </div>
                   <div className="hours-row">
-                    <span>Sobota</span>
-                    <span>9:00 – 13:00</span>
+                    <Editable id="czesci.hours.label2" as="span">Sobota</Editable>
+                    <Editable id="czesci.hours.val2" as="span">9:00 – 13:00</Editable>
                   </div>
                   <div className="hours-row">
-                    <span>Niedziela</span>
-                    <span>Zamknięte</span>
+                    <Editable id="czesci.hours.label3" as="span">Niedziela</Editable>
+                    <Editable id="czesci.hours.val3" as="span">Zamknięte</Editable>
                   </div>
                 </div>
               </div>
 
               <div className="sidebar-card">
-                <h4>Przydatne informacje</h4>
+                <Editable id="czesci.info.title" as="h4">Przydatne informacje</Editable>
                 <ul className="sidebar-list">
-                  <li>Numer VIN przyspiesza wyszukanie części</li>
-                  <li>Montaż zamówionych części w naszym serwisie</li>
-                  <li>Możliwość zwrotu nieużywanej części do 14 dni</li>
+                  <Editable id="czesci.info.li1" as="li">Numer VIN przyspiesza wyszukanie części</Editable>
+                  <Editable id="czesci.info.li2" as="li">Montaż zamówionych części w naszym serwisie</Editable>
+                  <Editable id="czesci.info.li3" as="li">Możliwość zwrotu nieużywanej części do 14 dni</Editable>
                 </ul>
               </div>
 

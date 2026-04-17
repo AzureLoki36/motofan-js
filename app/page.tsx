@@ -56,7 +56,7 @@ export default function Home() {
           <div className="scroll-mouse">
             <div className="scroll-wheel"></div>
           </div>
-          <span>Przewiń w dół</span>
+          <Editable id="home.hero.scroll" as="span">Przewiń w dół</Editable>
         </div>
       </section>
 
@@ -127,25 +127,26 @@ export default function Home() {
             >
               <div className="brand-card-inner">
                 <div className="brand-logo-wrap">
-                  <img
+                  <EditableImage
+                    id="home.img.brand.kawasaki"
                     src="/pics/marki/kawsaki.png"
                     alt="Kawasaki"
                     className="brand-logo brand-logo-lg"
                   />
                 </div>
                 <div className="brand-badge">
-                  Autoryzowany Dealer &amp; Serwis
+                  <Editable id="home.brand.kawasaki.badge" as="span">Autoryzowany Dealer &amp; Serwis</Editable>
                 </div>
-                <p>
+                <Editable id="home.brand.kawasaki.desc" as="p" multiline>
                   Jesteśmy autoryzowanym salonem i centrum serwisowym marki
                   Kawasaki w Opolu. Pełna gama motocykli – od sportowych Ninja
                   po turystyczne Versys.
-                </p>
+                </Editable>
                 <ul className="brand-offers">
-                  <li>Sprzedaż nowych motocykli Kawasaki</li>
-                  <li>Autoryzowany serwis gwarancyjny i pogwarancyjny</li>
-                  <li>Oryginalne części i akcesoria</li>
-                  <li>Diagnostyka komputerowa</li>
+                  <Editable id="home.brand.kawasaki.li1" as="li">Sprzedaż nowych motocykli Kawasaki</Editable>
+                  <Editable id="home.brand.kawasaki.li2" as="li">Autoryzowany serwis gwarancyjny i pogwarancyjny</Editable>
+                  <Editable id="home.brand.kawasaki.li3" as="li">Oryginalne części i akcesoria</Editable>
+                  <Editable id="home.brand.kawasaki.li4" as="li">Diagnostyka komputerowa</Editable>
                 </ul>
                 <span className="brand-link">
                   Oficjalna strona Kawasaki →
@@ -162,24 +163,25 @@ export default function Home() {
             >
               <div className="brand-card-inner">
                 <div className="brand-logo-wrap">
-                  <img
+                  <EditableImage
+                    id="home.img.brand.benelli"
                     src="/pics/marki/benelli-logo.png"
                     alt="Benelli"
                     className="brand-logo"
                   />
                 </div>
                 <div className="brand-badge">
-                  Autoryzowany Dealer &amp; Serwis
+                  <Editable id="home.brand.benelli.badge" as="span">Autoryzowany Dealer &amp; Serwis</Editable>
                 </div>
-                <p>
+                <Editable id="home.brand.benelli.desc" as="p" multiline>
                   Włoska marka o 100-letniej tradycji. Nowoczesne motocykle
                   łączące europejski design z niezawodną technologią.
-                </p>
+                </Editable>
                 <ul className="brand-offers">
-                  <li>Sprzedaż nowych motocykli Benelli</li>
-                  <li>Autoryzowany serwis Benelli</li>
-                  <li>Oryginalne części importowane</li>
-                  <li>Wsparcie techniczne</li>
+                  <Editable id="home.brand.benelli.li1" as="li">Sprzedaż nowych motocykli Benelli</Editable>
+                  <Editable id="home.brand.benelli.li2" as="li">Autoryzowany serwis Benelli</Editable>
+                  <Editable id="home.brand.benelli.li3" as="li">Oryginalne części importowane</Editable>
+                  <Editable id="home.brand.benelli.li4" as="li">Wsparcie techniczne</Editable>
                 </ul>
                 <span className="brand-link">
                   Oficjalna strona Benelli Polska →
@@ -197,24 +199,25 @@ export default function Home() {
             >
               <div className="brand-card-inner">
                 <div className="brand-logo-wrap">
-                  <img
+                  <EditableImage
+                    id="home.img.brand.kymco"
                     src="/pics/marki/kymco.png"
                     alt="Kymco"
                     className="brand-logo brand-logo-lg"
                   />
                 </div>
                 <div className="brand-badge">
-                  Autoryzowany Dealer &amp; Serwis
+                  <Editable id="home.brand.kymco.badge" as="span">Autoryzowany Dealer &amp; Serwis</Editable>
                 </div>
-                <p>
+                <Editable id="home.brand.kymco.desc" as="p" multiline>
                   Tajwański producent o światowej renomie. Skutery i quady Kymco
                   – idealne dla miasta i terenu. Szeroki wybór modeli.
-                </p>
+                </Editable>
                 <ul className="brand-offers">
-                  <li>Skutery 50 ccm i 125 ccm</li>
-                  <li>Maxiskutery</li>
-                  <li>Quady Kymco</li>
-                  <li>Autoryzowany serwis</li>
+                  <Editable id="home.brand.kymco.li1" as="li">Skutery 50 ccm i 125 ccm</Editable>
+                  <Editable id="home.brand.kymco.li2" as="li">Maxiskutery</Editable>
+                  <Editable id="home.brand.kymco.li3" as="li">Quady Kymco</Editable>
+                  <Editable id="home.brand.kymco.li4" as="li">Autoryzowany serwis</Editable>
                 </ul>
                 <span className="brand-link">
                   Oficjalna strona Kymco Polska →
@@ -239,99 +242,84 @@ export default function Home() {
           <div className="services-grid">
             <a href="/serwis-motocyklowy" className="service-card" id="svc-service">
               <div className="service-icon-wrap service-photo">
-                <img
-                  src="https://images.unsplash.com/photo-1636761358760-101cabeeb699?w=600&h=300&fit=crop&crop=center"
-                  alt="Mechanik pracujący przy motocyklu w warsztacie"
-                />
+                <EditableImage id="home.img.svc.serwis" src="https://images.unsplash.com/photo-1636761358760-101cabeeb699?w=600&h=300&fit=crop&crop=center" alt="Mechanik pracujący przy motocyklu w warsztacie" />
               </div>
               <Editable id="home.svc.serwis.title" as="h3">Serwis motocyklowy</Editable>
               <Editable id="home.svc.serwis.desc" as="p" multiline>
                 Naprawiamy wszelkiego rodzaju motocykle, quady, skutery, skutery wodne i śnieżne. Remonty silników, diagnostyka, regulacje.
               </Editable>
               <ul className="service-list">
-                <li>Remonty silników (2T i 4T)</li>
-                <li>Czyszczenie i synchronizacja gaźników</li>
-                <li>Sprawdzenie osiowości (Profi Laser S-BAT)</li>
-                <li>Diagnostyka komputerowa (Motorscan 5850)</li>
-                <li>Gwarancja na wykonane usługi</li>
+                <Editable id="home.svc.serwis.li1" as="li">Remonty silników (2T i 4T)</Editable>
+                <Editable id="home.svc.serwis.li2" as="li">Czyszczenie i synchronizacja gaźników</Editable>
+                <Editable id="home.svc.serwis.li3" as="li">Sprawdzenie osiowości (Profi Laser S-BAT)</Editable>
+                <Editable id="home.svc.serwis.li4" as="li">Diagnostyka komputerowa (Motorscan 5850)</Editable>
+                <Editable id="home.svc.serwis.li5" as="li">Gwarancja na wykonane usługi</Editable>
               </ul>
             </a>
 
             <a href="/sklep" className="service-card" id="svc-shop">
               <div className="service-icon-wrap service-photo">
-                <img
-                  src="/pics/glowna/odziez.jpg"
-                  alt="Odzież motocyklowa w sklepie"
-                />
+                <EditableImage id="home.img.svc.sklep" src="/pics/glowna/odziez.jpg" alt="Odzież motocyklowa w sklepie" />
               </div>
               <Editable id="home.svc.sklep.title" as="h3">Sklep z odzieżą i akcesoriami</Editable>
               <Editable id="home.svc.sklep.desc" as="p" multiline>
                 Odzież motocyklowa SECA, kaski AGV i Nolan, oleje Motul, rękawice, buty i akcesoria.
               </Editable>
               <ul className="service-list">
-                <li>Kaski (pełne, szczękowe, turystyczne)</li>
-                <li>Kurtki motocyklowe</li>
-                <li>Spodnie motocyklowe</li>
-                <li>Rękawice (letnie, zimowe)</li>
-                <li>Buty motocyklowe</li>
+                <Editable id="home.svc.sklep.li1" as="li">Kaski (pełne, szczękowe, turystyczne)</Editable>
+                <Editable id="home.svc.sklep.li2" as="li">Kurtki motocyklowe</Editable>
+                <Editable id="home.svc.sklep.li3" as="li">Spodnie motocyklowe</Editable>
+                <Editable id="home.svc.sklep.li4" as="li">Rękawice (letnie, zimowe)</Editable>
+                <Editable id="home.svc.sklep.li5" as="li">Buty motocyklowe</Editable>
               </ul>
             </a>
 
             <a href="/czesci" className="service-card" id="svc-parts">
               <div className="service-icon-wrap service-photo">
-                <img
-                  src="https://images.unsplash.com/photo-1775141570840-7e9578242d24?w=600&h=300&fit=crop&crop=center"
-                  alt="Silnik motocykla Kawasaki – części"
-                />
+                <EditableImage id="home.img.svc.czesci" src="https://images.unsplash.com/photo-1775141570840-7e9578242d24?w=600&h=300&fit=crop&crop=center" alt="Silnik motocykla Kawasaki – części" />
               </div>
               <Editable id="home.svc.czesci.title" as="h3">Sprzedaż części</Editable>
               <Editable id="home.svc.czesci.desc" as="p" multiline>
                 Szeroki wybór oryginalnych i zamiennikowych części do motocykli, skuterów i quadów.
               </Editable>
               <ul className="service-list">
-                <li>Oryginalne części Kawasaki, Benelli, Kymco</li>
-                <li>Części do chińskich skuterów i motocykli</li>
-                <li>Akcesoria i tuning</li>
-                <li>Oleje i płyny eksploatacyjne</li>
-                <li>Opony motocyklowe</li>
+                <Editable id="home.svc.czesci.li1" as="li">Oryginalne części Kawasaki, Benelli, Kymco</Editable>
+                <Editable id="home.svc.czesci.li2" as="li">Części do chińskich skuterów i motocykli</Editable>
+                <Editable id="home.svc.czesci.li3" as="li">Akcesoria i tuning</Editable>
+                <Editable id="home.svc.czesci.li4" as="li">Oleje i płyny eksploatacyjne</Editable>
+                <Editable id="home.svc.czesci.li5" as="li">Opony motocyklowe</Editable>
               </ul>
             </a>
 
             <a href="/motocykle-nowe" className="service-card" id="svc-new">
               <div className="service-icon-wrap service-photo">
-                <img
-                  src="/pics/glowna/moto_nowe.jpg"
-                  alt="Nowe motocykle w salonie MotoFan"
-                />
+                <EditableImage id="home.img.svc.nowe" src="/pics/glowna/moto_nowe.jpg" alt="Nowe motocykle w salonie MotoFan" />
               </div>
               <Editable id="home.svc.nowe.title" as="h3">Nowe motocykle</Editable>
               <Editable id="home.svc.nowe.desc" as="p" multiline>
                 Autoryzowany salon Kawasaki, Benelli i Kymco. Pełna gama nowych motocykli, skuterów i quadów z gwarancją producenta.
               </Editable>
               <ul className="service-list">
-                <li>Motocykle Kawasaki – cała gama modeli</li>
-                <li>Motocykle i skutery Benelli</li>
-                <li>Skutery i quady Kymco</li>
-                <li>Kredyt, leasing, rejestracja na miejscu</li>
+                <Editable id="home.svc.nowe.li1" as="li">Motocykle Kawasaki – cała gama modeli</Editable>
+                <Editable id="home.svc.nowe.li2" as="li">Motocykle i skutery Benelli</Editable>
+                <Editable id="home.svc.nowe.li3" as="li">Skutery i quady Kymco</Editable>
+                <Editable id="home.svc.nowe.li4" as="li">Kredyt, leasing, rejestracja na miejscu</Editable>
               </ul>
             </a>
 
             <a href="/motocykle-uzywane" className="service-card" id="svc-used">
               <div className="service-icon-wrap service-photo">
-                <img
-                  src="/pics/glowna/motorki.jpg"
-                  alt="Motocykle używane w salonie"
-                />
+                <EditableImage id="home.img.svc.uzywane" src="/pics/glowna/motorki.jpg" alt="Motocykle używane w salonie" />
               </div>
               <Editable id="home.svc.uzywane.title" as="h3">Motocykle używane</Editable>
               <Editable id="home.svc.uzywane.desc" as="p" multiline>
                 Skup i sprzedaż sprawdzonych motocykli używanych. Każdy pojazd dokładnie weryfikowany przez naszych techników.
               </Editable>
               <ul className="service-list">
-                <li>Sprawdzone pojazdy z historią serwisową</li>
-                <li>Weryfikacja techniczna przed zakupem</li>
-                <li>Pomoc w formalnościach</li>
-                <li>Skup motocykli</li>
+                <Editable id="home.svc.uzywane.li1" as="li">Sprawdzone pojazdy z historią serwisową</Editable>
+                <Editable id="home.svc.uzywane.li2" as="li">Weryfikacja techniczna przed zakupem</Editable>
+                <Editable id="home.svc.uzywane.li3" as="li">Pomoc w formalnościach</Editable>
+                <Editable id="home.svc.uzywane.li4" as="li">Skup motocykli</Editable>
               </ul>
             </a>
 
@@ -341,20 +329,17 @@ export default function Home() {
               id="svc-transport"
             >
               <div className="service-icon-wrap service-photo">
-                <img
-                  src="/pics/glowna/transport.jpg"
-                  alt="Transport motocykli i wynajem przyczepy"
-                />
+                <EditableImage id="home.img.svc.transport" src="/pics/glowna/transport.jpg" alt="Transport motocykli i wynajem przyczepy" />
               </div>
               <Editable id="home.svc.transport.title" as="h3">Transport i wynajem przyczepy</Editable>
               <Editable id="home.svc.transport.desc" as="p" multiline>
                 Profesjonalny transport motocykli na terenie całej Polski oraz wynajem przyczepy do samodzielnego przewozu.
               </Editable>
               <ul className="service-list">
-                <li>Transport motocykli – cała Polska</li>
-                <li>Wynajem przyczepy motocyklowej</li>
-                <li>Specjalistyczne mocowania</li>
-                <li>Ubezpieczenie ładunku</li>
+                <Editable id="home.svc.transport.li1" as="li">Transport motocykli – cała Polska</Editable>
+                <Editable id="home.svc.transport.li2" as="li">Wynajem przyczepy motocyklowej</Editable>
+                <Editable id="home.svc.transport.li3" as="li">Specjalistyczne mocowania</Editable>
+                <Editable id="home.svc.transport.li4" as="li">Ubezpieczenie ładunku</Editable>
               </ul>
             </a>
           </div>
@@ -382,7 +367,7 @@ export default function Home() {
                     </svg>
                   </div>
                   <div>
-                    <strong>Adres</strong>
+                    <Editable id="home.contact.label.address" as="strong">Adres</Editable>
                     <Editable id="home.contact.address" as="p" multiline>
                       ul. Partyzancka 85, 45-801 Opole
                     </Editable>
@@ -395,7 +380,7 @@ export default function Home() {
                     </svg>
                   </div>
                   <div>
-                    <strong>Telefon</strong>
+                    <Editable id="home.contact.label.phone" as="strong">Telefon</Editable>
                     <Editable id="home.contact.phone" as="a" className="contact-link">
                       601 48 42 42
                     </Editable>
@@ -409,7 +394,7 @@ export default function Home() {
                     </svg>
                   </div>
                   <div>
-                    <strong>E-mail</strong>
+                    <Editable id="home.contact.label.email" as="strong">E-mail</Editable>
                     <Editable id="home.contact.email" as="a" className="contact-link">
                       motofan@vp.pl
                     </Editable>
@@ -422,26 +407,26 @@ export default function Home() {
                     </svg>
                   </div>
                   <div>
-                    <strong>Facebook</strong>
+                    <Editable id="home.contact.label.facebook" as="strong">Facebook</Editable>
                     <a
                       href="https://www.facebook.com/tomko.koko.9"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="contact-link"
                     >
-                      Motofan Tomasz Kokoszka
+                      <Editable id="home.contact.facebook" as="span">Motofan Tomasz Kokoszka</Editable>
                     </a>
                   </div>
                 </div>
               </div>
               <div className="hours-card">
-                <h3>Godziny otwarcia</h3>
+                <Editable id="home.hours.title" as="h3">Godziny otwarcia</Editable>
                 <div className="hours-grid">
-                  <span>Poniedziałek – Piątek</span>
+                  <Editable id="home.hours.label1" as="span">Poniedziałek – Piątek</Editable>
                   <Editable id="home.hours.weekdays" as="span" className="hours-time">9:00 – 18:00</Editable>
-                  <span>Sobota</span>
+                  <Editable id="home.hours.label2" as="span">Sobota</Editable>
                   <Editable id="home.hours.saturday" as="span" className="hours-time">9:00 – 14:00</Editable>
-                  <span>Niedziela</span>
+                  <Editable id="home.hours.label3" as="span">Niedziela</Editable>
                   <Editable id="home.hours.sunday" as="span" className="hours-time closed">Zamknięte</Editable>
                 </div>
               </div>

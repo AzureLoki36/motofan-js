@@ -3,7 +3,7 @@
 import Navbar from "@/components/Navbar";
 import SubpageFooter from "@/components/SubpageFooter";
 import Link from "next/link";
-import { Editable, EditableHTML } from "@/components/Editable";
+import { Editable, EditableHTML, EditableImage } from "@/components/Editable";
 
 export default function SerwisMotocyklowy() {
   return (
@@ -34,42 +34,42 @@ export default function SerwisMotocyklowy() {
               <div className="service-features">
                 <div className="feature-box">
                   <div className="feature-photo">
-                    <img src="/pics/serwis/remonty_silnikow.png" alt="Rozłożony silnik motocyklowy" />
+                    <EditableImage id="serwis.img.feat1" src="/pics/serwis/remonty_silnikow.png" alt="Rozłożony silnik motocyklowy" />
                   </div>
                   <Editable id="serwis.feat1.title" as="h3">Remonty silników</Editable>
                   <Editable id="serwis.feat1.desc" as="p" multiline>Kompleksowe remonty silników 2-suwowych i 4-suwowych. Wymiana tłoków, pierścieni, łożysk, wałów korbowych.</Editable>
                 </div>
                 <div className="feature-box">
                   <div className="feature-photo">
-                    <img src="/pics/serwis/diagnostykakomputerowa.png" alt="Diagnostyka komputerowa motocykla" />
+                    <EditableImage id="serwis.img.feat2" src="/pics/serwis/diagnostykakomputerowa.png" alt="Diagnostyka komputerowa motocykla" />
                   </div>
                   <Editable id="serwis.feat2.title" as="h3">Diagnostyka komputerowa</Editable>
                   <Editable id="serwis.feat2.desc" as="p" multiline>Profesjonalna diagnostyka przy użyciu Motorscan 5850. Odczyt błędów, kasowanie, programowanie.</Editable>
                 </div>
                 <div className="feature-box">
                   <div className="feature-photo">
-                    <img src="/pics/serwis/gaznik.png" alt="Gaźnik motocyklowy" />
+                    <EditableImage id="serwis.img.feat3" src="/pics/serwis/gaznik.png" alt="Gaźnik motocyklowy" />
                   </div>
                   <Editable id="serwis.feat3.title" as="h3">Regulacja gaźników</Editable>
                   <Editable id="serwis.feat3.desc" as="p" multiline>Czyszczenie, synchronizacja i regulacja gaźników. Przywracamy płynną pracę silnika.</Editable>
                 </div>
                 <div className="feature-box">
                   <div className="feature-photo">
-                    <img src="/pics/serwis/diagnostyka_laserowa.png" alt="Laserowa maszyna sprawdzająca osiowość motocykla" />
+                    <EditableImage id="serwis.img.feat4" src="/pics/serwis/diagnostyka_laserowa.png" alt="Laserowa maszyna sprawdzająca osiowość motocykla" />
                   </div>
                   <Editable id="serwis.feat4.title" as="h3">Sprawdzenie osiowości</Editable>
                   <Editable id="serwis.feat4.desc" as="p" multiline>Precyzyjne ustawienie geometrii z użyciem Profi Laser S-BAT. Bezpieczeństwo i stabilność jazdy.</Editable>
                 </div>
                 <div className="feature-box">
                   <div className="feature-photo">
-                    <img src="/pics/serwis/przeglady_okresowe.png" alt="Przegląd okresowy motocykla" />
+                    <EditableImage id="serwis.img.feat5" src="/pics/serwis/przeglady_okresowe.png" alt="Przegląd okresowy motocykla" />
                   </div>
                   <Editable id="serwis.feat5.title" as="h3">Przeglądy okresowe</Editable>
                   <Editable id="serwis.feat5.desc" as="p" multiline>Kompleksowe przeglądy zgodne z zaleceniami producenta. Przedłużamy żywotność Twojego pojazdu.</Editable>
                 </div>
                 <div className="feature-box">
                   <div className="feature-photo">
-                    <img src="/pics/serwis/naprawa_zawiezenia.png" alt="Naprawa zawieszenia motocykla" />
+                    <EditableImage id="serwis.img.feat6" src="/pics/serwis/naprawa_zawiezenia.png" alt="Naprawa zawieszenia motocykla" />
                   </div>
                   <Editable id="serwis.feat6.title" as="h3">Naprawa zawieszenia</Editable>
                   <Editable id="serwis.feat6.desc" as="p" multiline>Regeneracja amortyzatorów, wymiana łożysk główki ramy, wahacza i kół.</Editable>
@@ -124,13 +124,13 @@ export default function SerwisMotocyklowy() {
               </div>
 
               <div className="sidebar-card">
-                <h3>Pracujemy na sprzęcie</h3>
+                <Editable id="serwis.equip.title" as="h3">Pracujemy na sprzęcie</Editable>
                 <ul className="equipment-list">
-                  <li>Bike-Lift</li>
-                  <li>Mitutoyo</li>
-                  <li>Jonnesway</li>
-                  <li>Motorscan 5850</li>
-                  <li>Profi Laser S-BAT</li>
+                  <Editable id="serwis.equip.li1" as="li">Bike-Lift</Editable>
+                  <Editable id="serwis.equip.li2" as="li">Mitutoyo</Editable>
+                  <Editable id="serwis.equip.li3" as="li">Jonnesway</Editable>
+                  <Editable id="serwis.equip.li4" as="li">Motorscan 5850</Editable>
+                  <Editable id="serwis.equip.li5" as="li">Profi Laser S-BAT</Editable>
                 </ul>
               </div>
 

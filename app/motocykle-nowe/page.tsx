@@ -199,16 +199,16 @@ export default function MotocykleNowe() {
                     </div>
                   </div>
                   <div className="moto-details">
-                    <span className="moto-brand">{moto.brand}</span>
-                    <h3>{moto.name}</h3>
+                    <Editable id={`nowe.${moto.id}.brand`} as="span" className="moto-brand">{moto.brand}</Editable>
+                    <Editable id={`nowe.${moto.id}.name`} as="h3">{moto.name}</Editable>
                     <div className="moto-specs">
-                      {moto.specs.map((s) => (
-                        <div className="spec" key={s.label}><strong>{s.label}:</strong> {s.value}</div>
+                      {moto.specs.map((s, si) => (
+                        <div className="spec" key={s.label}><strong>{s.label}:</strong> <Editable id={`nowe.${moto.id}.spec${si}`}>{s.value}</Editable></div>
                       ))}
                     </div>
-                    <p className="moto-desc">{moto.desc}</p>
-                    <div className="moto-price">{moto.price}</div>
-                    <a href="tel:601484242" className={moto.btnClass}>{moto.btnText}</a>
+                    <Editable id={`nowe.${moto.id}.desc`} as="p" className="moto-desc" multiline>{moto.desc}</Editable>
+                    <Editable id={`nowe.${moto.id}.price`} as="div" className="moto-price">{moto.price}</Editable>
+                    <a href="tel:601484242" className={moto.btnClass}><Editable id={`nowe.${moto.id}.btn`}>{moto.btnText}</Editable></a>
                   </div>
                 </article>
               );

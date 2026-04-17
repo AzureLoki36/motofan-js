@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { Editable } from "@/components/Editable";
 
 export default function SubpageFooter() {
   return (
@@ -12,13 +15,13 @@ export default function SubpageFooter() {
               </span>
               <span className="logo-sub">Opole</span>
             </div>
-            <p>
+            <Editable id="footer.sub.desc" as="p">
               Autoryzowany dealer i serwis Kawasaki, Benelli, Kymco. Od 1999
               roku służymy motocyklistom w Opolu.
-            </p>
+            </Editable>
           </div>
           <div className="footer-links">
-            <h4>Usługi</h4>
+            <Editable id="footer.sub.services.title" as="h4">Usługi</Editable>
             <ul>
               <li><Link href="/serwis-motocyklowy">Serwis motocyklowy</Link></li>
               <li><Link href="/sklep">Sklep z odzieżą</Link></li>
@@ -28,18 +31,18 @@ export default function SubpageFooter() {
             </ul>
           </div>
           <div className="footer-links">
-            <h4>Przydatne linki</h4>
+            <Editable id="footer.sub.links.title" as="h4">Przydatne linki</Editable>
             <ul>
               <li><Link href="/transport-i-wynajem">Transport i wynajem przyczepy</Link></li>
               <li><Link href="/#contact">Kontakt</Link></li>
             </ul>
           </div>
           <div className="footer-contact">
-            <h4>Kontakt</h4>
+            <Editable id="footer.sub.contact.title" as="h4">Kontakt</Editable>
             <p>
-              ul. Partyzancka 85
+              <Editable id="footer.sub.address1" as="span">ul. Partyzancka 85</Editable>
               <br />
-              45-801 Opole
+              <Editable id="footer.sub.address2" as="span">45-801 Opole</Editable>
             </p>
             <p>
               <a href="tel:601484242">601 48 42 42</a>
@@ -47,7 +50,7 @@ export default function SubpageFooter() {
           </div>
         </div>
         <div className="footer-bottom">
-          <p>&copy; 2026 MotoFan Opole. Wszelkie prawa zastrzeżone.</p>
+          <Editable id="footer.sub.copy" as="p">&copy; 2026 MotoFan Opole. Wszelkie prawa zastrzeżone.</Editable>
         </div>
       </div>
     </footer>

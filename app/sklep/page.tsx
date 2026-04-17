@@ -99,23 +99,23 @@ export default function Sklep() {
           <div className="brands-showcase">
             <a href="#cta-sklep" className="brand-showcase-card" style={{ textDecoration: "none", color: "inherit" }}>
               <img src="/pics/marki/seca-logo.png" alt="SECA" style={{ background: "#1a1a2e", padding: "12px 18px", borderRadius: "10px" }} />
-              <h4>SECA</h4>
-              <p>Odzież motocyklowa</p>
+              <Editable id="sklep.brand1.name" as="h4">SECA</Editable>
+              <Editable id="sklep.brand1.cat" as="p">Odzież motocyklowa</Editable>
             </a>
             <a href="#cta-sklep" className="brand-showcase-card" style={{ textDecoration: "none", color: "inherit" }}>
               <img src="/pics/marki/motul-logo.svg" alt="Motul" style={{ transform: "scale(1.3)" }} />
-              <h4>Motul</h4>
-              <p>Oleje i chemia</p>
+              <Editable id="sklep.brand2.name" as="h4">Motul</Editable>
+              <Editable id="sklep.brand2.cat" as="p">Oleje i chemia</Editable>
             </a>
             <a href="#cta-sklep" className="brand-showcase-card" style={{ textDecoration: "none", color: "inherit" }}>
               <img src="/pics/marki/agv_logo.svg" alt="AGV" style={{ transform: "scale(1.3)" }} />
-              <h4>AGV</h4>
-              <p>Kaski premium</p>
+              <Editable id="sklep.brand3.name" as="h4">AGV</Editable>
+              <Editable id="sklep.brand3.cat" as="p">Kaski premium</Editable>
             </a>
             <a href="#cta-sklep" className="brand-showcase-card" style={{ textDecoration: "none", color: "inherit" }}>
               <img src="/pics/marki/nolan-logo.png" alt="Nolan" />
-              <h4>Nolan</h4>
-              <p>Kaski włoskie</p>
+              <Editable id="sklep.brand4.name" as="h4">Nolan</Editable>
+              <Editable id="sklep.brand4.cat" as="p">Kaski włoskie</Editable>
             </a>
           </div>
 
