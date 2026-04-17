@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import ThemeToggle from "./ThemeToggle";
 
 interface NavbarProps {
   isHome?: boolean;
@@ -70,6 +71,7 @@ export default function Navbar({ isHome = false, activeSection }: NavbarProps) {
             </li>
           ))}
         </ul>
+        <ThemeToggle />
         <a href="tel:601484242" className="nav-cta">
           <svg
             width="16"
