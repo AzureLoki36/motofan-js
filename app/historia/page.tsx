@@ -149,10 +149,10 @@ export default function Historia() {
       <section className="content-section">
         <div className="container">
           <div className="content-text" style={{ maxWidth: "900px" }}>
-            <h2>Firma <span className="gradient-text">MOTOFAN</span></h2>
-            <p className="lead">Firma MOTOFAN powstała w 1999 roku w Opolu i od samego początku stawia na jakość, pasję i profesjonalną obsługę każdego motocyklisty.</p>
-            <p>Początkowo zajmowaliśmy się współorganizowaniem imprez integracyjnych dla firm i osób prywatnych, dostarczając rozrywkę w formie quadów. Kolejnym etapem było rozszerzenie usług o wypożyczalnię skuterów. Od początku działalności firma opiera się na sprawdzonym sprzęcie firmy Yamaha.</p>
-            <p>W chwili obecnej firma podzielona jest na kilka działów:</p>
+            <EditableHTML id="historia.h2.firma" as="h2" defaultHtml='Firma <span class="gradient-text">MOTOFAN</span>' />
+            <Editable id="historia.firma.lead" as="p" className="lead" multiline>Firma MOTOFAN powstała w 1999 roku w Opolu i od samego początku stawia na jakość, pasję i profesjonalną obsługę każdego motocyklisty.</Editable>
+            <Editable id="historia.firma.p1" as="p" multiline>Początkowo zajmowaliśmy się współorganizowaniem imprez integracyjnych dla firm i osób prywatnych, dostarczając rozrywkę w formie quadów. Kolejnym etapem było rozszerzenie usług o wypożyczalnię skuterów. Od początku działalności firma opiera się na sprawdzonym sprzęcie firmy Yamaha.</Editable>
+            <Editable id="historia.firma.p2" as="p">W chwili obecnej firma podzielona jest na kilka działów:</Editable>
             <ul style={{ margin: "20px 0 30px", paddingLeft: "24px", color: "var(--text-m)", lineHeight: 2 }}>
               <li>Serwis motocyklowy</li>
               <li>Transport motocykli</li>
@@ -161,13 +161,13 @@ export default function Historia() {
               <li>Sklep z odzieżą motocyklową (buty, kaski, kurtki, rękawice, spodnie)</li>
               <li>Wypożyczenie przyczepy motocyklowej</li>
             </ul>
-            <p>Zakończyliśmy prace budowlane w pełni profesjonalnego salonu motocyklowego o powierzchni <strong>500 m²</strong> przy ul. Partyzanckiej 85 w Opolu.</p>
+            <Editable id="historia.firma.closing" as="p" multiline>Zakończyliśmy prace budowlane w pełni profesjonalnego salonu motocyklowego o powierzchni 500 m² przy ul. Partyzanckiej 85 w Opolu.</Editable>
           </div>
 
           <div className="photo-timeline">
             <div className="photo-timeline-header">
-              <h2>Etapy budowy <span className="gradient-text">salonu</span></h2>
-              <p>Opole, ul. Partyzancka 85 — najedź na zdjęcie aby powiększyć, kliknij aby otworzyć na pełnym ekranie</p>
+              <EditableHTML id="historia.h2.etapy" as="h2" defaultHtml='Etapy budowy <span class="gradient-text">salonu</span>' />
+              <Editable id="historia.etapy.subtitle" as="p" multiline>Opole, ul. Partyzancka 85 — najeźdź na zdjęcie aby powiększyć, kliknij aby otworzyć na pełnym ekranie</Editable>
             </div>
 
             <div className="vtl">
@@ -190,8 +190,8 @@ export default function Historia() {
           </div>
 
           <div className="sidebar-card cta-card" style={{ maxWidth: "600px", margin: "50px auto" }}>
-            <h3>Odwiedź nas!</h3>
-            <p>Zapraszamy do naszego salonu przy ul. Partyzanckiej 85 w Opolu. Przekonaj się, ile pasji włożyliśmy w to miejsce.</p>
+            <Editable id="historia.cta.title" as="h3">Odwiedź nas!</Editable>
+            <Editable id="historia.cta.desc" as="p" multiline>Zapraszamy do naszego salonu przy ul. Partyzanckiej 85 w Opolu. Przekonaj się, ile pasji włożyliśmy w to miejsce.</Editable>
             <Link href="/#contact" className="btn btn-primary btn-full">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></svg>
               Zobacz dane kontaktowe

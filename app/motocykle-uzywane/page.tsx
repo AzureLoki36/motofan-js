@@ -156,27 +156,27 @@ export default function MotocykleUzywane() {
               <div className="info-card-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><polyline points="9 12 11 14 15 10" /></svg>
               </div>
-              <h3>Przegląd przed sprzedażą</h3>
-              <p>Każdy motocykl przechodzi szczegółową kontrolę techniczną w naszym serwisie.</p>
+              <Editable id="uzywane.info1.title" as="h3">Przegląd przed sprzedażą</Editable>
+              <Editable id="uzywane.info1.desc" as="p" multiline>Każdy motocykl przechodzi szczegółową kontrolę techniczną w naszym serwisie.</Editable>
             </div>
             <div className="info-card">
               <div className="info-card-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>
               </div>
-              <h3>Znana historia</h3>
-              <p>Pełna dokumentacja serwisowa. Wiemy wszystko o motocyklu.</p>
+              <Editable id="uzywane.info2.title" as="h3">Znana historia</Editable>
+              <Editable id="uzywane.info2.desc" as="p" multiline>Pełna dokumentacja serwisowa. Wiemy wszystko o motocyklu.</Editable>
             </div>
             <div className="info-card">
               <div className="info-card-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" /></svg>
               </div>
-              <h3>Finansowanie</h3>
-              <p>Możliwość kredytu lub leasingu. Pomożemy załatwić formalności.</p>
+              <Editable id="uzywane.info3.title" as="h3">Finansowanie</Editable>
+              <Editable id="uzywane.info3.desc" as="p" multiline>Możliwość kredytu lub leasingu. Pomożemy załatwić formalności.</Editable>
             </div>
           </div>
 
-          <h2>Aktualna <span className="gradient-text">oferta</span></h2>
-          <p className="lead">Kliknij na zdjęcie aby powiększyć. Oferta zmienia się dynamicznie – zadzwoń i zapytaj o dostępność.</p>
+          <EditableHTML id="uzywane.h2.oferta" as="h2" defaultHtml='Aktualna <span class="gradient-text">oferta</span>' />
+          <Editable id="uzywane.lead" as="p" className="lead" multiline>Kliknij na zdjęcie aby powiększyć. Oferta zmienia się dynamicznie – zadzwoń i zapytaj o dostępność.</Editable>
 
           <div className="moto-gallery-v2">
             {motorcycles.map((moto) => {
@@ -221,8 +221,8 @@ export default function MotocykleUzywane() {
           </div>
 
           <div className="sidebar-card cta-card" style={{ maxWidth: "600px", margin: "50px auto" }}>
-            <h3>Szukasz czegoś konkretnego?</h3>
-            <p>Jeśli nie znalazłeś motocykla, który Cię interesuje – zadzwoń! Oferta zmienia się często, a my możemy pomóc w poszukiwaniach.</p>
+            <Editable id="uzywane.cta.title" as="h3">Szukasz czegoś konkretnego?</Editable>
+            <Editable id="uzywane.cta.desc" as="p" multiline>Jeśli nie znalazłeś motocykla, który Cię interesuje – zadzwoń! Oferta zmienia się często, a my możemy pomóc w poszukiwaniach.</Editable>
             <a href="tel:601484242" className="btn btn-primary btn-full">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13 19.79 19.79 0 0 1 1.61 4.35 2 2 0 0 1 3.58 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.18 6.18l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" /></svg>
               601 48 42 42

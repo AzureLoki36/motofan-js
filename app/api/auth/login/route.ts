@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createToken, getAdminPassword, COOKIE_NAME } from "@/lib/auth";
+import { createToken, getAdminUsername, getAdminPassword, COOKIE_NAME } from "@/lib/auth";
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const { password } = body;
+  const { username, password } = body;
 
-  if (!password || password !== getAdminPassword()) {
-    return NextResponse.json({ error: "Nieprawidłowe hasło" }, { status: 401 });
+  if (!username || !password || username !== getAdminUsername() || password !== getAdminPassword()) {
+    return NextResponse.json({ error: "Nieprawidłowa nazwa użytkownika lub hasło" }, { status: 401 });
   }
 
   const token = await createToken();

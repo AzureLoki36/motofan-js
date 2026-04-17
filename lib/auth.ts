@@ -31,6 +31,10 @@ export async function isAdmin(): Promise<boolean> {
   return payload?.role === "admin";
 }
 
+export function getAdminUsername(): string {
+  return (process.env.ADMIN_USERNAME || "admin").trim();
+}
+
 export function getAdminPassword(): string {
   return (process.env.ADMIN_PASSWORD || "motofan2026").trim();
 }

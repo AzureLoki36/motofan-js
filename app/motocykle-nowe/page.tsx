@@ -151,27 +151,27 @@ export default function MotocykleNowe() {
               <div className="info-card-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><polyline points="9 12 11 14 15 10" /></svg>
               </div>
-              <h3>Gwarancja producenta</h3>
-              <p>Każdy nowy motocykl objęty jest oficjalną gwarancją. Serwis gwarancyjny na miejscu.</p>
+              <Editable id="nowe.info1.title" as="h3">Gwarancja producenta</Editable>
+              <Editable id="nowe.info1.desc" as="p" multiline>Każdy nowy motocykl objęty jest oficjalną gwarancją. Serwis gwarancyjny na miejscu.</Editable>
             </div>
             <div className="info-card">
               <div className="info-card-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" /></svg>
               </div>
-              <h3>Kredyt i leasing</h3>
-              <p>Finansowanie na raty, leasing dla firm. Pomożemy z formalnościami.</p>
+              <Editable id="nowe.info2.title" as="h3">Kredyt i leasing</Editable>
+              <Editable id="nowe.info2.desc" as="p" multiline>Finansowanie na raty, leasing dla firm. Pomożemy z formalnościami.</Editable>
             </div>
             <div className="info-card">
               <div className="info-card-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /></svg>
               </div>
-              <h3>Rejestracja na miejscu</h3>
-              <p>Pomoc w rejestracji, ubezpieczeniu OC/AC i formalnościach.</p>
+              <Editable id="nowe.info3.title" as="h3">Rejestracja na miejscu</Editable>
+              <Editable id="nowe.info3.desc" as="p" multiline>Pomoc w rejestracji, ubezpieczeniu OC/AC i formalnościach.</Editable>
             </div>
           </div>
 
-          <h2>Aktualna <span className="gradient-text">oferta</span></h2>
-          <p className="lead">Kliknij na zdjęcie aby powiększyć. Dostępność modeli zmienia się – zadzwoń i zapytaj o aktualny stan.</p>
+          <EditableHTML id="nowe.h2.oferta" as="h2" defaultHtml='Aktualna <span class="gradient-text">oferta</span>' />
+          <Editable id="nowe.lead" as="p" className="lead" multiline>Kliknij na zdjęcie aby powiększyć. Dostępność modeli zmienia się – zadzwoń i zapytaj o aktualny stan.</Editable>
 
           <div className="moto-gallery-v2">
             {motorcycles.map((moto) => {
@@ -216,8 +216,8 @@ export default function MotocykleNowe() {
           </div>
 
           <div className="sidebar-card cta-card" style={{ maxWidth: "600px", margin: "50px auto" }}>
-            <h3>Nie widzisz swojego modelu?</h3>
-            <p>Nasza oferta obejmuje pełną gamę Kawasaki, Benelli i Kymco. Zadzwoń – zamówimy dowolny model z katalogu producenta.</p>
+            <Editable id="nowe.cta.title" as="h3">Nie widzisz swojego modelu?</Editable>
+            <Editable id="nowe.cta.desc" as="p" multiline>Nasza oferta obejmuje pełną gamę Kawasaki, Benelli i Kymco. Zadzwoń – zamówimy dowolny model z katalogu producenta.</Editable>
             <a href="tel:601484242" className="btn btn-primary btn-full">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13 19.79 19.79 0 0 1 1.61 4.35 2 2 0 0 1 3.58 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.18 6.18l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" /></svg>
               601 48 42 42

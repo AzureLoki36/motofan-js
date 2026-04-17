@@ -65,11 +65,7 @@ export default function Home() {
         <div className="container">
           <div className="section-header">
             <span className="section-tag">O nas</span>
-            <h2 className="section-title">
-              Pasja do motocykli
-              <br />
-              <span className="gradient-text">od 1999 roku</span>
-            </h2>
+            <EditableHTML id="home.about.heading" as="h2" className="section-title" defaultHtml='Pasja do motocykli<br/><span class="gradient-text">od 1999 roku</span>' />
           </div>
           <div className="about-grid">
             <div
@@ -114,16 +110,12 @@ export default function Home() {
         <div className="container">
           <div className="section-header">
             <span className="section-tag">Autoryzacje</span>
-            <h2 className="section-title">
-              Firmy, z którymi
-              <br />
-              <span className="gradient-text">współpracujemy</span>
-            </h2>
-            <p className="section-desc">
+            <EditableHTML id="home.brands.heading" as="h2" className="section-title" defaultHtml='Firmy, z którymi<br/><span class="gradient-text">współpracujemy</span>' />
+            <Editable id="home.brands.desc" as="p" className="section-desc" multiline>
               Jesteśmy oficjalnym autoryzowanym dealerem i serwisem trzech
               wiodących marek motocyklowych. Gwarantujemy oryginalne części i
               profesjonalny serwis.
-            </p>
+            </Editable>
           </div>
           <div className="brands-grid">
             <a
@@ -238,11 +230,11 @@ export default function Home() {
         <div className="container">
           <div className="section-header">
             <span className="section-tag">Oferta</span>
-            <h2 className="section-title">Co oferujemy?</h2>
-            <p className="section-desc">
+            <EditableHTML id="home.services.heading" as="h2" className="section-title" defaultHtml='Co oferujemy?' />
+            <Editable id="home.services.desc" as="p" className="section-desc" multiline>
               Kompleksowa obsługa motocyklisty – od zakupu nowego pojazdu, przez
               serwis, aż po kompletne wyposażenie.
-            </p>
+            </Editable>
           </div>
           <div className="services-grid">
             <a href="/serwis-motocyklowy" className="service-card" id="svc-service">
@@ -377,9 +369,7 @@ export default function Home() {
         <div className="container">
           <div className="section-header">
             <span className="section-tag">Dojazd i kontakt</span>
-            <h2 className="section-title">
-              Znajdź nas <span className="gradient-text">w Opolu</span>
-            </h2>
+            <EditableHTML id="home.contact.heading" as="h2" className="section-title" defaultHtml='Znajdź nas <span class="gradient-text">w Opolu</span>' />
           </div>
           <div className="contact-grid">
             <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
