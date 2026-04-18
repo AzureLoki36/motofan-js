@@ -3,6 +3,7 @@
 import { useRef, useCallback, useState, createElement } from "react";
 import { useAdmin, useContentValue } from "./AdminProvider";
 import { useLocale } from "./LocaleProvider";
+import { contentTranslations } from "@/lib/content-translations";
 
 /* ── Editable Text ── */
 interface EditableProps {
@@ -301,6 +302,8 @@ function getLocalizedVal(content: Record<string, unknown>, id: string, locale: s
   if (locale !== "pl") {
     const localized = getVal(content, `${locale}.${id}`);
     if (localized !== undefined) return localized;
+    const staticVal = (contentTranslations as Record<string, Record<string, string>>)[locale]?.[id];
+    if (staticVal !== undefined) return staticVal;
   }
   return getVal(content, id);
 }

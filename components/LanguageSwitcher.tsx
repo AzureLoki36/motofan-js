@@ -126,12 +126,12 @@ export default function LanguageSwitcher() {
           list-style: none;
           margin: 0;
           padding: 4px;
-          background: var(--card-bg, #1a1a2e);
-          border: 1px solid rgba(255,255,255,.12);
+          background: var(--surface, #1c1e2b);
+          border: 1px solid var(--border, rgba(255,255,255,.12));
           border-radius: 10px;
-          box-shadow: 0 8px 24px rgba(0,0,0,.35);
+          box-shadow: 0 8px 24px rgba(0,0,0,.18);
           z-index: 1000;
-          min-width: 90px;
+          min-width: 100px;
           animation: langFade .15s ease;
         }
         @keyframes langFade {
@@ -148,12 +148,12 @@ export default function LanguageSwitcher() {
           padding: 8px 12px;
           border-radius: 7px;
           cursor: pointer;
-          color: inherit;
+          color: var(--text, #e8e9f0);
           font-family: inherit;
           transition: background .15s;
         }
         .lang-option:hover {
-          background: rgba(255,255,255,.1);
+          background: var(--surface2, rgba(255,255,255,.1));
         }
         .lang-option .lang-code {
           font-size: .82rem;

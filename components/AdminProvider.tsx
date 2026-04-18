@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from "react";
 import { useLocale } from "./LocaleProvider";
+import { contentTranslations } from "@/lib/content-translations";
 
 type ContentData = Record<string, unknown>;
 
@@ -64,6 +65,8 @@ export function useContentValue(path: string, defaultValue: string): string {
   if (locale !== "pl") {
     const localized = getNestedValue(content, `${locale}.${path}`);
     if (typeof localized === "string" && localized !== "") return localized;
+    const staticVal = (contentTranslations as Record<string, Record<string, string>>)[locale]?.[path];
+    if (staticVal) return staticVal;
   }
   const val = getNestedValue(content, path);
   return typeof val === "string" ? val : defaultValue;
