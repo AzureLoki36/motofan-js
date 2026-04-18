@@ -1,9 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useLocale } from "./LocaleProvider";
+
+const LABELS: Record<string, { light: string; dark: string }> = {
+  pl: { light: "Tryb ciemny", dark: "Tryb jasny" },
+  en: { light: "Dark mode", dark: "Light mode" },
+  uk: { light: "Темний режим", dark: "Світлий режим" },
+};
 
 export default function ThemeToggle() {
   const [dark, setDark] = useState(false);
+  const { locale } = useLocale();
+  const labels = LABELS[locale] || LABELS.pl;
 
   useEffect(() => {
     const saved = localStorage.getItem("theme");
@@ -24,8 +33,8 @@ export default function ThemeToggle() {
     <button
       onClick={toggle}
       className="theme-toggle"
-      aria-label={dark ? "Włącz tryb jasny" : "Włącz tryb ciemny"}
-      title={dark ? "Tryb jasny" : "Tryb ciemny"}
+      aria-label={dark ? labels.dark : labels.light}
+      title={dark ? labels.dark : labels.light}
     >
       {dark ? (
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

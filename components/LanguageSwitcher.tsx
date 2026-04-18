@@ -5,17 +5,38 @@ import { useLocale } from "./LocaleProvider";
 import type { Locale } from "@/lib/i18n";
 import { LOCALES, LOCALE_NAMES } from "@/lib/i18n";
 
-const FLAGS: Record<Locale, string> = {
-  pl: "🇵🇱",
-  en: "🇬🇧",
-  uk: "🇺🇦",
-};
-
 const SHORT: Record<Locale, string> = {
   pl: "PL",
   en: "EN",
   uk: "UA",
 };
+
+function Flag({ code, size = 20 }: { code: Locale; size?: number }) {
+  if (code === "pl")
+    return (
+      <svg width={size} height={size * 0.67} viewBox="0 0 30 20" style={{ borderRadius: 3, display: "block" }}>
+        <rect width="30" height="10" fill="#fff" />
+        <rect y="10" width="30" height="10" fill="#dc143c" />
+      </svg>
+    );
+  if (code === "en")
+    return (
+      <svg width={size} height={size * 0.67} viewBox="0 0 60 40" style={{ borderRadius: 3, display: "block" }}>
+        <rect width="60" height="40" fill="#012169" />
+        <path d="M0 0L60 40M60 0L0 40" stroke="#fff" strokeWidth="6" />
+        <path d="M0 0L60 40M60 0L0 40" stroke="#C8102E" strokeWidth="4" />
+        <path d="M30 0V40M0 20H60" stroke="#fff" strokeWidth="10" />
+        <path d="M30 0V40M0 20H60" stroke="#C8102E" strokeWidth="6" />
+      </svg>
+    );
+  /* uk = Ukraine */
+  return (
+    <svg width={size} height={size * 0.67} viewBox="0 0 30 20" style={{ borderRadius: 3, display: "block" }}>
+      <rect width="30" height="10" fill="#0057B8" />
+      <rect y="10" width="30" height="10" fill="#FFD700" />
+    </svg>
+  );
+}
 
 export default function LanguageSwitcher() {
   const { locale, setLocale } = useLocale();
@@ -47,7 +68,7 @@ export default function LanguageSwitcher() {
           aria-label={LOCALE_NAMES[locale]}
           aria-expanded={open}
         >
-          <span className="lang-flag">{FLAGS[locale]}</span>
+          <Flag code={locale} />
           <span className="lang-code">{SHORT[locale]}</span>
           <svg className={`lang-chevron${open ? " open" : ""}`} width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
             <path d="M2 3.5L5 6.5L8 3.5" />
@@ -58,7 +79,7 @@ export default function LanguageSwitcher() {
             {LOCALES.filter((l) => l !== locale).map((l) => (
               <li key={l}>
                 <button className="lang-option" onClick={() => choose(l)}>
-                  <span className="lang-flag">{FLAGS[l]}</span>
+                  <Flag code={l} />
                   <span className="lang-code">{SHORT[l]}</span>
                 </button>
               </li>
@@ -86,10 +107,6 @@ export default function LanguageSwitcher() {
         }
         .lang-current:hover {
           background: rgba(255,255,255,.15);
-        }
-        .lang-flag {
-          font-size: 16px;
-          line-height: 1;
         }
         .lang-code {
           font-size: .78rem;
