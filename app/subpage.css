@@ -1635,6 +1635,28 @@
   object-fit: cover;
 }
 
+/* Banner admin order controls */
+.banner-admin-order {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.banner-order-btn {
+  padding: 2px 8px !important;
+  min-width: unset !important;
+  font-size: 0.7rem !important;
+  line-height: 1 !important;
+}
+
+.banner-order-num {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-m);
+}
+
 .moto-admin-no-img {
   width: 100%;
   height: 100%;

@@ -1,31 +1,55 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import Navbar from "@/components/Navbar";
 import SubpageFooter from "@/components/SubpageFooter";
 import { Editable, EditableHTML } from "@/components/Editable";
 import Link from "next/link";
 import { useLocale } from "@/components/LocaleProvider";
+import { useAdmin } from "@/components/AdminProvider";
+import BannerAdmin from "@/components/BannerAdmin";
+import type { BannerItem } from "@/lib/banner";
 
-const bannerItems = [
-  { img: "https://dainese-cdn.thron.com/delivery/public/image/dainese/81086c27-e811-40f0-a04f-03c7368356cf/px6qct/std/450x450/2118399001_013_1.png", alt: "AGV K7 Super 46", brand: "AGV", cat: "cat.sportHelmets" },
-  { img: "https://secamoto.com/wp-content/uploads/2024/07/box-2-insidry.jpg", alt: "SECA InsiDry", brand: "SECA", cat: "cat.jackets" },
-  { img: "https://dainese-cdn.thron.com/delivery/public/image/dainese/d2ef76d4-abb3-41c1-9967-b35c530a86d5/px6qct/std/450x450/2118399001_003_1.png", alt: "Nolan N120-1", brand: "Nolan", cat: "cat.touringHelmets" },
-  { img: "https://staging-cms.motul.com/images/carousel_lubrifiants_c9338e5dc6.jpg", alt: "Motul", brand: "Motul", cat: "cat.oils" },
-  { img: "https://secamoto.com/wp-content/uploads/2026/01/X-ADV_Desktop.jpg", alt: "SECA X-ADV", brand: "SECA", cat: "cat.boots" },
-  { img: "https://dainese-cdn.thron.com/delivery/public/image/dainese/8a9fd80f-3aed-4d88-84db-11f36f7fe9d3/px6qct/std/450x450/2118399001_010_1.png", alt: "AGV K7 Damascus", brand: "AGV", cat: "cat.fullface" },
-  { img: "https://secamoto.com/wp-content/uploads/2024/07/box-2-D3O.jpg", alt: "SECA D3O", brand: "SECA", cat: "cat.protectors" },
-  { img: "https://dainese-cdn.thron.com/delivery/public/image/dainese/fdcdfec0-3869-4082-af2b-df19d1303887/px6qct/std/450x450/2118399001_001_1.png", alt: "Nolan", brand: "Nolan", cat: "cat.flipHelmets" },
-  { img: "https://secamoto.com/wp-content/uploads/2023/05/UKEMI-PRO-blk-rotated.jpg", alt: "SECA Ukemi Pro", brand: "SECA", cat: "cat.gloves" },
-  { img: "https://secamoto.com/wp-content/uploads/2023/05/SRS-II-FLUO-RED_PANT_1.jpg", alt: "SECA SRS II", brand: "SECA", cat: "cat.pants" },
+const defaultBannerItems = [
+  { img: "https://dainese-cdn.thron.com/delivery/public/image/dainese/81086c27-e811-40f0-a04f-03c7368356cf/px6qct/std/450x450/2118399001_013_1.png", alt: "AGV K7 Super 46", brand: "AGV", cat: "Kaski sportowe" },
+  { img: "https://secamoto.com/wp-content/uploads/2024/07/box-2-insidry.jpg", alt: "SECA InsiDry", brand: "SECA", cat: "Kurtki motocyklowe" },
+  { img: "https://dainese-cdn.thron.com/delivery/public/image/dainese/d2ef76d4-abb3-41c1-9967-b35c530a86d5/px6qct/std/450x450/2118399001_003_1.png", alt: "Nolan N120-1", brand: "Nolan", cat: "Kaski turystyczne" },
+  { img: "https://staging-cms.motul.com/images/carousel_lubrifiants_c9338e5dc6.jpg", alt: "Motul", brand: "Motul", cat: "Oleje silnikowe" },
+  { img: "https://secamoto.com/wp-content/uploads/2026/01/X-ADV_Desktop.jpg", alt: "SECA X-ADV", brand: "SECA", cat: "Buty motocyklowe" },
+  { img: "https://dainese-cdn.thron.com/delivery/public/image/dainese/8a9fd80f-3aed-4d88-84db-11f36f7fe9d3/px6qct/std/450x450/2118399001_010_1.png", alt: "AGV K7 Damascus", brand: "AGV", cat: "Kaski fullface" },
+  { img: "https://secamoto.com/wp-content/uploads/2024/07/box-2-D3O.jpg", alt: "SECA D3O", brand: "SECA", cat: "Ochraniacze D3O" },
+  { img: "https://dainese-cdn.thron.com/delivery/public/image/dainese/fdcdfec0-3869-4082-af2b-df19d1303887/px6qct/std/450x450/2118399001_001_1.png", alt: "Nolan", brand: "Nolan", cat: "Kaski szczękowe" },
+  { img: "https://secamoto.com/wp-content/uploads/2023/05/UKEMI-PRO-blk-rotated.jpg", alt: "SECA Ukemi Pro", brand: "SECA", cat: "Rękawice" },
+  { img: "https://secamoto.com/wp-content/uploads/2023/05/SRS-II-FLUO-RED_PANT_1.jpg", alt: "SECA SRS II", brand: "SECA", cat: "Spodnie" },
 ];
 
 export default function Sklep() {
   const { t } = useLocale();
+  const { isAdmin, editMode } = useAdmin();
   const trackRef = useRef<HTMLDivElement>(null);
   const posRef = useRef(0);
   const pausedRef = useRef(false);
   const manualBoostRef = useRef(0);
+
+  const [bannerItemsDb, setBannerItemsDb] = useState<BannerItem[]>([]);
+  const [bannerLoaded, setBannerLoaded] = useState(false);
+
+  const fetchBanner = useCallback(async () => {
+    try {
+      const res = await fetch("/api/banner", { cache: "no-store" });
+      if (res.ok) {
+        const data: BannerItem[] = await res.json();
+        setBannerItemsDb(data);
+      }
+    } catch { /* use defaults */ }
+    setBannerLoaded(true);
+  }, []);
+
+  useEffect(() => { fetchBanner(); }, [fetchBanner]);
+
+  const bannerItems = bannerItemsDb.length > 0
+    ? bannerItemsDb.map((b) => ({ img: b.img, alt: b.alt, brand: b.brand, cat: b.cat }))
+    : defaultBannerItems;
 
   useEffect(() => {
     const track = trackRef.current;
@@ -123,6 +147,10 @@ export default function Sklep() {
 
           <EditableHTML id="sklep.h2.kategorie" as="h2" defaultHtml='Kategorie <span class="gradient-text">produktów</span>' />
 
+          {isAdmin && editMode && (
+            <BannerAdmin items={bannerItemsDb} onSaved={fetchBanner} />
+          )}
+
           {/* Inline styles for brand banner */}
           <style>{`
             .brand-banner { overflow: hidden; padding: 30px 0; position: relative; }
@@ -184,7 +212,7 @@ export default function Sklep() {
                   <img src={item.img} alt={item.alt} />
                   <div className="banner-overlay">
                     <span className="banner-brand">{item.brand}</span>
-                    <span className="banner-cat">{t(item.cat)}</span>
+                    <span className="banner-cat">{item.cat}</span>
                   </div>
                 </a>
               ))}
