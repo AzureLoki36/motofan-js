@@ -1,132 +1,48 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Navbar from "@/components/Navbar";
 import SubpageFooter from "@/components/SubpageFooter";
 import { Editable, EditableHTML } from "@/components/Editable";
 import Lightbox from "@/components/Lightbox";
 import Link from "next/link";
 import { useLocale } from "@/components/LocaleProvider";
-
-interface MotoImage {
-  thumb: string;
-  full: string;
-  hires: string;
-}
-
-interface Motorcycle {
-  id: string;
-  brand: string;
-  name: string;
-  badge: string;
-  badgeClass?: string;
-  specs: { label: string; value: string }[];
-  desc: string;
-  price: string;
-  btnText: string;
-  btnClass: string;
-  images: MotoImage[];
-}
-
-const motorcycles: Motorcycle[] = [
-  {
-    id: "new1",
-    brand: "Kawasaki",
-    name: "Z650",
-    badge: "badge.new",
-    specs: [
-      { label: "spec.year", value: "2025" },
-      { label: "spec.mileage", value: "0 km" },
-      { label: "spec.displacement", value: "649 cm³" },
-      { label: "spec.power", value: "68 KM" },
-    ],
-    desc: "Bestsellerowy naked bike. Doskonały zarówno dla początkujących, jak i doświadczonych motocyklistów.",
-    price: "od 34 900 zł",
-    btnText: "Zapytaj o ten motocykl",
-    btnClass: "btn btn-primary btn-full",
-    images: [
-      { thumb: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=150&h=100&fit=crop", full: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop", hires: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&h=800&fit=crop" },
-      { thumb: "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=150&h=100&fit=crop", full: "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=800&h=600&fit=crop", hires: "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=1200&h=800&fit=crop" },
-      { thumb: "https://images.unsplash.com/photo-1609630875171-b1321377ee65?w=150&h=100&fit=crop", full: "https://images.unsplash.com/photo-1609630875171-b1321377ee65?w=800&h=600&fit=crop", hires: "https://images.unsplash.com/photo-1609630875171-b1321377ee65?w=1200&h=800&fit=crop" },
-    ],
-  },
-  {
-    id: "new2",
-    brand: "Kawasaki",
-    name: "Ninja 650",
-    badge: "badge.new",
-    specs: [
-      { label: "spec.year", value: "2025" },
-      { label: "spec.mileage", value: "0 km" },
-      { label: "spec.displacement", value: "649 cm³" },
-      { label: "spec.power", value: "68 KM" },
-    ],
-    desc: "Sportowy charakter w przystępnej formie. Ikoniczny design Ninja z komfortową pozycją jazdy.",
-    price: "od 37 900 zł",
-    btnText: "Zapytaj o ten motocykl",
-    btnClass: "btn btn-primary btn-full",
-    images: [
-      { thumb: "https://images.unsplash.com/photo-1609630875171-b1321377ee65?w=150&h=100&fit=crop", full: "https://images.unsplash.com/photo-1609630875171-b1321377ee65?w=800&h=600&fit=crop", hires: "https://images.unsplash.com/photo-1609630875171-b1321377ee65?w=1200&h=800&fit=crop" },
-      { thumb: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=150&h=100&fit=crop", full: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop", hires: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&h=800&fit=crop" },
-      { thumb: "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=150&h=100&fit=crop", full: "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=800&h=600&fit=crop", hires: "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=1200&h=800&fit=crop" },
-    ],
-  },
-  {
-    id: "new3",
-    brand: "Benelli",
-    name: "TRK 502 X",
-    badge: "badge.new",
-    specs: [
-      { label: "spec.year", value: "2025" },
-      { label: "spec.mileage", value: "0 km" },
-      { label: "spec.displacement", value: "500 cm³" },
-      { label: "spec.power", value: "47,5 KM" },
-    ],
-    desc: "Wszechstronny adventure z włoskim sznytem. Idealny na asfalt i lekki teren. Bestseller marki.",
-    price: "od 27 990 zł",
-    btnText: "Zapytaj o ten motocykl",
-    btnClass: "btn btn-primary btn-full",
-    images: [
-      { thumb: "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=150&h=100&fit=crop", full: "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=800&h=600&fit=crop", hires: "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=1200&h=800&fit=crop" },
-      { thumb: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=150&h=100&fit=crop", full: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop", hires: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&h=800&fit=crop" },
-      { thumb: "https://images.unsplash.com/photo-1558980664-10e7170b5df9?w=150&h=100&fit=crop", full: "https://images.unsplash.com/photo-1558980664-10e7170b5df9?w=800&h=600&fit=crop", hires: "https://images.unsplash.com/photo-1558980664-10e7170b5df9?w=1200&h=800&fit=crop" },
-    ],
-  },
-  {
-    id: "new4",
-    brand: "Kymco",
-    name: "X-Town 300i ABS",
-    badge: "badge.new",
-    specs: [
-      { label: "spec.year", value: "2025" },
-      { label: "spec.mileage", value: "0 km" },
-      { label: "spec.displacement", value: "276 cm³" },
-      { label: "spec.power", value: "25 KM" },
-    ],
-    desc: "Komfortowy maxiskuter miejski z ABS. Pojemny schowek pod siedzeniem, niskie spalanie.",
-    price: "od 21 900 zł",
-    btnText: "Zapytaj o ten motocykl",
-    btnClass: "btn btn-primary btn-full",
-    images: [
-      { thumb: "https://images.unsplash.com/photo-1558980664-10e7170b5df9?w=150&h=100&fit=crop", full: "https://images.unsplash.com/photo-1558980664-10e7170b5df9?w=800&h=600&fit=crop", hires: "https://images.unsplash.com/photo-1558980664-10e7170b5df9?w=1200&h=800&fit=crop" },
-      { thumb: "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=150&h=100&fit=crop", full: "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=800&h=600&fit=crop", hires: "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=1200&h=800&fit=crop" },
-      { thumb: "https://images.unsplash.com/photo-1547549082-6bc09f2049ae?w=150&h=100&fit=crop", full: "https://images.unsplash.com/photo-1547549082-6bc09f2049ae?w=800&h=600&fit=crop", hires: "https://images.unsplash.com/photo-1547549082-6bc09f2049ae?w=1200&h=800&fit=crop" },
-    ],
-  },
-];
+import { useAdmin } from "@/components/AdminProvider";
+import MotorcycleAdmin from "@/components/MotorcycleAdmin";
+import MotorcycleFilters, { Filters, emptyFilters, applyFilters } from "@/components/MotorcycleFilters";
+import type { Motorcycle } from "@/lib/motorcycles";
 
 export default function MotocykleNowe() {
   const { t } = useLocale();
-  const [mainImages, setMainImages] = useState<Record<string, number>>(
-    Object.fromEntries(motorcycles.map((m) => [m.id, 0]))
-  );
-  const [lightbox, setLightbox] = useState<{ galleryId: string; index: number } | null>(null);
+  const { isAdmin, editMode } = useAdmin();
+  const [motorcycles, setMotorcycles] = useState<Motorcycle[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [filters, setFilters] = useState<Filters>(emptyFilters);
+  const [mainImages, setMainImages] = useState<Record<string, number>>({});
+  const [lightbox, setLightbox] = useState<{ id: string; index: number } | null>(null);
 
-  const changeMainImage = (galleryId: string, index: number) => {
-    setMainImages((prev) => ({ ...prev, [galleryId]: index }));
+  const fetchMotorcycles = useCallback(async () => {
+    try {
+      const res = await fetch("/api/motorcycles");
+      if (res.ok) {
+        const all: Motorcycle[] = await res.json();
+        setMotorcycles(all.filter((m) => m.type === "nowe"));
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => { fetchMotorcycles(); }, [fetchMotorcycles]);
+
+  const filtered = applyFilters(motorcycles, filters);
+
+  const changeMainImage = (id: string, index: number) => {
+    setMainImages((prev) => ({ ...prev, [id]: index }));
   };
 
-  const lightboxImages = lightbox ? motorcycles.find((m) => m.id === lightbox.galleryId)!.images.map((img) => img.hires) : [];
+  const lbMoto = lightbox ? motorcycles.find((m) => m.id === lightbox.id) : null;
+  const lightboxImages = lbMoto ? lbMoto.images : [];
 
   return (
     <>
@@ -175,47 +91,69 @@ export default function MotocykleNowe() {
           <EditableHTML id="nowe.h2.oferta" as="h2" defaultHtml='Aktualna <span class="gradient-text">oferta</span>' />
           <Editable id="nowe.lead" as="p" className="lead" multiline>Kliknij na zdjęcie aby powiększyć. Dostępność modeli zmienia się – zadzwoń i zapytaj o aktualny stan.</Editable>
 
-          <div className="moto-gallery-v2">
-            {motorcycles.map((moto) => {
-              const activeIdx = mainImages[moto.id];
-              return (
-                <article className="moto-card-v2" key={moto.id}>
-                  <div className="moto-images-container">
-                    <div className="moto-main-img" onClick={() => setLightbox({ galleryId: moto.id, index: activeIdx })}>
-                      <img src={moto.images[activeIdx].full} alt={`${moto.brand} ${moto.name}`} />
-                      <span className={`moto-badge${moto.badgeClass ? " " + moto.badgeClass : ""}`}>{t(moto.badge)}</span>
-                      <div className="moto-zoom-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /><line x1="11" y1="8" x2="11" y2="14" /><line x1="8" y1="11" x2="14" y2="11" /></svg>
+          {isAdmin && editMode && (
+            <MotorcycleAdmin motoType="nowe" motorcycles={motorcycles} onSaved={fetchMotorcycles} />
+          )}
+
+          {motorcycles.length > 0 && (
+            <MotorcycleFilters motorcycles={motorcycles} filters={filters} onChange={setFilters} t={t} />
+          )}
+
+          {loading ? (
+            <div style={{ textAlign: "center", padding: "60px 0", color: "var(--text-m)" }}>
+              <div className="moto-spinner" />
+              <p>Ładowanie...</p>
+            </div>
+          ) : filtered.length === 0 ? (
+            <div style={{ textAlign: "center", padding: "60px 0", color: "var(--text-m)" }}>
+              <p>{motorcycles.length === 0 ? "Brak motocykli w ofercie." : t("filter.noResults")}</p>
+            </div>
+          ) : (
+            <div className="moto-gallery-v2">
+              {filtered.map((moto) => {
+                const activeIdx = mainImages[moto.id] || 0;
+                const images = moto.images.length > 0 ? moto.images : ["/pics/placeholder.jpg"];
+                const badgeLabel = t("badge.new");
+                return (
+                  <article className="moto-card-v2" key={moto.id}>
+                    <div className="moto-images-container">
+                      <div className="moto-main-img" onClick={() => images.length > 0 && setLightbox({ id: moto.id, index: activeIdx })}>
+                        <img src={images[activeIdx] || images[0]} alt={`${moto.brand} ${moto.model}`} />
+                        <span className="moto-badge">{badgeLabel}</span>
+                        <div className="moto-zoom-icon">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /><line x1="11" y1="8" x2="11" y2="14" /><line x1="8" y1="11" x2="14" y2="11" /></svg>
+                        </div>
+                      </div>
+                      <div className="moto-thumbs-scroll">
+                        {images.map((img, i) => (
+                          <img
+                            key={i}
+                            src={img}
+                            alt={`${moto.brand} ${moto.model} ${i + 1}`}
+                            className={i === activeIdx ? "active" : ""}
+                            onClick={() => changeMainImage(moto.id, i)}
+                          />
+                        ))}
                       </div>
                     </div>
-                    <div className="moto-thumbs-scroll">
-                      {moto.images.map((img, i) => (
-                        <img
-                          key={i}
-                          src={img.thumb}
-                          alt={`View ${i + 1}`}
-                          className={i === activeIdx ? "active" : ""}
-                          onClick={() => changeMainImage(moto.id, i)}
-                        />
-                      ))}
+                    <div className="moto-details">
+                      <span className="moto-brand">{moto.brand}</span>
+                      <h3>{moto.model}</h3>
+                      <div className="moto-specs">
+                        <div className="spec"><strong>{t("spec.year")}:</strong> {moto.year}</div>
+                        <div className="spec"><strong>{t("spec.mileage")}:</strong> {moto.mileage.toLocaleString("pl-PL")} km</div>
+                        <div className="spec"><strong>{t("spec.displacement")}:</strong> {moto.displacement} cm³</div>
+                        <div className="spec"><strong>{t("spec.power")}:</strong> {moto.power} KM</div>
+                      </div>
+                      <p className="moto-desc">{moto.description}</p>
+                      <div className="moto-price">{moto.price.toLocaleString("pl-PL")} zł</div>
+                      <a href="tel:601484242" className="btn btn-primary btn-full">{t("moto.askAbout")}</a>
                     </div>
-                  </div>
-                  <div className="moto-details">
-                    <Editable id={`nowe.${moto.id}.brand`} as="span" className="moto-brand">{moto.brand}</Editable>
-                    <Editable id={`nowe.${moto.id}.name`} as="h3">{moto.name}</Editable>
-                    <div className="moto-specs">
-                      {moto.specs.map((s, si) => (
-                        <div className="spec" key={s.label}><strong>{t(s.label)}:</strong> <Editable id={`nowe.${moto.id}.spec${si}`}>{s.value}</Editable></div>
-                      ))}
-                    </div>
-                    <Editable id={`nowe.${moto.id}.desc`} as="p" className="moto-desc" multiline>{moto.desc}</Editable>
-                    <Editable id={`nowe.${moto.id}.price`} as="div" className="moto-price">{moto.price}</Editable>
-                    <a href="tel:601484242" className={moto.btnClass}><Editable id={`nowe.${moto.id}.btn`}>{moto.btnText}</Editable></a>
-                  </div>
-                </article>
-              );
-            })}
-          </div>
+                  </article>
+                );
+              })}
+            </div>
+          )}
 
           <div className="sidebar-card cta-card" style={{ maxWidth: "600px", margin: "50px auto" }}>
             <Editable id="nowe.cta.title" as="h3">Nie widzisz swojego modelu?</Editable>
@@ -228,7 +166,7 @@ export default function MotocykleNowe() {
         </div>
       </section>
 
-      {lightbox && (
+      {lightbox && lbMoto && (
         <Lightbox
           images={lightboxImages}
           currentIndex={lightbox.index}

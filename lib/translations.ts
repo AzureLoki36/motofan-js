@@ -120,6 +120,22 @@ export const translations: Record<Locale, Dict> = {
     "cat.flipHelmets": "Kaski szczękowe",
     "cat.gloves": "Rękawice",
     "cat.pants": "Spodnie",
+
+    // Filters
+    "filter.brand": "Marka",
+    "filter.category": "Kategoria",
+    "filter.yearFrom": "Rok od",
+    "filter.yearTo": "Rok do",
+    "filter.priceFrom": "Cena od",
+    "filter.priceTo": "Cena do",
+    "filter.displacementFrom": "Poj. od (cm³)",
+    "filter.displacementTo": "Poj. do (cm³)",
+    "filter.powerFrom": "Moc od (KM)",
+    "filter.powerTo": "Moc do (KM)",
+    "filter.clear": "Wyczyść filtry",
+    "filter.results": "Znaleziono",
+    "filter.noResults": "Brak motocykli spełniających kryteria",
+    "moto.askAbout": "Zapytaj o ten motocykl",
   },
 
   /* ─── English ─── */
@@ -225,6 +241,22 @@ export const translations: Record<Locale, Dict> = {
     "cat.flipHelmets": "Flip-up helmets",
     "cat.gloves": "Gloves",
     "cat.pants": "Pants",
+
+    // Filters
+    "filter.brand": "Brand",
+    "filter.category": "Category",
+    "filter.yearFrom": "Year from",
+    "filter.yearTo": "Year to",
+    "filter.priceFrom": "Price from",
+    "filter.priceTo": "Price to",
+    "filter.displacementFrom": "Displ. from (cm³)",
+    "filter.displacementTo": "Displ. to (cm³)",
+    "filter.powerFrom": "Power from (HP)",
+    "filter.powerTo": "Power to (HP)",
+    "filter.clear": "Clear filters",
+    "filter.results": "Found",
+    "filter.noResults": "No motorcycles match your criteria",
+    "moto.askAbout": "Ask about this motorcycle",
   },
 
   /* ─── Українська ─── */
@@ -330,5 +362,21 @@ export const translations: Record<Locale, Dict> = {
     "cat.flipHelmets": "Модульні шоломи",
     "cat.gloves": "Рукавиці",
     "cat.pants": "Штани",
+
+    // Filters
+    "filter.brand": "Марка",
+    "filter.category": "Категорія",
+    "filter.yearFrom": "Рік від",
+    "filter.yearTo": "Рік до",
+    "filter.priceFrom": "Ціна від",
+    "filter.priceTo": "Ціна до",
+    "filter.displacementFrom": "Об'єм від (см³)",
+    "filter.displacementTo": "Об'єм до (см³)",
+    "filter.powerFrom": "Пот. від (к.с.)",
+    "filter.powerTo": "Пот. до (к.с.)",
+    "filter.clear": "Очистити фільтри",
+    "filter.results": "Знайдено",
+    "filter.noResults": "Немає мотоциклів за вашими критеріями",
+    "moto.askAbout": "Запитати про цей мотоцикл",
   },
 };
