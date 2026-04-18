@@ -74,8 +74,6 @@ export default function Navbar({ isHome = false, activeSection }: NavbarProps) {
             </li>
           ))}
         </ul>
-        <ThemeToggle />
-        <LanguageSwitcher />
         <a href="tel:601484242" className="nav-cta">
           <svg
             width="16"
@@ -91,6 +89,8 @@ export default function Navbar({ isHome = false, activeSection }: NavbarProps) {
           </svg>
           601 48 42 42
         </a>
+        <LanguageSwitcher />
+        <ThemeToggle />
         <button
           className={`hamburger${menuOpen ? " active" : ""}`}
           aria-label="Menu"

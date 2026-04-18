@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useRef, useEffect } from "react";
 import { useLocale } from "./LocaleProvider";
 import type { Locale } from "@/lib/i18n";
 import { LOCALES, LOCALE_NAMES } from "@/lib/i18n";
@@ -10,59 +11,139 @@ const FLAGS: Record<Locale, string> = {
   uk: "🇺🇦",
 };
 
+const SHORT: Record<Locale, string> = {
+  pl: "PL",
+  en: "EN",
+  uk: "UA",
+};
+
 export default function LanguageSwitcher() {
   const { locale, setLocale } = useLocale();
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  /* Close on outside click */
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  const choose = (l: Locale) => {
+    setLocale(l);
+    setOpen(false);
+  };
 
   return (
     <>
-      <div className="lang-switcher">
-        {LOCALES.map((l) => (
-          <button
-            key={l}
-            className={`lang-btn${l === locale ? " active" : ""}`}
-            onClick={() => setLocale(l)}
-            title={LOCALE_NAMES[l]}
-            aria-label={LOCALE_NAMES[l]}
-          >
-            {FLAGS[l]}
-          </button>
-        ))}
+      <div className="lang-dropdown" ref={ref}>
+        <button
+          className="lang-current"
+          onClick={() => setOpen(!open)}
+          aria-label={LOCALE_NAMES[locale]}
+          aria-expanded={open}
+        >
+          <span className="lang-flag">{FLAGS[locale]}</span>
+          <span className="lang-code">{SHORT[locale]}</span>
+          <svg className={`lang-chevron${open ? " open" : ""}`} width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M2 3.5L5 6.5L8 3.5" />
+          </svg>
+        </button>
+        {open && (
+          <ul className="lang-menu">
+            {LOCALES.filter((l) => l !== locale).map((l) => (
+              <li key={l}>
+                <button className="lang-option" onClick={() => choose(l)}>
+                  <span className="lang-flag">{FLAGS[l]}</span>
+                  <span className="lang-code">{SHORT[l]}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
       <style>{`
-        .lang-switcher {
-          display: flex;
-          align-items: center;
-          gap: 4px;
-          margin: 0 6px;
+        .lang-dropdown {
+          position: relative;
+          margin: 0 4px;
         }
-        .lang-btn {
-          background: rgba(255,255,255,.08);
-          border: 2px solid transparent;
-          border-radius: 50%;
-          width: 32px;
-          height: 32px;
-          font-size: 16px;
-          cursor: pointer;
+        .lang-current {
           display: flex;
           align-items: center;
-          justify-content: center;
+          gap: 5px;
+          background: rgba(255,255,255,.08);
+          border: 1px solid rgba(255,255,255,.15);
+          border-radius: 8px;
+          padding: 5px 10px;
+          cursor: pointer;
           transition: all .2s;
-          padding: 0;
+          color: inherit;
+          font-family: inherit;
+        }
+        .lang-current:hover {
+          background: rgba(255,255,255,.15);
+        }
+        .lang-flag {
+          font-size: 16px;
           line-height: 1;
         }
-        .lang-btn:hover {
-          background: rgba(255,255,255,.15);
-          transform: scale(1.1);
+        .lang-code {
+          font-size: .78rem;
+          font-weight: 700;
+          letter-spacing: .5px;
         }
-        .lang-btn.active {
-          border-color: var(--accent, #e63946);
-          background: rgba(230,57,70,.15);
-          box-shadow: 0 0 8px rgba(230,57,70,.3);
+        .lang-chevron {
+          transition: transform .2s;
+        }
+        .lang-chevron.open {
+          transform: rotate(180deg);
+        }
+        .lang-menu {
+          position: absolute;
+          top: calc(100% + 6px);
+          right: 0;
+          list-style: none;
+          margin: 0;
+          padding: 4px;
+          background: var(--card-bg, #1a1a2e);
+          border: 1px solid rgba(255,255,255,.12);
+          border-radius: 10px;
+          box-shadow: 0 8px 24px rgba(0,0,0,.35);
+          z-index: 1000;
+          min-width: 90px;
+          animation: langFade .15s ease;
+        }
+        @keyframes langFade {
+          from { opacity: 0; transform: translateY(-6px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .lang-option {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          width: 100%;
+          background: none;
+          border: none;
+          padding: 8px 12px;
+          border-radius: 7px;
+          cursor: pointer;
+          color: inherit;
+          font-family: inherit;
+          transition: background .15s;
+        }
+        .lang-option:hover {
+          background: rgba(255,255,255,.1);
+        }
+        .lang-option .lang-code {
+          font-size: .82rem;
         }
         @media (max-width: 900px) {
-          .lang-switcher {
-            order: -1;
-            margin: 12px 0 0;
+          .lang-dropdown {
+            margin: 0 2px;
           }
         }
       `}</style>
