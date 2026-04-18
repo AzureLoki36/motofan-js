@@ -6,6 +6,7 @@ import SubpageFooter from "@/components/SubpageFooter";
 import { Editable, EditableHTML, EditableImage } from "@/components/Editable";
 import Lightbox from "@/components/Lightbox";
 import Link from "next/link";
+import { useLocale } from "@/components/LocaleProvider";
 
 const twImages = [
   { src: "/pics/glowna/bus1.jpg", label: "Bus – widok z boku" },
@@ -16,6 +17,7 @@ const twImages = [
 
 export default function TransportIWynajem() {
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
+  const { t } = useLocale();
 
   return (
     <>
@@ -24,11 +26,11 @@ export default function TransportIWynajem() {
       <section className="page-header">
         <div className="container">
           <div className="breadcrumb">
-            <Link href="/">Strona główna</Link>
+            <Link href="/">{t("bc.home")}</Link>
             <span>/</span>
-            <Link href="/#services">Usługi</Link>
+            <Link href="/#services">{t("bc.services")}</Link>
             <span>/</span>
-            <span>Transport i wynajem przyczepy</span>
+            <span>{t("bc.transport")}</span>
           </div>
           <EditableHTML id="transport.title" as="h1" className="page-title" defaultHtml='Transport <span class="gradient-text">i Wynajem Przyczepy</span>' />
           <Editable id="transport.desc" as="p" className="page-desc">Profesjonalny transport motocykli na terenie całej Polski oraz wynajem przyczepy – wybierz opcję, która Ci odpowiada.</Editable>
@@ -160,7 +162,7 @@ export default function TransportIWynajem() {
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13 19.79 19.79 0 0 1 1.61 4.35 2 2 0 0 1 3.58 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.18 6.18l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" /></svg>
                 601 48 42 42
               </a>
-              <Link href="/#contact" className="btn btn-secondary">Formularz kontaktowy</Link>
+              <Link href="/#contact" className="btn btn-secondary">{t("btn.contactForm")}</Link>
             </div>
           </div>
 

@@ -4,8 +4,10 @@ import Navbar from "@/components/Navbar";
 import SubpageFooter from "@/components/SubpageFooter";
 import Link from "next/link";
 import { Editable, EditableHTML, EditableImage } from "@/components/Editable";
+import { useLocale } from "@/components/LocaleProvider";
 
 export default function SerwisMotocyklowy() {
+  const { t } = useLocale();
   return (
     <>
       <Navbar activeSection="Usługi" />
@@ -13,11 +15,11 @@ export default function SerwisMotocyklowy() {
       <section className="page-header">
         <div className="container">
           <div className="breadcrumb">
-            <Link href="/">Strona główna</Link>
+            <Link href="/">{t("bc.home")}</Link>
             <span>/</span>
-            <Link href="/#services">Usługi</Link>
+            <Link href="/#services">{t("bc.services")}</Link>
             <span>/</span>
-            <span>Serwis motocyklowy</span>
+            <span>{t("bc.serwis")}</span>
           </div>
           <EditableHTML id="serwis.title" as="h1" className="page-title" defaultHtml='Serwis <span class="gradient-text">Motocyklowy</span>' />
           <Editable id="serwis.desc" as="p" className="page-desc" multiline>Profesjonalna obsługa i naprawy motocykli, skuterów, quadów oraz pojazdów wodnych i śnieżnych. Ponad 25 lat doświadczenia.</Editable>

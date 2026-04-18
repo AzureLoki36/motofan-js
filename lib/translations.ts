@@ -64,6 +64,62 @@ export const translations: Record<Locale, Dict> = {
     "footer.usedBikes": "Motocykle używane",
     "footer.transport": "Transport i wynajem przyczepy",
     "footer.contact": "Kontakt",
+
+    // Breadcrumbs
+    "bc.home": "Strona główna",
+    "bc.services": "Usługi",
+    "bc.about": "O nas",
+    "bc.serwis": "Serwis motocyklowy",
+    "bc.czesci": "Sprzedaż części",
+    "bc.sklep": "Sklep z odzieżą i akcesoriami",
+    "bc.transport": "Transport i wynajem przyczepy",
+    "bc.historia": "Historia",
+    "bc.nowe": "Motocykle nowe",
+    "bc.uzywane": "Motocykle używane",
+
+    // Section tags
+    "tag.about": "O nas",
+    "tag.brands": "Autoryzacje",
+    "tag.offer": "Oferta",
+    "tag.contact": "Dojazd i kontakt",
+
+    // Hero buttons
+    "hero.brands": "Poznaj nasze marki",
+    "hero.contact": "Kontakt z nami",
+    "hero.history": "Historia firmy",
+
+    // Brand links
+    "brand.link.kawasaki": "Oficjalna strona Kawasaki →",
+    "brand.link.benelli": "Oficjalna strona Benelli Polska →",
+    "brand.link.kymco": "Oficjalna strona Kymco Polska →",
+    "brand.featured": "⭐ Polecana",
+
+    // Spec labels
+    "spec.year": "Rok",
+    "spec.mileage": "Przebieg",
+    "spec.displacement": "Pojemność",
+    "spec.power": "Moc",
+
+    // Badges
+    "badge.new": "Nowy",
+    "badge.available": "Dostępny",
+    "badge.reserved": "Rezerwacja",
+
+    // Buttons
+    "btn.contactForm": "Formularz kontaktowy",
+    "btn.contactDetails": "Zobacz dane kontaktowe",
+
+    // Sklep banner categories
+    "cat.sportHelmets": "Kaski sportowe",
+    "cat.jackets": "Kurtki motocyklowe",
+    "cat.touringHelmets": "Kaski turystyczne",
+    "cat.oils": "Oleje silnikowe",
+    "cat.boots": "Buty motocyklowe",
+    "cat.fullface": "Kaski fullface",
+    "cat.protectors": "Ochraniacze D3O",
+    "cat.flipHelmets": "Kaski szczękowe",
+    "cat.gloves": "Rękawice",
+    "cat.pants": "Spodnie",
   },
 
   /* ─── English ─── */
@@ -121,6 +177,54 @@ export const translations: Record<Locale, Dict> = {
     "footer.usedBikes": "Used motorcycles",
     "footer.transport": "Transport & trailer rental",
     "footer.contact": "Contact",
+
+    "bc.home": "Home",
+    "bc.services": "Services",
+    "bc.about": "About",
+    "bc.serwis": "Motorcycle service",
+    "bc.czesci": "Parts sales",
+    "bc.sklep": "Clothing & accessories shop",
+    "bc.transport": "Transport & trailer rental",
+    "bc.historia": "History",
+    "bc.nowe": "New motorcycles",
+    "bc.uzywane": "Used motorcycles",
+
+    "tag.about": "About us",
+    "tag.brands": "Authorizations",
+    "tag.offer": "Offer",
+    "tag.contact": "Directions & contact",
+
+    "hero.brands": "Discover our brands",
+    "hero.contact": "Contact us",
+    "hero.history": "Company history",
+
+    "brand.link.kawasaki": "Official Kawasaki website →",
+    "brand.link.benelli": "Official Benelli Poland website →",
+    "brand.link.kymco": "Official Kymco Poland website →",
+    "brand.featured": "⭐ Recommended",
+
+    "spec.year": "Year",
+    "spec.mileage": "Mileage",
+    "spec.displacement": "Displacement",
+    "spec.power": "Power",
+
+    "badge.new": "New",
+    "badge.available": "Available",
+    "badge.reserved": "Reserved",
+
+    "btn.contactForm": "Contact form",
+    "btn.contactDetails": "See contact details",
+
+    "cat.sportHelmets": "Sport helmets",
+    "cat.jackets": "Motorcycle jackets",
+    "cat.touringHelmets": "Touring helmets",
+    "cat.oils": "Engine oils",
+    "cat.boots": "Motorcycle boots",
+    "cat.fullface": "Full-face helmets",
+    "cat.protectors": "D3O protectors",
+    "cat.flipHelmets": "Flip-up helmets",
+    "cat.gloves": "Gloves",
+    "cat.pants": "Pants",
   },
 
   /* ─── Українська ─── */
@@ -178,5 +282,53 @@ export const translations: Record<Locale, Dict> = {
     "footer.usedBikes": "Вживані мотоцикли",
     "footer.transport": "Транспорт та оренда причепа",
     "footer.contact": "Контакти",
+
+    "bc.home": "Головна",
+    "bc.services": "Послуги",
+    "bc.about": "Про нас",
+    "bc.serwis": "Сервіс мотоциклів",
+    "bc.czesci": "Продаж запчастин",
+    "bc.sklep": "Магазин одягу та аксесуарів",
+    "bc.transport": "Транспорт та оренда причепа",
+    "bc.historia": "Історія",
+    "bc.nowe": "Нові мотоцикли",
+    "bc.uzywane": "Вживані мотоцикли",
+
+    "tag.about": "Про нас",
+    "tag.brands": "Авторизації",
+    "tag.offer": "Пропозиція",
+    "tag.contact": "Як дістатися та контакти",
+
+    "hero.brands": "Дізнатися про наші бренди",
+    "hero.contact": "Зв\u2019язатися з нами",
+    "hero.history": "Історія компанії",
+
+    "brand.link.kawasaki": "Офіційний сайт Kawasaki →",
+    "brand.link.benelli": "Офіційний сайт Benelli Polska →",
+    "brand.link.kymco": "Офіційний сайт Kymco Polska →",
+    "brand.featured": "⭐ Рекомендовано",
+
+    "spec.year": "Рік",
+    "spec.mileage": "Пробіг",
+    "spec.displacement": "Об\u2019єм",
+    "spec.power": "Потужність",
+
+    "badge.new": "Новий",
+    "badge.available": "В наявності",
+    "badge.reserved": "Резервація",
+
+    "btn.contactForm": "Контактна форма",
+    "btn.contactDetails": "Дивитися контактні дані",
+
+    "cat.sportHelmets": "Спортивні шоломи",
+    "cat.jackets": "Мотоциклетні куртки",
+    "cat.touringHelmets": "Туристичні шоломи",
+    "cat.oils": "Моторні масла",
+    "cat.boots": "Мотоциклетне взуття",
+    "cat.fullface": "Шоломи інтеграл",
+    "cat.protectors": "Протектори D3O",
+    "cat.flipHelmets": "Модульні шоломи",
+    "cat.gloves": "Рукавиці",
+    "cat.pants": "Штани",
   },
 };

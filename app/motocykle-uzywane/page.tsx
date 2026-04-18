@@ -6,6 +6,7 @@ import SubpageFooter from "@/components/SubpageFooter";
 import { Editable, EditableHTML } from "@/components/Editable";
 import Lightbox from "@/components/Lightbox";
 import Link from "next/link";
+import { useLocale } from "@/components/LocaleProvider";
 
 interface MotoImage {
   thumb: string;
@@ -32,12 +33,12 @@ const motorcycles: Motorcycle[] = [
     id: "moto1",
     brand: "Kawasaki",
     name: "Z650",
-    badge: "Dostępny",
+    badge: "badge.available",
     specs: [
-      { label: "Rok", value: "2021" },
-      { label: "Przebieg", value: "8 500 km" },
-      { label: "Pojemność", value: "649 cm³" },
-      { label: "Moc", value: "68 KM" },
+      { label: "spec.year", value: "2021" },
+      { label: "spec.mileage", value: "8 500 km" },
+      { label: "spec.displacement", value: "649 cm³" },
+      { label: "spec.power", value: "68 KM" },
     ],
     desc: "Świetny motocykl dla początkujących i zaawansowanych. Pierwszy właściciel, serwisowany w ASO.",
     price: "29 900 zł",
@@ -55,12 +56,12 @@ const motorcycles: Motorcycle[] = [
     id: "moto2",
     brand: "Benelli",
     name: "TRK 502 X",
-    badge: "Dostępny",
+    badge: "badge.available",
     specs: [
-      { label: "Rok", value: "2022" },
-      { label: "Przebieg", value: "4 200 km" },
-      { label: "Pojemność", value: "500 cm³" },
-      { label: "Moc", value: "47,5 KM" },
+      { label: "spec.year", value: "2022" },
+      { label: "spec.mileage", value: "4 200 km" },
+      { label: "spec.displacement", value: "500 cm³" },
+      { label: "spec.power", value: "47,5 KM" },
     ],
     desc: "Adventure w wersji X z podniesionymi końcówkami. Idealny do jazdy po asfalcie i lekkim terenie.",
     price: "26 500 zł",
@@ -77,13 +78,13 @@ const motorcycles: Motorcycle[] = [
     id: "moto3",
     brand: "Kawasaki",
     name: "Ninja 650",
-    badge: "Rezerwacja",
+    badge: "badge.reserved",
     badgeClass: "sold",
     specs: [
-      { label: "Rok", value: "2020" },
-      { label: "Przebieg", value: "12 800 km" },
-      { label: "Pojemność", value: "649 cm³" },
-      { label: "Moc", value: "68 KM" },
+      { label: "spec.year", value: "2020" },
+      { label: "spec.mileage", value: "12 800 km" },
+      { label: "spec.displacement", value: "649 cm³" },
+      { label: "spec.power", value: "68 KM" },
     ],
     desc: "Sportowy wygląd, komfortowa pozycja. Nowe opony, świeży przegląd. Kolor zielony Kawasaki.",
     price: "32 900 zł",
@@ -99,12 +100,12 @@ const motorcycles: Motorcycle[] = [
     id: "moto4",
     brand: "Kymco",
     name: "X-Town 300i ABS",
-    badge: "Dostępny",
+    badge: "badge.available",
     specs: [
-      { label: "Rok", value: "2023" },
-      { label: "Przebieg", value: "2 100 km" },
-      { label: "Pojemność", value: "276 cm³" },
-      { label: "Moc", value: "25 KM" },
+      { label: "spec.year", value: "2023" },
+      { label: "spec.mileage", value: "2 100 km" },
+      { label: "spec.displacement", value: "276 cm³" },
+      { label: "spec.power", value: "25 KM" },
     ],
     desc: "Praktyczny skuter miejski z ABS. Pojemny bagażnik, niskie spalanie. Jak nowy!",
     price: "18 900 zł",
@@ -120,6 +121,7 @@ const motorcycles: Motorcycle[] = [
 ];
 
 export default function MotocykleUzywane() {
+  const { t } = useLocale();
   const [mainImages, setMainImages] = useState<Record<string, number>>(
     Object.fromEntries(motorcycles.map((m) => [m.id, 0]))
   );
@@ -138,11 +140,11 @@ export default function MotocykleUzywane() {
       <section className="page-header">
         <div className="container">
           <div className="breadcrumb">
-            <Link href="/">Strona główna</Link>
+            <Link href="/">{t("bc.home")}</Link>
             <span>/</span>
-            <Link href="/#services">Usługi</Link>
+            <Link href="/#services">{t("bc.services")}</Link>
             <span>/</span>
-            <span>Motocykle używane</span>
+            <span>{t("bc.uzywane")}</span>
           </div>
           <EditableHTML id="uzywane.title" as="h1" className="page-title" defaultHtml='Motocykle <span class="gradient-text">Używane</span>' />
           <Editable id="uzywane.desc" as="p" className="page-desc">Sprawdzone motocykle z historią serwisową. Każdy pojazd przed sprzedażą przechodzi szczegółowy przegląd techniczny w naszym warsztacie.</Editable>
@@ -186,7 +188,7 @@ export default function MotocykleUzywane() {
                   <div className="moto-images-container">
                     <div className="moto-main-img" onClick={() => setLightbox({ galleryId: moto.id, index: activeIdx })}>
                       <img src={moto.images[activeIdx].full} alt={`${moto.brand} ${moto.name}`} />
-                      <span className={`moto-badge${moto.badgeClass ? " " + moto.badgeClass : ""}`}>{moto.badge}</span>
+                      <span className={`moto-badge${moto.badgeClass ? " " + moto.badgeClass : ""}`}>{t(moto.badge)}</span>
                       <div className="moto-zoom-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /><line x1="11" y1="8" x2="11" y2="14" /><line x1="8" y1="11" x2="14" y2="11" /></svg>
                       </div>
@@ -196,7 +198,7 @@ export default function MotocykleUzywane() {
                         <img
                           key={i}
                           src={img.thumb}
-                          alt={`Widok ${i + 1}`}
+                          alt={`View ${i + 1}`}
                           className={i === activeIdx ? "active" : ""}
                           onClick={() => changeMainImage(moto.id, i)}
                         />
@@ -208,7 +210,7 @@ export default function MotocykleUzywane() {
                     <Editable id={`uzywane.${moto.id}.name`} as="h3">{moto.name}</Editable>
                     <div className="moto-specs">
                       {moto.specs.map((s, si) => (
-                        <div className="spec" key={s.label}><strong>{s.label}:</strong> <Editable id={`uzywane.${moto.id}.spec${si}`}>{s.value}</Editable></div>
+                        <div className="spec" key={s.label}><strong>{t(s.label)}:</strong> <Editable id={`uzywane.${moto.id}.spec${si}`}>{s.value}</Editable></div>
                       ))}
                     </div>
                     <Editable id={`uzywane.${moto.id}.desc`} as="p" className="moto-desc" multiline>{moto.desc}</Editable>

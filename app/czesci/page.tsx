@@ -4,8 +4,10 @@ import Navbar from "@/components/Navbar";
 import SubpageFooter from "@/components/SubpageFooter";
 import Link from "next/link";
 import { Editable, EditableHTML, EditableImage } from "@/components/Editable";
+import { useLocale } from "@/components/LocaleProvider";
 
 export default function Czesci() {
+  const { t } = useLocale();
   return (
     <>
       <Navbar activeSection="Usługi" />
@@ -13,11 +15,11 @@ export default function Czesci() {
       <section className="page-header">
         <div className="container">
           <div className="breadcrumb">
-            <Link href="/">Strona główna</Link>
+            <Link href="/">{t("bc.home")}</Link>
             <span>/</span>
-            <Link href="/#services">Usługi</Link>
+            <Link href="/#services">{t("bc.services")}</Link>
             <span>/</span>
-            <span>Sprzedaż części</span>
+            <span>{t("bc.czesci")}</span>
           </div>
           <EditableHTML id="czesci.title" as="h1" className="page-title" defaultHtml='Sprzedaż <span class="gradient-text">Części Zamiennych</span>' />
           <Editable id="czesci.desc" as="p" className="page-desc" multiline>Oryginalne części OEM oraz wysokiej jakości zamienniki do motocykli Kawasaki, Benelli, Kymco i innych marek.</Editable>

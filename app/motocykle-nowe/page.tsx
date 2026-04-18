@@ -6,6 +6,7 @@ import SubpageFooter from "@/components/SubpageFooter";
 import { Editable, EditableHTML } from "@/components/Editable";
 import Lightbox from "@/components/Lightbox";
 import Link from "next/link";
+import { useLocale } from "@/components/LocaleProvider";
 
 interface MotoImage {
   thumb: string;
@@ -32,12 +33,12 @@ const motorcycles: Motorcycle[] = [
     id: "new1",
     brand: "Kawasaki",
     name: "Z650",
-    badge: "Nowy",
+    badge: "badge.new",
     specs: [
-      { label: "Rok", value: "2025" },
-      { label: "Przebieg", value: "0 km" },
-      { label: "Pojemność", value: "649 cm³" },
-      { label: "Moc", value: "68 KM" },
+      { label: "spec.year", value: "2025" },
+      { label: "spec.mileage", value: "0 km" },
+      { label: "spec.displacement", value: "649 cm³" },
+      { label: "spec.power", value: "68 KM" },
     ],
     desc: "Bestsellerowy naked bike. Doskonały zarówno dla początkujących, jak i doświadczonych motocyklistów.",
     price: "od 34 900 zł",
@@ -53,12 +54,12 @@ const motorcycles: Motorcycle[] = [
     id: "new2",
     brand: "Kawasaki",
     name: "Ninja 650",
-    badge: "Nowy",
+    badge: "badge.new",
     specs: [
-      { label: "Rok", value: "2025" },
-      { label: "Przebieg", value: "0 km" },
-      { label: "Pojemność", value: "649 cm³" },
-      { label: "Moc", value: "68 KM" },
+      { label: "spec.year", value: "2025" },
+      { label: "spec.mileage", value: "0 km" },
+      { label: "spec.displacement", value: "649 cm³" },
+      { label: "spec.power", value: "68 KM" },
     ],
     desc: "Sportowy charakter w przystępnej formie. Ikoniczny design Ninja z komfortową pozycją jazdy.",
     price: "od 37 900 zł",
@@ -74,12 +75,12 @@ const motorcycles: Motorcycle[] = [
     id: "new3",
     brand: "Benelli",
     name: "TRK 502 X",
-    badge: "Nowy",
+    badge: "badge.new",
     specs: [
-      { label: "Rok", value: "2025" },
-      { label: "Przebieg", value: "0 km" },
-      { label: "Pojemność", value: "500 cm³" },
-      { label: "Moc", value: "47,5 KM" },
+      { label: "spec.year", value: "2025" },
+      { label: "spec.mileage", value: "0 km" },
+      { label: "spec.displacement", value: "500 cm³" },
+      { label: "spec.power", value: "47,5 KM" },
     ],
     desc: "Wszechstronny adventure z włoskim sznytem. Idealny na asfalt i lekki teren. Bestseller marki.",
     price: "od 27 990 zł",
@@ -95,12 +96,12 @@ const motorcycles: Motorcycle[] = [
     id: "new4",
     brand: "Kymco",
     name: "X-Town 300i ABS",
-    badge: "Nowy",
+    badge: "badge.new",
     specs: [
-      { label: "Rok", value: "2025" },
-      { label: "Przebieg", value: "0 km" },
-      { label: "Pojemność", value: "276 cm³" },
-      { label: "Moc", value: "25 KM" },
+      { label: "spec.year", value: "2025" },
+      { label: "spec.mileage", value: "0 km" },
+      { label: "spec.displacement", value: "276 cm³" },
+      { label: "spec.power", value: "25 KM" },
     ],
     desc: "Komfortowy maxiskuter miejski z ABS. Pojemny schowek pod siedzeniem, niskie spalanie.",
     price: "od 21 900 zł",
@@ -115,6 +116,7 @@ const motorcycles: Motorcycle[] = [
 ];
 
 export default function MotocykleNowe() {
+  const { t } = useLocale();
   const [mainImages, setMainImages] = useState<Record<string, number>>(
     Object.fromEntries(motorcycles.map((m) => [m.id, 0]))
   );
@@ -133,11 +135,11 @@ export default function MotocykleNowe() {
       <section className="page-header">
         <div className="container">
           <div className="breadcrumb">
-            <Link href="/">Strona główna</Link>
+            <Link href="/">{t("bc.home")}</Link>
             <span>/</span>
-            <Link href="/#services">Usługi</Link>
+            <Link href="/#services">{t("bc.services")}</Link>
             <span>/</span>
-            <span>Motocykle nowe</span>
+            <span>{t("bc.nowe")}</span>
           </div>
           <EditableHTML id="nowe.title" as="h1" className="page-title" defaultHtml='Nowe <span class="gradient-text">Motocykle</span>' />
           <Editable id="nowe.desc" as="p" className="page-desc">Autoryzowany salon Kawasaki, Benelli i Kymco w Opolu. Pełna gama nowych motocykli, skuterów i quadów z gwarancją producenta.</Editable>
@@ -181,7 +183,7 @@ export default function MotocykleNowe() {
                   <div className="moto-images-container">
                     <div className="moto-main-img" onClick={() => setLightbox({ galleryId: moto.id, index: activeIdx })}>
                       <img src={moto.images[activeIdx].full} alt={`${moto.brand} ${moto.name}`} />
-                      <span className={`moto-badge${moto.badgeClass ? " " + moto.badgeClass : ""}`}>{moto.badge}</span>
+                      <span className={`moto-badge${moto.badgeClass ? " " + moto.badgeClass : ""}`}>{t(moto.badge)}</span>
                       <div className="moto-zoom-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /><line x1="11" y1="8" x2="11" y2="14" /><line x1="8" y1="11" x2="14" y2="11" /></svg>
                       </div>
@@ -191,7 +193,7 @@ export default function MotocykleNowe() {
                         <img
                           key={i}
                           src={img.thumb}
-                          alt={`Widok ${i + 1}`}
+                          alt={`View ${i + 1}`}
                           className={i === activeIdx ? "active" : ""}
                           onClick={() => changeMainImage(moto.id, i)}
                         />
@@ -203,7 +205,7 @@ export default function MotocykleNowe() {
                     <Editable id={`nowe.${moto.id}.name`} as="h3">{moto.name}</Editable>
                     <div className="moto-specs">
                       {moto.specs.map((s, si) => (
-                        <div className="spec" key={s.label}><strong>{s.label}:</strong> <Editable id={`nowe.${moto.id}.spec${si}`}>{s.value}</Editable></div>
+                        <div className="spec" key={s.label}><strong>{t(s.label)}:</strong> <Editable id={`nowe.${moto.id}.spec${si}`}>{s.value}</Editable></div>
                       ))}
                     </div>
                     <Editable id={`nowe.${moto.id}.desc`} as="p" className="moto-desc" multiline>{moto.desc}</Editable>

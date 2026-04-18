@@ -6,6 +6,7 @@ import SubpageFooter from "@/components/SubpageFooter";
 import { Editable, EditableHTML } from "@/components/Editable";
 import Lightbox from "@/components/Lightbox";
 import Link from "next/link";
+import { useLocale } from "@/components/LocaleProvider";
 
 const galleryImages = [
   { src: "/pics/historia/32.jpg", caption: "Karczowanie drzew - 4.10.2014" },
@@ -41,6 +42,8 @@ const ZoomIcon = () => (
 
 export default function Historia() {
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
+
+  const { t } = useLocale();
 
   return (
     <>
@@ -135,11 +138,11 @@ export default function Historia() {
       <section className="page-header">
         <div className="container">
           <div className="breadcrumb">
-            <Link href="/">Strona główna</Link>
+            <Link href="/">{t("bc.home")}</Link>
             <span>/</span>
-            <Link href="/#about">O nas</Link>
+            <Link href="/#about">{t("bc.about")}</Link>
             <span>/</span>
-            <span>Historia</span>
+            <span>{t("bc.historia")}</span>
           </div>
           <EditableHTML id="historia.title" as="h1" className="page-title" defaultHtml='Nasza <span class="gradient-text">Historia</span>' />
           <Editable id="historia.desc" as="p" className="page-desc">Od małej firmy do nowoczesnego salonu motocyklowego. Poznaj naszą drogę od 1999 roku.</Editable>
@@ -194,7 +197,7 @@ export default function Historia() {
             <Editable id="historia.cta.desc" as="p" multiline>Zapraszamy do naszego salonu przy ul. Partyzanckiej 85 w Opolu. Przekonaj się, ile pasji włożyliśmy w to miejsce.</Editable>
             <Link href="/#contact" className="btn btn-primary btn-full">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></svg>
-              Zobacz dane kontaktowe
+              {t("btn.contactDetails")}
             </Link>
           </div>
         </div>

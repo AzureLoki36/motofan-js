@@ -1,19 +1,15 @@
 "use client";
 
+import { Editable, EditableHTML } from "./Editable";
+
 export default function FacebookSection() {
   return (
     <section className="news-section" id="news">
       <div className="container">
         <div className="section-header">
-          <span className="section-tag">Aktualności</span>
-          <h2 className="section-title">
-            Ostatnie wpisy na{" "}
-            <span className="gradient-text">Facebooku</span>
-          </h2>
-          <p className="section-desc">
-            Najświeższe informacje, promocje i aktualności prosto z naszego
-            profilu.
-          </p>
+          <Editable id="home.fb.tag" as="span" className="section-tag">Aktualności</Editable>
+          <EditableHTML id="home.fb.title" as="h2" className="section-title" defaultHtml='Ostatnie wpisy na <span class="gradient-text">Facebooku</span>' />
+          <Editable id="home.fb.desc" as="p" className="section-desc">Najświeższe informacje, promocje i aktualności prosto z naszego profilu.</Editable>
         </div>
         <div className="fb-section-wrap">
           <div className="fb-feed-container" id="fbFeedWrap">
@@ -39,11 +35,8 @@ export default function FacebookSection() {
           {/* MOBILE CTA */}
           <div className="mobile-fb-cta">
             <img src="/pics/logo.jpg" alt="Motofan" className="mobile-cta-logo" />
-            <h3>Jesteśmy na Facebooku!</h3>
-            <p>
-              Ze względów bezpieczeństwa na urządzeniach mobilnych zalecamy
-              przeglądanie naszych aktualności bezpośrednio w aplikacji.
-            </p>
+            <Editable id="home.fb.mobile.title" as="h3">Jesteśmy na Facebooku!</Editable>
+            <Editable id="home.fb.mobile.desc" as="p">Ze względów bezpieczeństwa na urządzeniach mobilnych zalecamy przeglądanie naszych aktualności bezpośrednio w aplikacji.</Editable>
             <a
               href="https://www.facebook.com/tomko.koko.9"
               target="_blank"
@@ -60,7 +53,7 @@ export default function FacebookSection() {
               >
                 <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
               </svg>
-              Odpal Motofan na Facebooku
+              <Editable id="home.fb.mobile.btn" as="span">Odpal Motofan na Facebooku</Editable>
             </a>
           </div>
 
@@ -80,13 +73,13 @@ export default function FacebookSection() {
                 <div className="fb-stats-row">
                   <div className="fb-stat-item">
                     <strong>475</strong>
-                    <span>obserwujących</span>
+                    <Editable id="home.fb.followers" as="span">obserwujących</Editable>
                   </div>
                 </div>
               </div>
             </div>
 
-            <h3>Bądź na bieżąco</h3>
+            <Editable id="home.fb.sidebar.heading" as="h3">Bądź na bieżąco</Editable>
             <div className="fb-reasons">
               <div className="fb-reason">
                 <div className="fb-reason-icon">
@@ -96,8 +89,8 @@ export default function FacebookSection() {
                   </svg>
                 </div>
                 <div>
-                  <strong>Promocje i oferty</strong>
-                  <p>Najnowsze oferty sprzedaży motocykli i akcesoriów.</p>
+                  <Editable id="home.fb.reason1.title" as="strong">Promocje i oferty</Editable>
+                  <Editable id="home.fb.reason1.desc" as="p">Najnowsze oferty sprzedaży motocykli i akcesoriów.</Editable>
                 </div>
               </div>
               <div className="fb-reason">
@@ -109,8 +102,8 @@ export default function FacebookSection() {
                   </svg>
                 </div>
                 <div>
-                  <strong>Galeria pojazdów</strong>
-                  <p>Zdjęcia nowych modeli Kawasaki, Benelli i Kymco.</p>
+                  <Editable id="home.fb.reason2.title" as="strong">Galeria pojazdów</Editable>
+                  <Editable id="home.fb.reason2.desc" as="p">Zdjęcia nowych modeli Kawasaki, Benelli i Kymco.</Editable>
                 </div>
               </div>
               <div className="fb-reason">
@@ -123,8 +116,8 @@ export default function FacebookSection() {
                   </svg>
                 </div>
                 <div>
-                  <strong>Imprezy motocyklowe</strong>
-                  <p>Zloty, eventy i aktualności regionu opolskiego.</p>
+                  <Editable id="home.fb.reason3.title" as="strong">Imprezy motocyklowe</Editable>
+                  <Editable id="home.fb.reason3.desc" as="p">Zloty, eventy i aktualności regionu opolskiego.</Editable>
                 </div>
               </div>
             </div>
@@ -142,7 +135,7 @@ export default function FacebookSection() {
               >
                 <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
               </svg>
-              Obserwuj na Facebooku
+              <Editable id="home.fb.follow" as="span">Obserwuj na Facebooku</Editable>
             </a>
           </div>
         </div>

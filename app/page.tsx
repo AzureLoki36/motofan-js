@@ -7,8 +7,10 @@ import ScrollEffects from "@/components/ScrollEffects";
 import ContactForm from "@/components/ContactForm";
 import FacebookSection from "@/components/FacebookSection";
 import { Editable, EditableHTML, EditableImage } from "@/components/Editable";
+import { useLocale } from "@/components/LocaleProvider";
 
 export default function Home() {
+  const { t } = useLocale();
   return (
     <>
       <Navbar isHome activeSection="Start" />
@@ -29,10 +31,10 @@ export default function Home() {
           </Editable>
           <div className="hero-actions">
             <a href="#brands" className="btn btn-primary">
-              Poznaj nasze marki
+              {t("hero.brands")}
             </a>
             <a href="#contact" className="btn btn-ghost">
-              Kontakt z nami
+              {t("hero.contact")}
             </a>
           </div>
           <div className="hero-stats">
@@ -64,7 +66,7 @@ export default function Home() {
       <section className="about" id="about">
         <div className="container">
           <div className="section-header">
-            <span className="section-tag">O nas</span>
+            <span className="section-tag">{t("tag.about")}</span>
             <EditableHTML id="home.about.heading" as="h2" className="section-title" defaultHtml='Pasja do motocykli<br/><span class="gradient-text">od 1999 roku</span>' />
           </div>
           <div className="about-grid">
@@ -85,7 +87,7 @@ export default function Home() {
               </Editable>
               <div style={{ textAlign: "center", marginTop: 30 }}>
                 <a href="/historia" className="btn btn-primary">
-                  Historia firmy
+                  {t("hero.history")}
                 </a>
               </div>
               <div style={{ marginTop: 30, textAlign: "center" }}>
@@ -109,7 +111,7 @@ export default function Home() {
       <section className="brands" id="brands">
         <div className="container">
           <div className="section-header">
-            <span className="section-tag">Autoryzacje</span>
+            <span className="section-tag">{t("tag.brands")}</span>
             <EditableHTML id="home.brands.heading" as="h2" className="section-title" defaultHtml='Firmy, z którymi<br/><span class="gradient-text">współpracujemy</span>' />
             <Editable id="home.brands.desc" as="p" className="section-desc" multiline>
               Jesteśmy oficjalnym autoryzowanym dealerem i serwisem trzech
@@ -149,7 +151,7 @@ export default function Home() {
                   <Editable id="home.brand.kawasaki.li4" as="li">Diagnostyka komputerowa</Editable>
                 </ul>
                 <span className="brand-link">
-                  Oficjalna strona Kawasaki →
+                  {t("brand.link.kawasaki")}
                 </span>
               </div>
             </a>
@@ -184,10 +186,10 @@ export default function Home() {
                   <Editable id="home.brand.benelli.li4" as="li">Wsparcie techniczne</Editable>
                 </ul>
                 <span className="brand-link">
-                  Oficjalna strona Benelli Polska →
+                  {t("brand.link.benelli")}
                 </span>
               </div>
-              <div className="brand-featured-badge">⭐ Polecana</div>
+              <div className="brand-featured-badge">{t("brand.featured")}</div>
             </a>
 
             <a
@@ -220,7 +222,7 @@ export default function Home() {
                   <Editable id="home.brand.kymco.li4" as="li">Autoryzowany serwis</Editable>
                 </ul>
                 <span className="brand-link">
-                  Oficjalna strona Kymco Polska →
+                  {t("brand.link.kymco")}
                 </span>
               </div>
             </a>
@@ -232,7 +234,7 @@ export default function Home() {
       <section className="services" id="services">
         <div className="container">
           <div className="section-header">
-            <span className="section-tag">Oferta</span>
+            <span className="section-tag">{t("tag.offer")}</span>
             <EditableHTML id="home.services.heading" as="h2" className="section-title" defaultHtml='Co oferujemy?' />
             <Editable id="home.services.desc" as="p" className="section-desc" multiline>
               Kompleksowa obsługa motocyklisty – od zakupu nowego pojazdu, przez
@@ -353,7 +355,7 @@ export default function Home() {
       <section className="contact" id="contact">
         <div className="container">
           <div className="section-header">
-            <span className="section-tag">Dojazd i kontakt</span>
+            <span className="section-tag">{t("tag.contact")}</span>
             <EditableHTML id="home.contact.heading" as="h2" className="section-title" defaultHtml='Znajdź nas <span class="gradient-text">w Opolu</span>' />
           </div>
           <div className="contact-grid">
