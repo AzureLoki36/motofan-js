@@ -1,22 +1,25 @@
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 
-const SECRET = new TextEncoder().encode(
-  process.env.ADMIN_SECRET || "motofan-default-secret-change-me"
-);
+function getSecret() {
+  const secret = process.env.ADMIN_SECRET;
+  if (!secret) throw new Error("ADMIN_SECRET env variable is required");
+  return new TextEncoder().encode(secret);
+}
+
 const COOKIE_NAME = "motofan-admin";
 
 export async function createToken() {
   return new SignJWT({ role: "admin" })
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
-    .setExpirationTime("7d")
-    .sign(SECRET);
+    .setExpirationTime("24h")
+    .sign(getSecret());
 }
 
 export async function verifyToken(token: string) {
   try {
-    const { payload } = await jwtVerify(token, SECRET);
+    const { payload } = await jwtVerify(token, getSecret());
     return payload;
   } catch {
     return null;
@@ -32,11 +35,28 @@ export async function isAdmin(): Promise<boolean> {
 }
 
 export function getAdminUsername(): string {
-  return (process.env.ADMIN_USERNAME || "admin").trim();
+  const u = process.env.ADMIN_USERNAME;
+  if (!u) throw new Error("ADMIN_USERNAME env variable is required");
+  return u.trim();
 }
 
 export function getAdminPassword(): string {
-  return (process.env.ADMIN_PASSWORD || "motofan2026").trim();
+  const p = process.env.ADMIN_PASSWORD;
+  if (!p) throw new Error("ADMIN_PASSWORD env variable is required");
+  return p.trim();
+}
+
+/** Constant-time string comparison to prevent timing attacks */
+export function safeCompare(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  const encoder = new TextEncoder();
+  const bufA = encoder.encode(a);
+  const bufB = encoder.encode(b);
+  let result = 0;
+  for (let i = 0; i < bufA.length; i++) {
+    result |= bufA[i] ^ bufB[i];
+  }
+  return result === 0;
 }
 
 export { COOKIE_NAME };
