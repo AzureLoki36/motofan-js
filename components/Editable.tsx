@@ -2,6 +2,7 @@
 
 import { useRef, useCallback, useState, createElement } from "react";
 import { useAdmin, useContentValue } from "./AdminProvider";
+import { useLocale } from "./LocaleProvider";
 
 /* ── Editable Text ── */
 interface EditableProps {
@@ -22,17 +23,19 @@ export function Editable({
   style,
 }: EditableProps) {
   const { editMode, updateContent } = useAdmin();
+  const { locale } = useLocale();
   const value = useContentValue(id, children);
   const ref = useRef<HTMLElement>(null);
+  const saveId = locale === "pl" ? id : `${locale}.${id}`;
 
   const handleBlur = useCallback(() => {
     if (ref.current) {
       const text = ref.current.innerText;
       if (text !== value) {
-        updateContent(id, text);
+        updateContent(saveId, text);
       }
     }
-  }, [id, value, updateContent]);
+  }, [saveId, value, updateContent]);
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
@@ -78,18 +81,20 @@ export function EditableHTML({
   style,
 }: EditableHTMLProps) {
   const { editMode, content, updateContent } = useAdmin();
-  const stored = getVal(content, id);
+  const { locale } = useLocale();
+  const stored = getLocalizedVal(content, id, locale);
   const html = typeof stored === "string" ? stored : defaultHtml;
   const ref = useRef<HTMLElement>(null);
+  const saveId = locale === "pl" ? id : `${locale}.${id}`;
 
   const handleBlur = useCallback(() => {
     if (ref.current) {
       const newHtml = ref.current.innerHTML;
       if (newHtml !== html) {
-        updateContent(id, newHtml);
+        updateContent(saveId, newHtml);
       }
     }
-  }, [id, html, updateContent]);
+  }, [saveId, html, updateContent]);
 
   if (!editMode) {
     return createElement(Tag, {
@@ -128,10 +133,12 @@ export function EditableImage({
   style,
 }: EditableImageProps) {
   const { editMode, content, updateContent } = useAdmin();
-  const stored = getVal(content, id);
+  const { locale, t } = useLocale();
+  const stored = getLocalizedVal(content, id, locale);
   const currentSrc = typeof stored === "string" ? stored : src;
   const [uploading, setUploading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const saveId = locale === "pl" ? id : `${locale}.${id}`;
 
   const handleUpload = useCallback(
     async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -143,11 +150,11 @@ export function EditableImage({
       const res = await fetch("/api/upload", { method: "POST", body: form });
       if (res.ok) {
         const data = await res.json();
-        updateContent(id, data.url);
+        updateContent(saveId, data.url);
       }
       setUploading(false);
     },
-    [id, updateContent]
+    [saveId, updateContent]
   );
 
   if (!editMode) {
@@ -162,9 +169,9 @@ export function EditableImage({
         onClick={(e) => { e.preventDefault(); e.stopPropagation(); inputRef.current?.click(); }}
       >
         {uploading ? (
-          <span>Wgrywam...</span>
+          <span>{t("edit.uploading")}</span>
         ) : (
-          <span>📷 Zmień zdjęcie</span>
+          <span>{t("edit.changeImage")}</span>
         )}
       </div>
       <input
@@ -201,32 +208,34 @@ export function EditableList<T extends EditableListItem>({
   itemLabel = "element",
 }: EditableListProps<T>) {
   const { editMode, content, updateContent } = useAdmin();
-  const stored = getVal(content, id);
+  const { locale, t } = useLocale();
+  const stored = getLocalizedVal(content, id, locale);
   const items: T[] = Array.isArray(stored) ? (stored as T[]) : defaultItems;
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const saveId = locale === "pl" ? id : `${locale}.${id}`;
 
   const updateItem = useCallback(
     (index: number, field: string, value: unknown) => {
       const newItems = [...items];
       newItems[index] = { ...newItems[index], [field]: value };
-      updateContent(id, newItems);
+      updateContent(saveId, newItems);
     },
-    [id, items, updateContent]
+    [saveId, items, updateContent]
   );
 
   const addItem = useCallback(() => {
     const newItems = [...items, { ...defaultItems[0] } as T];
-    updateContent(id, newItems);
+    updateContent(saveId, newItems);
     setEditingIndex(newItems.length - 1);
-  }, [id, items, defaultItems, updateContent]);
+  }, [saveId, items, defaultItems, updateContent]);
 
   const removeItem = useCallback(
     (index: number) => {
       const newItems = items.filter((_, i) => i !== index);
-      updateContent(id, newItems);
+      updateContent(saveId, newItems);
       setEditingIndex(null);
     },
-    [id, items, updateContent]
+    [saveId, items, updateContent]
   );
 
   if (!editMode) {
@@ -265,20 +274,20 @@ export function EditableList<T extends EditableListItem>({
                 style={{ marginTop: 12, padding: "8px 16px", fontSize: ".85rem" }}
                 onClick={() => setEditingIndex(null)}
               >
-                Gotowe
+                {t("edit.done")}
               </button>
             </div>
           )}
         </div>
       ))}
       <button className="admin-add-btn" onClick={addItem}>
-        + Dodaj {itemLabel}
+        + {t("edit.add")} {itemLabel}
       </button>
     </div>
   );
 }
 
-/* ── Helper ── */
+/* ── Helpers ── */
 function getVal(content: Record<string, unknown>, path: string): unknown {
   return path.split(".").reduce<unknown>((o, k) => {
     if (o && typeof o === "object" && k in (o as Record<string, unknown>)) {
@@ -286,4 +295,12 @@ function getVal(content: Record<string, unknown>, path: string): unknown {
     }
     return undefined;
   }, content);
+}
+
+function getLocalizedVal(content: Record<string, unknown>, id: string, locale: string): unknown {
+  if (locale !== "pl") {
+    const localized = getVal(content, `${locale}.${id}`);
+    if (localized !== undefined) return localized;
+  }
+  return getVal(content, id);
 }

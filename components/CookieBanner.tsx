@@ -1,8 +1,11 @@
 "use client";
 
 import { useEffect } from "react";
+import { useLocale } from "./LocaleProvider";
 
 export default function CookieBanner() {
+  const { t } = useLocale();
+
   useEffect(() => {
     const banner = document.getElementById("cookieBanner");
     const btn = document.getElementById("acceptCookies");
@@ -22,17 +25,12 @@ export default function CookieBanner() {
     <div className="cookie-banner" id="cookieBanner">
       <div className="cookie-content">
         <div className="cookie-text">
-          <strong>Ta strona używa plików cookies 🍪</strong>
-          <p>
-            Korzystamy z plików cookies, aby zapewnić najlepsze doświadczenia,
-            analizować ruch na stronie i ułatwić działanie funkcji
-            społecznościowych (np. wtyczka Facebook). Pozostając na stronie
-            akceptujesz ich użycie.
-          </p>
+          <strong>{t("cookie.title")}</strong>
+          <p>{t("cookie.text")}</p>
         </div>
         <div className="cookie-actions">
           <button id="acceptCookies" className="btn btn-primary">
-            Akceptuję i zamykam
+            {t("cookie.accept")}
           </button>
         </div>
       </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from "react";
+import { useLocale } from "./LocaleProvider";
 
 type ContentData = Record<string, unknown>;
 
@@ -59,6 +60,11 @@ function setNestedValue(obj: Record<string, unknown>, keyPath: string, value: un
 
 export function useContentValue(path: string, defaultValue: string): string {
   const { content } = useAdmin();
+  const { locale } = useLocale();
+  if (locale !== "pl") {
+    const localized = getNestedValue(content, `${locale}.${path}`);
+    if (typeof localized === "string" && localized !== "") return localized;
+  }
   const val = getNestedValue(content, path);
   return typeof val === "string" ? val : defaultValue;
 }

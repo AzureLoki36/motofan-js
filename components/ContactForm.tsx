@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { useLocale } from "./LocaleProvider";
 
 export default function ContactForm() {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
     "idle"
   );
+  const { t } = useLocale();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -35,50 +37,50 @@ export default function ContactForm() {
 
   return (
     <div className="contact-form-wrap">
-      <h3>Wyślij nam wiadomość</h3>
+      <h3>{t("form.title")}</h3>
       <form className="contact-form" onSubmit={handleSubmit}>
         <div className="form-row">
           <div className="form-group">
-            <label htmlFor="fname">Imię i nazwisko</label>
+            <label htmlFor="fname">{t("form.name")}</label>
             <input
               type="text"
               id="fname"
               name="name"
-              placeholder="Jan Kowalski"
+              placeholder={t("form.name.ph")}
               required
             />
           </div>
           <div className="form-group">
-            <label htmlFor="femail">E-mail</label>
+            <label htmlFor="femail">{t("form.email")}</label>
             <input
               type="email"
               id="femail"
               name="email"
-              placeholder="jan@example.pl"
+              placeholder={t("form.email.ph")}
               required
             />
           </div>
         </div>
         <div className="form-group">
-          <label htmlFor="fsubject">Temat</label>
+          <label htmlFor="fsubject">{t("form.subject")}</label>
           <select id="fsubject" name="subject">
-            <option value="">Wybierz temat...</option>
-            <option>Serwis motocyklowy</option>
-            <option>Kawasaki – zapytanie o model</option>
-            <option>Benelli – zapytanie o model</option>
-            <option>Kymco – zapytanie o model</option>
-            <option>Odzież i akcesoria</option>
-            <option>Transport / przyczepa</option>
-            <option>Inne</option>
+            <option value="">{t("form.subject.default")}</option>
+            <option>{t("form.subject.service")}</option>
+            <option>{t("form.subject.kawasaki")}</option>
+            <option>{t("form.subject.benelli")}</option>
+            <option>{t("form.subject.kymco")}</option>
+            <option>{t("form.subject.clothes")}</option>
+            <option>{t("form.subject.transport")}</option>
+            <option>{t("form.subject.other")}</option>
           </select>
         </div>
         <div className="form-group">
-          <label htmlFor="fmessage">Wiadomość</label>
+          <label htmlFor="fmessage">{t("form.message")}</label>
           <textarea
             id="fmessage"
             name="message"
             rows={5}
-            placeholder="Opisz czego potrzebujesz..."
+            placeholder={t("form.message.ph")}
             required
           ></textarea>
         </div>
@@ -88,13 +90,12 @@ export default function ContactForm() {
             className="btn btn-primary btn-full"
             disabled={status === "sending"}
           >
-            {status === "sending" ? "Wysyłanie..." : status === "error" ? "Wystąpił błąd, spróbuj ponownie" : "Wyślij wiadomość"}
+            {status === "sending" ? t("form.sending") : status === "error" ? t("form.error") : t("form.submit")}
           </button>
         )}
         {status === "sent" && (
           <div className="form-success" style={{ display: "block" }}>
-            ✅ Dziękujemy! Twoja wiadomość została wysłana. Skontaktujemy się
-            wkrótce.
+            {t("form.success")}
           </div>
         )}
       </form>

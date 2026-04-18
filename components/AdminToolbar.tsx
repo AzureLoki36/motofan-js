@@ -1,9 +1,11 @@
 "use client";
 
 import { useAdmin } from "./AdminProvider";
+import { useLocale } from "./LocaleProvider";
 
 export default function AdminToolbar() {
   const { isAdmin, editMode, toggleEditMode, hasChanges, saveContent, discardChanges, logout, saving } = useAdmin();
+  const { t } = useLocale();
 
   if (!isAdmin) return null;
 
@@ -11,27 +13,27 @@ export default function AdminToolbar() {
     <>
       <div className="admin-toolbar">
         <div className="admin-toolbar-left">
-          <span className="admin-badge">🔧 Admin</span>
+          <span className="admin-badge">{t("admin.badge")}</span>
           <button
             className={`admin-toolbar-btn ${editMode ? "active" : ""}`}
             onClick={toggleEditMode}
           >
-            {editMode ? "✏️ Edycja ON" : "👁️ Podgląd"}
+            {editMode ? t("admin.editOn") : t("admin.preview")}
           </button>
         </div>
         <div className="admin-toolbar-right">
           {hasChanges && (
             <>
               <button className="admin-toolbar-btn save" onClick={saveContent} disabled={saving}>
-                {saving ? "Zapisuję..." : "💾 Zapisz"}
+                {saving ? t("admin.saving") : t("admin.save")}
               </button>
               <button className="admin-toolbar-btn discard" onClick={discardChanges}>
-                ↩️ Cofnij
+                {t("admin.discard")}
               </button>
             </>
           )}
           <button className="admin-toolbar-btn logout" onClick={logout}>
-            🚪 Wyloguj
+            {t("admin.logout")}
           </button>
         </div>
       </div>

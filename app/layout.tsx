@@ -3,6 +3,7 @@ import "./style.css";
 import "./subpage.css";
 import { AdminProvider } from "@/components/AdminProvider";
 import AdminToolbar from "@/components/AdminToolbar";
+import { LocaleProvider } from "@/components/LocaleProvider";
 
 export const metadata: Metadata = {
   title: "MotoFan Opole – Kawasaki · Benelli · Kymco",
@@ -30,10 +31,12 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <AdminProvider>
-          {children}
-          <AdminToolbar />
-        </AdminProvider>
+        <LocaleProvider>
+          <AdminProvider>
+            {children}
+            <AdminToolbar />
+          </AdminProvider>
+        </LocaleProvider>
       </body>
     </html>
   );

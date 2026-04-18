@@ -2,12 +2,14 @@
 
 import Link from "next/link";
 import { Editable } from "@/components/Editable";
+import { useLocale } from "@/components/LocaleProvider";
 
 interface FooterProps {
   isHome?: boolean;
 }
 
 export default function HomeFooter() {
+  const { t } = useLocale();
   return (
     <footer className="footer">
       <div className="container">
@@ -52,22 +54,22 @@ export default function HomeFooter() {
             <Editable id="footer.home.nav.title" as="h4">Nawigacja</Editable>
             <ul>
               <li>
-                <a href="#home">Start</a>
+                <a href="#home">{t("nav.start")}</a>
               </li>
               <li>
-                <a href="#about">O nas</a>
+                <a href="#about">{t("nav.about")}</a>
               </li>
               <li>
-                <a href="#brands">Marki</a>
+                <a href="#brands">{t("nav.brands")}</a>
               </li>
               <li>
-                <a href="#services">Usługi</a>
+                <a href="#services">{t("nav.services")}</a>
               </li>
               <li>
-                <a href="#news">Aktualności</a>
+                <a href="#news">{t("nav.news")}</a>
               </li>
               <li>
-                <a href="#contact">Kontakt</a>
+                <a href="#contact">{t("nav.contact")}</a>
               </li>
             </ul>
           </div>

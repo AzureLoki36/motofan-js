@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import ThemeToggle from "./ThemeToggle";
+import LanguageSwitcher from "./LanguageSwitcher";
+import { useLocale } from "./LocaleProvider";
 
 interface NavbarProps {
   isHome?: boolean;
@@ -12,6 +14,7 @@ interface NavbarProps {
 export default function Navbar({ isHome = false, activeSection }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const { t } = useLocale();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -23,20 +26,20 @@ export default function Navbar({ isHome = false, activeSection }: NavbarProps) {
   const prefix = isHome ? "" : "/";
   const links = isHome
     ? [
-        { href: "#home", label: "Start" },
-        { href: "#about", label: "O nas" },
-        { href: "#brands", label: "Marki" },
-        { href: "#services", label: "Usługi" },
-        { href: "#news", label: "Aktualności" },
-        { href: "#contact", label: "Kontakt" },
+        { href: "#home", label: t("nav.start") },
+        { href: "#about", label: t("nav.about") },
+        { href: "#brands", label: t("nav.brands") },
+        { href: "#services", label: t("nav.services") },
+        { href: "#news", label: t("nav.news") },
+        { href: "#contact", label: t("nav.contact") },
       ]
     : [
-        { href: "/", label: "Start" },
-        { href: "/#about", label: "O nas" },
-        { href: "/#brands", label: "Marki" },
-        { href: "/#services", label: "Usługi" },
-        { href: "/#news", label: "Aktualności" },
-        { href: "/#contact", label: "Kontakt" },
+        { href: "/", label: t("nav.start") },
+        { href: "/#about", label: t("nav.about") },
+        { href: "/#brands", label: t("nav.brands") },
+        { href: "/#services", label: t("nav.services") },
+        { href: "/#news", label: t("nav.news") },
+        { href: "/#contact", label: t("nav.contact") },
       ];
 
   return (
@@ -72,6 +75,7 @@ export default function Navbar({ isHome = false, activeSection }: NavbarProps) {
           ))}
         </ul>
         <ThemeToggle />
+        <LanguageSwitcher />
         <a href="tel:601484242" className="nav-cta">
           <svg
             width="16"

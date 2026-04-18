@@ -2,8 +2,10 @@
 
 import Link from "next/link";
 import { Editable } from "@/components/Editable";
+import { useLocale } from "@/components/LocaleProvider";
 
 export default function SubpageFooter() {
+  const { t } = useLocale();
   return (
     <footer className="footer">
       <div className="container">
@@ -23,18 +25,18 @@ export default function SubpageFooter() {
           <div className="footer-links">
             <Editable id="footer.sub.services.title" as="h4">Usługi</Editable>
             <ul>
-              <li><Link href="/serwis-motocyklowy">Serwis motocyklowy</Link></li>
-              <li><Link href="/sklep">Sklep z odzieżą</Link></li>
-              <li><Link href="/czesci">Sprzedaż części</Link></li>
-              <li><Link href="/motocykle-nowe">Motocykle nowe</Link></li>
-              <li><Link href="/motocykle-uzywane">Motocykle używane</Link></li>
+              <li><Link href="/serwis-motocyklowy">{t("footer.service")}</Link></li>
+              <li><Link href="/sklep">{t("footer.shop")}</Link></li>
+              <li><Link href="/czesci">{t("footer.parts")}</Link></li>
+              <li><Link href="/motocykle-nowe">{t("footer.newBikes")}</Link></li>
+              <li><Link href="/motocykle-uzywane">{t("footer.usedBikes")}</Link></li>
             </ul>
           </div>
           <div className="footer-links">
             <Editable id="footer.sub.links.title" as="h4">Przydatne linki</Editable>
             <ul>
-              <li><Link href="/transport-i-wynajem">Transport i wynajem przyczepy</Link></li>
-              <li><Link href="/#contact">Kontakt</Link></li>
+              <li><Link href="/transport-i-wynajem">{t("footer.transport")}</Link></li>
+              <li><Link href="/#contact">{t("footer.contact")}</Link></li>
             </ul>
           </div>
           <div className="footer-contact">
