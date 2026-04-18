@@ -8,7 +8,9 @@ export async function readContent(): Promise<ContentData> {
   try {
     const { blobs } = await list({ prefix: CONTENT_BLOB });
     if (blobs.length > 0) {
-      const res = await fetch(blobs[0].url);
+      const res = await fetch(blobs[0].url, {
+        headers: { Authorization: `Bearer ${process.env.BLOB_READ_WRITE_TOKEN}` },
+      });
       if (res.ok) return await res.json();
     }
   } catch {
@@ -28,7 +30,7 @@ export async function writeContent(data: ContentData): Promise<void> {
     /* ignore */
   }
   await put(CONTENT_BLOB, JSON.stringify(data, null, 2), {
-    access: "public",
+    access: "private",
     contentType: "application/json",
     addRandomSuffix: false,
   });

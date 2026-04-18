@@ -35,7 +35,10 @@ export async function readMotorcycles(): Promise<Motorcycle[]> {
   try {
     const { blobs } = await list({ prefix: BLOB_PREFIX });
     if (!blobs.length) return [];
-    const res = await fetch(blobs[0].url, { cache: "no-store" });
+    const res = await fetch(blobs[0].url, {
+      cache: "no-store",
+      headers: { Authorization: `Bearer ${process.env.BLOB_READ_WRITE_TOKEN}` },
+    });
     if (!res.ok) return [];
     return res.json();
   } catch {
@@ -47,7 +50,7 @@ export async function writeMotorcycles(data: Motorcycle[]): Promise<void> {
   const { blobs } = await list({ prefix: BLOB_PREFIX });
   for (const b of blobs) await del(b.url);
   await put(BLOB_PREFIX, JSON.stringify(data), {
-    access: "public",
+    access: "private",
     addRandomSuffix: false,
     contentType: "application/json",
   });

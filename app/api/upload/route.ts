@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
   const safeName = `uploads/upload-${Date.now()}.${ext.replace(/[^a-zA-Z0-9]/g, "")}`;
 
   const blob = await put(safeName, file, {
-    access: "public",
+    access: "private",
     contentType: file.type,
   });
 

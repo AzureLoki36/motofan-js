@@ -7,6 +7,7 @@ export async function POST() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  try {
   const existing = await readMotorcycles();
   if (existing.length > 0) {
     return NextResponse.json({ error: "Database not empty, skipping seed" }, { status: 400 });
@@ -118,4 +119,8 @@ export async function POST() {
 
   await writeMotorcycles(seed);
   return NextResponse.json({ success: true, count: seed.length });
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : String(e);
+    return NextResponse.json({ error: msg }, { status: 500 });
+  }
 }
