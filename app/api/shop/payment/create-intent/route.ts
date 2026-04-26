@@ -4,8 +4,11 @@ import Stripe from "stripe";
 import { readProducts } from "@/lib/shop-db";
 
 export async function POST(req: NextRequest) {
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? "", { apiVersion: "2026-04-22.dahlia" });
+  if (!process.env.STRIPE_SECRET_KEY) {
+    return NextResponse.json({ error: "Płatność kartą nie jest skonfigurowana. Wybierz inną metodę płatności." }, { status: 503 });
+  }
   try {
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: "2026-04-22.dahlia" });
     const body = await req.json();
     const { items, currency = "pln", orderId } = body;
 
@@ -33,6 +36,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ clientSecret: intent.client_secret, amount });
   } catch (e) {
     console.error("stripe intent error", e);
-    return NextResponse.json({ error: "Błąd płatności" }, { status: 500 });
+    return NextResponse.json({ error: "Błąd płatności kartą. Wybierz inną metodę płatności." }, { status: 500 });
   }
 }

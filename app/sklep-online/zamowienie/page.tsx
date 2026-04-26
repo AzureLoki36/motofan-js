@@ -75,8 +75,9 @@ export default function ZamowieniePage() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ items, orderId: data.id }),
         });
-        const piData = await piRes.json();
-        if (piRes.ok) {
+        let piData: { clientSecret?: string; error?: string } = {};
+        try { piData = await piRes.json(); } catch { /* non-JSON response */ }
+        if (piRes.ok && piData.clientSecret) {
           clear();
           router.push(`/sklep-online/zamowienie/sukces?order=${data.orderNumber}&payment=stripe&cs=${piData.clientSecret}`);
           return;
