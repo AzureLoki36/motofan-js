@@ -61,4 +61,5 @@ export default function RejestrPage() {
 const inputStyle: React.CSSProperties = {
   padding: "0.7rem 1rem", borderRadius: 8, border: "1px solid #333",
   background: "#141414", color: "#eee", fontSize: "0.95rem", outline: "none",
+  width: "100%", boxSizing: "border-box",
 };

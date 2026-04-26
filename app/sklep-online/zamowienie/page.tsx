@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useCart } from "../components/CartProvider";
-import type { PaymentMethod, Address } from "@/lib/shop-types";
+import type { PaymentMethod, Address, PublicUser } from "@/lib/shop-types";
 
 const PAYMENT_METHODS: Array<{ value: PaymentMethod; label: string; icon: string }> = [
   { value: "stripe", label: "Karta płatnicza (Visa/Mastercard)", icon: "💳" },
@@ -19,10 +19,27 @@ export default function ZamowieniePage() {
   const router = useRouter();
   const [addr, setAddr] = useState<Address>(emptyAddr);
   const [guestEmail, setGuestEmail] = useState("");
+  const [loggedUser, setLoggedUser] = useState<PublicUser | null>(null);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("stripe");
   const [notes, setNotes] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  // Auto-fill from logged-in user
+  useEffect(() => {
+    fetch("/api/shop/auth/me").then(async (r) => {
+      if (!r.ok) return;
+      const u: PublicUser = await r.json();
+      setLoggedUser(u);
+      const def = u.addresses?.find((a) => a.isDefault) ?? u.addresses?.[0];
+      if (def) {
+        setAddr(def);
+      } else {
+        // At least fill name from profile
+        setAddr((a) => ({ ...a, firstName: u.firstName, lastName: u.lastName }));
+      }
+    });
+  }, []);
 
   const shipping = total >= 50000 ? 0 : 1499;
   const orderTotal = total + shipping;
@@ -93,7 +110,8 @@ export default function ZamowieniePage() {
       <form onSubmit={submit} style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: "2rem" }} className="checkout-grid">
         {/* Left: forms */}
         <div>
-          {/* Guest email */}
+          {/* Guest email — only shown when not logged in */}
+          {!loggedUser && (
           <section style={{ marginBottom: "2rem" }}>
             <h2 style={{ fontSize: "1rem", fontWeight: 700, marginBottom: "0.75rem", color: "#f60" }}>Kontakt</h2>
             <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
@@ -110,6 +128,15 @@ export default function ZamowieniePage() {
               </div>
             </div>
           </section>
+          )}
+          {loggedUser && (
+          <section style={{ marginBottom: "2rem" }}>
+            <div style={{ background: "#1a1a1a", border: "1px solid #2a2a2a", borderRadius: 8, padding: "0.75rem 1rem", fontSize: "0.9rem", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <span>Zalogowany jako <strong style={{ color: "#f60" }}>{loggedUser.email}</strong></span>
+              <a href="/sklep-online/konto" style={{ color: "#666", fontSize: "0.8rem" }}>Konto →</a>
+            </div>
+          </section>
+          )}
 
           {/* Shipping address */}
           <section style={{ marginBottom: "2rem" }}>
