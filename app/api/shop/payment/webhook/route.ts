@@ -3,10 +3,9 @@ import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { readOrders, writeOrders } from "@/lib/shop-db";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: "2025-05-28.basil" });
-const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
-
 export async function POST(req: NextRequest) {
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? "", { apiVersion: "2026-04-22.dahlia" });
+  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET ?? "";
   const body = await req.text();
   const sig = req.headers.get("stripe-signature");
   if (!sig) return NextResponse.json({ error: "Missing signature" }, { status: 400 });

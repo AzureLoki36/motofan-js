@@ -70,7 +70,7 @@ function ProductCard({ product }: { product: PublicProduct }) {
   );
 }
 
-export default function ShopPageInner() {
+function ShopPageInner() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [products, setProducts] = useState<PublicProduct[]>([]);
