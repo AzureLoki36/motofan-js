@@ -1,9 +1,10 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 import Link from "next/link";
 
-export default function SukcesPage() {
+function SukcesPageInner() {
   const searchParams = useSearchParams();
   const orderNumber = searchParams.get("order");
   const payment = searchParams.get("payment");
@@ -40,5 +41,13 @@ export default function SukcesPage() {
         </Link>
       </div>
     </div>
+  );
+}
+
+export default function SukcesPage() {
+  return (
+    <Suspense fallback={null}>
+      <SukcesPageInner />
+    </Suspense>
   );
 }

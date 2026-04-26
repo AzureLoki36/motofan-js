@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import type { PublicProduct } from "@/lib/shop-types";
@@ -70,7 +70,7 @@ function ProductCard({ product }: { product: PublicProduct }) {
   );
 }
 
-export default function ShopPage() {
+export default function ShopPageInner() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [products, setProducts] = useState<PublicProduct[]>([]);
@@ -218,5 +218,13 @@ export default function ShopPage() {
         </>
       )}
     </div>
+  );
+}
+
+export default function ShopPage() {
+  return (
+    <Suspense fallback={<div style={{ textAlign: "center", padding: "4rem", color: "#666", fontFamily: "Outfit, sans-serif" }}>Ładowanie…</div>}>
+      <ShopPageInner />
+    </Suspense>
   );
 }
