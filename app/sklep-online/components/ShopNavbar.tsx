@@ -84,12 +84,17 @@ export default function ShopNavbar() {
           {/* User */}
           {user ? (
             <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-              <Link href="/sklep-online/konto" style={{ color: "#ccc", textDecoration: "none", fontSize: "0.85rem" }}>
-                {user.firstName}
+              <Link href="/sklep-online/konto" style={{
+                display: "flex", alignItems: "center", gap: "0.4rem",
+                background: "#1a1a1a", border: "1px solid #333",
+                color: "#eee", textDecoration: "none", fontSize: "0.85rem",
+                padding: "0.35rem 0.85rem", borderRadius: 20, fontWeight: 600,
+              }}>
+                <span style={{ fontSize: "1rem" }}>👤</span> Moje konto
               </Link>
               <button
                 onClick={logout}
-                style={{ background: "none", border: "1px solid #555", color: "#aaa", padding: "0.2rem 0.6rem", borderRadius: 4, cursor: "pointer", fontSize: "0.8rem" }}
+                style={{ background: "none", border: "1px solid #444", color: "#888", padding: "0.35rem 0.7rem", borderRadius: 20, cursor: "pointer", fontSize: "0.8rem" }}
               >
                 Wyloguj
               </button>

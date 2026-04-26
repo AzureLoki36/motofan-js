@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import type { PublicUser, Order, Address } from "@/lib/shop-types";
 import Link from "next/link";
+import KartySection from "./KartySection";
 
 const STATUS_LABELS: Record<string, string> = {
   pending: "Oczekuje",
@@ -278,16 +279,8 @@ export default function KontoPage() {
             </div>
           </div>
 
-          {/* Card placeholder */}
-          <div style={{ background: "#1a1a1a", border: "1px solid #2a2a2a", borderRadius: 10, padding: "1.5rem" }}>
-            <h2 style={{ fontSize: "1rem", fontWeight: 700, marginTop: 0, marginBottom: "0.5rem", color: "#f60" }}>💳 Karta płatnicza</h2>
-            <p style={{ color: "#666", fontSize: "0.9rem", margin: "0 0 1rem" }}>Zapisz kartę, żeby płacić szybciej przy następnych zamówieniach.</p>
-            <div style={{ background: "#141414", border: "1px dashed #333", borderRadius: 8, padding: "1.5rem", textAlign: "center", color: "#555" }}>
-              <div style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>💳</div>
-              <div style={{ fontSize: "0.9rem" }}>Brak zapisanej karty</div>
-              <div style={{ fontSize: "0.78rem", color: "#444", marginTop: "0.25rem" }}>Funkcja dostępna wkrótce (wymaga aktywnego klucza Stripe)</div>
-            </div>
-          </div>
+          {/* Card section */}
+          <KartySection />
 
           <div>
             <button

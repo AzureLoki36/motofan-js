@@ -58,6 +58,8 @@ export interface ShopUser {
   phone?: string;
   role: UserRole;
   addresses: Address[];
+  stripeCustomerId?: string;
+  savedCards?: SavedCard[];
   createdAt: string;
   updatedAt: string;
 }
@@ -71,6 +73,16 @@ export interface Address {
   city: string;
   postalCode: string;
   country: string;
+  isDefault: boolean;
+}
+
+// ── Saved payment card (Stripe) ───────────────────────
+export interface SavedCard {
+  stripePaymentMethodId: string;
+  brand: string;           // "visa", "mastercard", etc.
+  last4: string;
+  expMonth: number;
+  expYear: number;
   isDefault: boolean;
 }
 

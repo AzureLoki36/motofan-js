@@ -5,12 +5,15 @@ import { safeCompare } from "@/lib/auth";
 
 export async function POST(req: NextRequest) {
   try {
-    const { password } = await req.json();
-    const expected = process.env.SHOP_ADMIN_PASSWORD ?? process.env.ADMIN_PASSWORD;
-    if (!expected) return NextResponse.json({ error: "Not configured" }, { status: 500 });
+    const { username, password } = await req.json();
+    const expectedUser = (process.env.ADMIN_USERNAME ?? "").trim();
+    const expectedPass = (process.env.SHOP_ADMIN_PASSWORD ?? process.env.ADMIN_PASSWORD ?? "").trim();
+    if (!expectedPass) return NextResponse.json({ error: "Not configured" }, { status: 500 });
 
-    if (!safeCompare(password ?? "", expected)) {
-      return NextResponse.json({ error: "Nieprawidłowe hasło" }, { status: 401 });
+    const userOk = !expectedUser || safeCompare((username ?? "").trim(), expectedUser);
+    const passOk = safeCompare((password ?? "").trim(), expectedPass);
+    if (!userOk || !passOk) {
+      return NextResponse.json({ error: "Nieprawidłowy login lub hasło" }, { status: 401 });
     }
 
     const token = await createShopAdminToken();
