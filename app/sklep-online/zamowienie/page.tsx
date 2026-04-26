@@ -27,7 +27,7 @@ export default function ZamowieniePage() {
 
   // Auto-fill from logged-in user
   useEffect(() => {
-    fetch("/api/shop/auth/me").then(async (r) => {
+    fetch("/api/shop/auth/me", { cache: "no-store" }).then(async (r) => {
       if (!r.ok) return;
       const u: PublicUser = await r.json();
       setLoggedUser(u);

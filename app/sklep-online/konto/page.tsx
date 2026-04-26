@@ -93,16 +93,17 @@ export default function KontoPage() {
   const submitAddr = (e: React.FormEvent) => {
     e.preventDefault();
     if (!addrForm) return;
-    const isEdit = !!addrForm.id;
+    const cleanedForm = { ...addrForm, label: addrForm.label?.trim() || undefined };
+    const isEdit = !!cleanedForm.id;
     let newAddrs: Address[];
     if (isEdit) {
-      newAddrs = addresses.map((a) => a.id === addrForm.id ? { ...addrForm, id: a.id } as Address : a);
+      newAddrs = addresses.map((a) => a.id === cleanedForm.id ? { ...cleanedForm, id: a.id } as Address : a);
     } else {
       const newId = Date.now().toString(36) + Math.random().toString(36).slice(2);
-      newAddrs = [...addresses, { ...addrForm, id: newId } as Address];
+      newAddrs = [...addresses, { ...cleanedForm, id: newId } as Address];
     }
-    if (addrForm.isDefault) {
-      const defaultId = isEdit ? addrForm.id : newAddrs[newAddrs.length - 1].id;
+    if (cleanedForm.isDefault) {
+      const defaultId = isEdit ? cleanedForm.id : newAddrs[newAddrs.length - 1].id;
       newAddrs = newAddrs.map((a) => ({ ...a, isDefault: a.id === defaultId }));
     }
     saveAddrs(newAddrs);
@@ -203,7 +204,9 @@ export default function KontoPage() {
                 <div key={addr.id} style={{ background: "#1a1a1a", border: `1px solid ${addr.isDefault ? "#f60" : "#2a2a2a"}`, borderRadius: 10, padding: "1.1rem 1.25rem" }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "0.5rem", flexWrap: "wrap" }}>
                     <div>
-                      {addr.label && <div style={{ fontSize: "0.8rem", color: "#f60", fontWeight: 700, marginBottom: "0.25rem" }}>{addr.label}</div>}
+                      <div style={{ fontSize: "0.8rem", color: addr.label ? "#f60" : "#666", fontWeight: 700, marginBottom: "0.25rem" }}>
+                        {addr.label ?? "Adres"}
+                      </div>
                       <div style={{ fontWeight: 600 }}>{addr.firstName} {addr.lastName}</div>
                       <div style={{ color: "#aaa", fontSize: "0.9rem" }}>{addr.street}</div>
                       <div style={{ color: "#aaa", fontSize: "0.9rem" }}>{addr.postalCode} {addr.city}, {COUNTRIES[addr.country] ?? addr.country}</div>

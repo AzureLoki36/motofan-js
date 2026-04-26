@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import type { PublicUser } from "@/lib/shop-types";
 import { useCart } from "./CartProvider";
 
@@ -10,6 +11,7 @@ export default function ShopNavbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [user, setUser] = useState<PublicUser | null>(null);
   const { items } = useCart();
+  const pathname = usePathname();
 
   const cartCount = items.reduce((s, i) => s + i.quantity, 0);
 
@@ -25,7 +27,7 @@ export default function ShopNavbar() {
       .then((r) => (r.ok ? r.json() : null))
       .then(setUser)
       .catch(() => null);
-  }, []);
+  }, [pathname]);
 
   const logout = useCallback(async () => {
     await fetch("/api/shop/auth/me", { method: "POST" });
