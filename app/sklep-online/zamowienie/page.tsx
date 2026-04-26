@@ -63,6 +63,10 @@ export default function ZamowieniePage() {
           clear();
           router.push(`/sklep-online/zamowienie/sukces?order=${data.orderNumber}&payment=stripe&cs=${piData.clientSecret}`);
           return;
+        } else {
+          setError(piData.error ?? "Błąd inicjalizacji płatności Stripe. Spróbuj wybrać inną metodę płatności.");
+          setLoading(false);
+          return;
         }
       }
 
@@ -95,6 +99,7 @@ export default function ZamowieniePage() {
             <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
               <input
                 type="email"
+                required
                 placeholder="Adres e-mail *"
                 value={guestEmail}
                 onChange={(e) => setGuestEmail(e.target.value)}

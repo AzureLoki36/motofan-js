@@ -1,1 +1,14 @@
 /* placeholder */
+
+/* ── Shop responsive layouts ──────────────────────── */
+@media (max-width: 768px) {
+  .product-detail-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .checkout-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .shop-nav-links {
+    display: none !important;
+  }
+}

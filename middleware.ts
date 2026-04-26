@@ -95,6 +95,7 @@ export const config = {
     "/api/content/:path*",
     "/api/banner/:path*",
     "/api/motorcycles/:path*",
+    "/sklep-online/adm",
     "/sklep-online/adm/:path*",
   ],
 };

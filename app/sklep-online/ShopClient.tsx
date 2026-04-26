@@ -78,6 +78,7 @@ function ShopPageInner() {
   const [total, setTotal] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [search, setSearch] = useState(searchParams.get("q") ?? "");
 
   const category = searchParams.get("category") ?? "";
@@ -86,21 +87,29 @@ function ShopPageInner() {
 
   const fetchProducts = useCallback(async () => {
     setLoading(true);
-    const params = new URLSearchParams();
-    if (search) params.set("q", search);
-    if (category) params.set("category", category);
-    params.set("sort", sort);
-    params.set("page", String(page));
-    params.set("limit", "24");
+    setError("");
+    try {
+      const params = new URLSearchParams();
+      if (search) params.set("q", search);
+      if (category) params.set("category", category);
+      params.set("sort", sort);
+      params.set("page", String(page));
+      params.set("limit", "24");
 
-    const res = await fetch(`/api/shop/products?${params}`);
-    if (res.ok) {
-      const data = await res.json();
-      setProducts(data.items);
-      setTotal(data.total);
-      setTotalPages(data.totalPages);
+      const res = await fetch(`/api/shop/products?${params}`);
+      if (res.ok) {
+        const data = await res.json();
+        setProducts(data.items);
+        setTotal(data.total);
+        setTotalPages(data.totalPages);
+      } else {
+        setError("Błąd ładowania produktów. Spróbuj ponownie.");
+      }
+    } catch {
+      setError("Błąd połączenia z serwerem.");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   }, [search, category, sort, page]);
 
   useEffect(() => {
@@ -230,6 +239,14 @@ function ShopPageInner() {
       {/* Results */}
       {loading ? (
         <div style={{ textAlign: "center", padding: "4rem", color: "#666" }}>Ładowanie…</div>
+      ) : error ? (
+        <div style={{ textAlign: "center", padding: "4rem", color: "#f44336" }}>
+          <div style={{ fontSize: "2rem", marginBottom: "1rem" }}>⚠️</div>
+          <p>{error}</p>
+          <button onClick={fetchProducts} style={{ marginTop: "1rem", background: "#f60", color: "#fff", border: "none", padding: "0.6rem 1.5rem", borderRadius: 8, cursor: "pointer", fontWeight: 700 }}>
+            Spróbuj ponownie
+          </button>
+        </div>
       ) : products.length === 0 ? (
         <div style={{ textAlign: "center", padding: "4rem", color: "#666" }}>
           <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>🔧</div>
