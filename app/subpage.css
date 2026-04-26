@@ -1166,6 +1166,20 @@
   }
 }
 
+@media (max-width: 768px) {
+  .content-section .products-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+    overflow-x: hidden !important;
+  }
+
+  .content-section .products-grid .product-card {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+}
+
 /* ===== TRANSPORT & WYNAJEM – DUAL BLOCK LAYOUT ===== */
 .tw-dual {
   display: grid;
