@@ -30,6 +30,7 @@ export default function Sklep() {
   const posRef = useRef(0);
   const pausedRef = useRef(false);
   const manualBoostRef = useRef(0);
+  const [isMobileBanner, setIsMobileBanner] = useState(false);
 
   const [bannerItemsDb, setBannerItemsDb] = useState<BannerItem[]>([]);
   const [bannerLoaded, setBannerLoaded] = useState(false);
@@ -52,8 +53,23 @@ export default function Sklep() {
     : defaultBannerItems;
 
   useEffect(() => {
+    const media = window.matchMedia("(max-width: 768px)");
+    const onChange = () => setIsMobileBanner(media.matches);
+    onChange();
+    media.addEventListener("change", onChange);
+    return () => media.removeEventListener("change", onChange);
+  }, []);
+
+  useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
+
+    if (isMobileBanner) {
+      posRef.current = 0;
+      manualBoostRef.current = 0;
+      track.style.transform = "none";
+      return;
+    }
 
     const speed = 0.8;
     let animId: number;
@@ -90,14 +106,14 @@ export default function Sklep() {
 
     animId = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(animId);
-  }, []);
+  }, [isMobileBanner]);
 
   const scrollBanner = (dir: number) => {
     manualBoostRef.current += dir * 350;
   };
 
   // Duplicate items for infinite loop
-  const allItems = [...bannerItems, ...bannerItems];
+  const allItems = isMobileBanner ? bannerItems : [...bannerItems, ...bannerItems];
 
   return (
     <>
@@ -193,9 +209,31 @@ export default function Sklep() {
             .banner-arrow--left { left: 12px; }
             .banner-arrow--right { right: 12px; }
             @media (max-width: 768px) {
-              .banner-item { width: 220px; height: 280px; }
+              .brand-banner {
+                overflow-y: auto;
+                overflow-x: hidden;
+                max-height: 72vh;
+                padding: 8px 4px 8px 0;
+              }
+              .brand-banner::before,
+              .brand-banner::after { display: none; }
+              .banner-track {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                transform: none !important;
+              }
+              .banner-item {
+                width: 100%;
+                height: 200px;
+                margin-left: 0;
+                clip-path: none;
+                border-radius: 12px;
+                overflow: hidden;
+              }
               .banner-item .banner-cat { font-size: 1rem; }
-              .banner-arrow { width: 38px; height: 38px; font-size: 1.1rem; }
+              .banner-arrow { display: none; }
             }
           `}</style>
 
