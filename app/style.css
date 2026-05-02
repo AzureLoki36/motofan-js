@@ -65,6 +65,9 @@
   --footer-rule:  rgba(232,233,240,.08);
 }
 
+[data-theme="dark"] .brand-card.featured{background:linear-gradient(135deg,var(--surface),rgba(230,57,70,.07))}
+[data-theme="dark"] .brand-logo-wrap{background:#fff;border-radius:var(--radius-md);padding:10px}
+[data-theme="dark"] .btn-ghost{background:var(--surface);color:var(--text)}
 [data-theme="dark"] .hamburger span{background:var(--text)}
 [data-theme="dark"] .footer-logo .logo-text{color:var(--footer-text)}
 [data-theme="dark"] .footer-col ul li a:hover{color:var(--footer-text)}
