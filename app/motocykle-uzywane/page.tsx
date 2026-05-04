@@ -96,7 +96,7 @@ export default function MotocykleUzywane() {
           )}
 
           {motorcycles.length > 0 && (
-            <MotorcycleFilters motorcycles={motorcycles} filters={filters} onChange={setFilters} t={t} />
+            <MotorcycleFilters motorcycles={motorcycles} filters={filters} onChange={setFilters} t={t} showMileage />
           )}
 
           {loading ? (

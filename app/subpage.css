@@ -426,51 +426,59 @@
 /* Motorcycle Gallery */
 /* ===== MOTORCYCLE FILTERS ===== */
 .mf-wrap {
+  margin-top: 40px;
   margin-bottom: 48px;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius-xl, 20px);
+  border-radius: 16px;
   overflow: hidden;
   background: var(--surface);
+  border: 1.5px solid var(--border);
   box-shadow: var(--shadow);
 }
 
 /* Category tab strip */
-.mf-tabs-wrap {
+.mf-cats {
+  display: flex;
+  align-items: stretch;
   overflow-x: auto;
   scrollbar-width: none;
   border-bottom: 1.5px solid var(--border);
+  padding: 0 8px;
+  gap: 0;
 }
-.mf-tabs-wrap::-webkit-scrollbar { display: none; }
 
-.mf-tabs {
+.mf-cats::-webkit-scrollbar { display: none; }
+
+.mf-cat-label {
   display: flex;
-  align-items: stretch;
-  min-width: max-content;
+  align-items: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+  flex-shrink: 0;
+  padding: 0 12px 0 8px;
+  white-space: nowrap;
 }
 
 .mf-tab {
   flex-shrink: 0;
-  padding: 16px 24px;
+  padding: 15px 18px;
   border: none;
   border-bottom: 3px solid transparent;
   background: transparent;
   color: var(--text-m);
-  font-size: 0.88rem;
+  font-size: 0.87rem;
   font-weight: 600;
   font-family: 'Outfit', sans-serif;
   cursor: pointer;
   transition: var(--tr);
-  position: relative;
   white-space: nowrap;
-  letter-spacing: 0.01em;
 }
 
 .mf-tab:hover {
   color: var(--text);
-  background: rgba(0,0,0,.03);
+  background: rgba(0,0,0,.025);
 }
 
 .mf-tab--active {
@@ -480,76 +488,117 @@
 }
 
 [data-theme="dark"] .mf-tab:hover {
-  background: rgba(255,255,255,.05);
+  background: rgba(255,255,255,.04);
 }
 
-/* Brand + actions row */
-.mf-bar {
+/* Filter grid – OtoMoto style divider grid */
+.mf-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 0;
+  background: var(--border);
+  border-bottom: 1.5px solid var(--border);
+}
+
+.mf-group {
+  background: var(--surface);
+  padding: 18px 20px;
   display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px 20px;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 9px;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
 }
 
-.mf-bar-label {
-  font-size: 0.78rem;
+.mf-lbl {
+  font-size: 0.7rem;
   font-weight: 700;
   color: var(--text-dim);
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  flex-shrink: 0;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
 }
 
-.mf-brands {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  align-items: center;
-  flex: 1;
-}
-
-.mf-brand {
-  padding: 6px 14px;
-  border-radius: 6px;
+/* Styled native select */
+.mf-select {
+  width: 100%;
+  background: var(--bg);
   border: 1.5px solid var(--border);
-  background: transparent;
-  color: var(--text-m);
-  font-size: 0.82rem;
-  font-weight: 600;
+  border-radius: 8px;
+  padding: 9px 32px 9px 12px;
+  color: var(--text);
+  font-size: 0.87rem;
   font-family: 'Outfit', sans-serif;
   cursor: pointer;
+  outline: none;
   transition: var(--tr);
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239090b0' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
 }
 
-.mf-brand:hover {
+.mf-select:focus {
   border-color: var(--primary);
-  color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(230,57,70,.1);
 }
 
-.mf-brand--active {
-  background: var(--primary);
-  border-color: var(--primary);
-  color: #fff;
-}
-
-/* Right-side actions */
-.mf-actions {
+/* Range pair: Od — Do */
+.mf-dbl {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-left: auto;
-  flex-shrink: 0;
+  gap: 6px;
 }
 
-.mf-adv-btn {
-  display: inline-flex;
+.mf-inp {
+  flex: 1;
+  min-width: 0;
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 6px;
+  color: var(--text);
+  font-size: 0.85rem;
+  font-family: 'Outfit', sans-serif;
+  outline: none;
+  transition: var(--tr);
+  text-align: center;
+  width: 0;
+}
+
+.mf-inp:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(230,57,70,.1);
+}
+
+.mf-inp::placeholder {
+  color: var(--text-dim);
+  font-size: 0.8rem;
+}
+
+.mf-sep {
+  width: 12px;
+  height: 2px;
+  background: var(--border);
+  flex-shrink: 0;
+  border-radius: 2px;
+}
+
+/* Clear row */
+.mf-footer {
+  padding: 12px 20px;
+  display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
+  justify-content: flex-end;
+  background: var(--bg);
+}
+
+.mf-clear {
+  padding: 8px 20px;
   border-radius: 8px;
   border: 1.5px solid var(--border);
-  background: var(--bg);
+  background: transparent;
   color: var(--text-m);
   font-size: 0.83rem;
   font-weight: 600;
@@ -558,132 +607,35 @@
   transition: var(--tr);
 }
 
-.mf-adv-btn:hover,
-.mf-adv-btn--open {
+.mf-clear:hover {
   border-color: var(--primary);
   color: var(--primary);
-}
-
-.mf-adv-btn--has {
-  border-color: var(--primary);
-  color: var(--primary);
-}
-
-.mf-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--primary);
-  color: #fff;
-  font-size: 0.7rem;
-  font-weight: 800;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.mf-reset {
-  padding: 8px 14px;
-  border-radius: 8px;
-  border: 1.5px solid transparent;
-  background: transparent;
-  color: var(--text-dim);
-  font-size: 0.82rem;
-  font-weight: 500;
-  font-family: 'Outfit', sans-serif;
-  cursor: pointer;
-  transition: var(--tr);
-}
-
-.mf-reset:hover {
-  color: var(--primary);
-  border-color: var(--border);
-}
-
-/* Advanced panel */
-.mf-advanced {
-  padding: 20px;
-  border-top: 1.5px solid var(--border);
-  background: var(--bg);
-}
-
-.mf-adv-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-}
-
-.mf-field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.mf-lbl {
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: var(--text-dim);
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
-}
-
-.mf-range {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.mf-input {
-  flex: 1;
-  min-width: 0;
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: 8px;
-  padding: 9px 10px;
-  color: var(--text);
-  font-size: 0.85rem;
-  font-family: 'Outfit', sans-serif;
-  outline: none;
-  transition: var(--tr);
-}
-
-.mf-input:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(230,57,70,.1);
-}
-
-.mf-sep {
-  width: 12px;
-  height: 1.5px;
-  background: var(--border);
-  flex-shrink: 0;
-  border-radius: 2px;
+  background: rgba(230,57,70,.04);
 }
 
 /* Responsive */
 @media (max-width: 900px) {
-  .mf-adv-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .mf-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 640px) {
+  .mf-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
   .mf-tab {
-    padding: 14px 16px;
+    padding: 13px 14px;
     font-size: 0.82rem;
   }
-  .mf-bar {
-    padding: 12px 14px;
-    gap: 8px;
+  .mf-group {
+    padding: 14px 14px;
   }
-  .mf-adv-grid {
+}
+
+@media (max-width: 400px) {
+  .mf-grid {
     grid-template-columns: 1fr;
-  }
-  .mf-actions {
-    width: 100%;
-    margin-left: 0;
-    justify-content: flex-end;
   }
 }
 
@@ -693,6 +645,7 @@
   grid-template-columns: repeat(2, 1fr);
   gap: 30px;
 }
+
 
 
 .moto-card {
