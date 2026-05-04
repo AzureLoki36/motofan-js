@@ -335,7 +335,7 @@ section{padding:96px 0}
 .btn-sm{padding:7px 14px;font-size:.82rem;border-radius:var(--radius-sm)}
 
 /* ===== ADMIN MODAL ===== */
-.moto-admin-trigger{margin-bottom:24px}
+.moto-admin-trigger{margin-bottom:40px;margin-top:8px}
 .moto-admin-overlay{position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:16px}
 .moto-admin-panel{background:var(--surface);border-radius:20px;width:100%;max-width:860px;max-height:90vh;display:flex;flex-direction:column;box-shadow:0 24px 80px rgba(0,0,0,.25);overflow:hidden}
 .moto-admin-header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1.5px solid var(--border);flex-shrink:0}
