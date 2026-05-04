@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import type { Motorcycle, MotorcycleCategory } from "@/lib/motorcycles";
 import { CATEGORY_LABELS } from "@/lib/motorcycles";
 
@@ -46,6 +46,16 @@ export function applyFilters(motorcycles: Motorcycle[], f: Filters): Motorcycle[
   });
 }
 
+const CATEGORY_ICONS: Record<string, string> = {
+  naked: "🏍️",
+  sport: "🏁",
+  touring: "🗺️",
+  cruiser: "🛣️",
+  skuter: "🛵",
+  enduro: "🌲",
+  inne: "⚙️",
+};
+
 interface Props {
   motorcycles: Motorcycle[];
   filters: Filters;
@@ -54,124 +64,132 @@ interface Props {
 }
 
 export default function MotorcycleFilters({ motorcycles, filters, onChange, t }: Props) {
+  const [expanded, setExpanded] = useState(false);
+
   const brands = useMemo(
     () => [...new Set(motorcycles.map((m) => m.brand))].sort(),
     [motorcycles]
   );
   const categories = useMemo(
-    () => [...new Set(motorcycles.map((m) => m.category))].sort(),
+    () => [...new Set(motorcycles.map((m) => m.category))].sort() as MotorcycleCategory[],
     [motorcycles]
   );
-  const years = useMemo(() => {
-    const yrs = motorcycles.map((m) => m.year);
-    return { min: Math.min(...yrs, new Date().getFullYear()), max: Math.max(...yrs, new Date().getFullYear()) };
-  }, [motorcycles]);
 
   const set = (key: keyof Filters, val: string) => onChange({ ...filters, [key]: val });
-
   const hasAny = Object.values(filters).some(Boolean);
+  const activeCount = Object.values(filters).filter(Boolean).length;
+
+  const inp: React.CSSProperties = {
+    background: "var(--bg)",
+    border: "1.5px solid var(--border)",
+    borderRadius: "var(--radius-md)",
+    padding: "10px 14px",
+    color: "var(--text)",
+    fontFamily: "Inter, sans-serif",
+    fontSize: "0.88rem",
+    outline: "none",
+    width: "100%",
+    transition: "var(--tr)",
+  };
 
   return (
-    <div className="moto-filters">
-      <div className="moto-filters-bar">
-        <select value={filters.brand} onChange={(e) => set("brand", e.target.value)}>
-          <option value="">{t("filter.brand")}</option>
-          {brands.map((b) => (
-            <option key={b} value={b}>{b}</option>
-          ))}
-        </select>
-
-        <select value={filters.category} onChange={(e) => set("category", e.target.value)}>
-          <option value="">{t("filter.category")}</option>
-          {categories.map((c) => (
-            <option key={c} value={c}>{CATEGORY_LABELS[c as MotorcycleCategory] || c}</option>
-          ))}
-        </select>
-
-        <div className="moto-filter-range">
-          <input
-            type="number"
-            placeholder={t("filter.yearFrom")}
-            value={filters.yearFrom}
-            onChange={(e) => set("yearFrom", e.target.value)}
-            min={years.min}
-            max={years.max}
-          />
-          <span>–</span>
-          <input
-            type="number"
-            placeholder={t("filter.yearTo")}
-            value={filters.yearTo}
-            onChange={(e) => set("yearTo", e.target.value)}
-            min={years.min}
-            max={years.max}
-          />
-        </div>
-
-        <div className="moto-filter-range">
-          <input
-            type="number"
-            placeholder={t("filter.displacementFrom")}
-            value={filters.displacementFrom}
-            onChange={(e) => set("displacementFrom", e.target.value)}
-            min={0}
-            step={50}
-          />
-          <span>–</span>
-          <input
-            type="number"
-            placeholder={t("filter.displacementTo")}
-            value={filters.displacementTo}
-            onChange={(e) => set("displacementTo", e.target.value)}
-            min={0}
-            step={50}
-          />
-        </div>
-
-        <div className="moto-filter-range">
-          <input
-            type="number"
-            placeholder={t("filter.powerFrom")}
-            value={filters.powerFrom}
-            onChange={(e) => set("powerFrom", e.target.value)}
-            min={0}
-          />
-          <span>–</span>
-          <input
-            type="number"
-            placeholder={t("filter.powerTo")}
-            value={filters.powerTo}
-            onChange={(e) => set("powerTo", e.target.value)}
-            min={0}
-          />
-        </div>
-
-        <div className="moto-filter-range">
-          <input
-            type="number"
-            placeholder={t("filter.priceFrom")}
-            value={filters.priceFrom}
-            onChange={(e) => set("priceFrom", e.target.value)}
-            min={0}
-            step={1000}
-          />
-          <span>–</span>
-          <input
-            type="number"
-            placeholder={t("filter.priceTo")}
-            value={filters.priceTo}
-            onChange={(e) => set("priceTo", e.target.value)}
-            min={0}
-            step={1000}
-          />
-        </div>
-
-        {hasAny && (
-          <button className="btn btn-secondary moto-filter-clear" onClick={() => onChange(emptyFilters)}>
-            {t("filter.clear")}
+    <div className="mf-filters">
+      {/* ── Category chips ── */}
+      {categories.length > 0 && (
+        <div className="mf-categories">
+          <button
+            className={`mf-chip${!filters.category ? " mf-chip--active" : ""}`}
+            onClick={() => set("category", "")}
+          >
+            Wszystkie
           </button>
+          {categories.map((c) => (
+            <button
+              key={c}
+              className={`mf-chip${filters.category === c ? " mf-chip--active" : ""}`}
+              onClick={() => set("category", filters.category === c ? "" : c)}
+            >
+              <span>{CATEGORY_ICONS[c] ?? "🏍️"}</span>
+              {CATEGORY_LABELS[c] || c}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* ── Brand + advanced toggle bar ── */}
+      <div className="mf-bar">
+        {/* Brand pills */}
+        {brands.length > 0 && (
+          <div className="mf-brands">
+            {brands.map((b) => (
+              <button
+                key={b}
+                className={`mf-brand-pill${filters.brand === b ? " mf-brand-pill--active" : ""}`}
+                onClick={() => set("brand", filters.brand === b ? "" : b)}
+              >
+                {b}
+              </button>
+            ))}
+          </div>
         )}
+
+        <div style={{ display: "flex", gap: 10, marginLeft: "auto", alignItems: "center", flexShrink: 0 }}>
+          {hasAny && (
+            <button className="mf-clear-btn" onClick={() => onChange(emptyFilters)}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              Wyczyść{activeCount > 0 ? ` (${activeCount})` : ""}
+            </button>
+          )}
+          <button
+            className={`mf-advanced-btn${expanded ? " mf-advanced-btn--open" : ""}`}
+            onClick={() => setExpanded(!expanded)}
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+            Filtry zaawansowane
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ transition: "transform 0.3s", transform: expanded ? "rotate(180deg)" : "none" }}><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+        </div>
       </div>
+
+      {/* ── Advanced panel ── */}
+      {expanded && (
+        <div className="mf-advanced">
+          <div className="mf-advanced-grid">
+            <div className="mf-field">
+              <label className="mf-label">Rok produkcji</label>
+              <div className="mf-range">
+                <input style={inp} type="number" placeholder="Od" value={filters.yearFrom} onChange={(e) => set("yearFrom", e.target.value)} />
+                <span className="mf-dash">—</span>
+                <input style={inp} type="number" placeholder="Do" value={filters.yearTo} onChange={(e) => set("yearTo", e.target.value)} />
+              </div>
+            </div>
+            <div className="mf-field">
+              <label className="mf-label">Cena (zł)</label>
+              <div className="mf-range">
+                <input style={inp} type="number" placeholder="Od" value={filters.priceFrom} onChange={(e) => set("priceFrom", e.target.value)} step={1000} />
+                <span className="mf-dash">—</span>
+                <input style={inp} type="number" placeholder="Do" value={filters.priceTo} onChange={(e) => set("priceTo", e.target.value)} step={1000} />
+              </div>
+            </div>
+            <div className="mf-field">
+              <label className="mf-label">Pojemność (ccm)</label>
+              <div className="mf-range">
+                <input style={inp} type="number" placeholder="Od" value={filters.displacementFrom} onChange={(e) => set("displacementFrom", e.target.value)} step={50} />
+                <span className="mf-dash">—</span>
+                <input style={inp} type="number" placeholder="Do" value={filters.displacementTo} onChange={(e) => set("displacementTo", e.target.value)} step={50} />
+              </div>
+            </div>
+            <div className="mf-field">
+              <label className="mf-label">Moc (KM)</label>
+              <div className="mf-range">
+                <input style={inp} type="number" placeholder="Od" value={filters.powerFrom} onChange={(e) => set("powerFrom", e.target.value)} />
+                <span className="mf-dash">—</span>
+                <input style={inp} type="number" placeholder="Do" value={filters.powerTo} onChange={(e) => set("powerTo", e.target.value)} />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
