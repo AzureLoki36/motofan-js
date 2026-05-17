@@ -222,7 +222,7 @@ export default function DlaDzieci() {
           position: absolute;
           left: 0; right: 0;
           bottom: 50px; /* nad droga z hero-biker.svg */
-          height: 240px;
+          height: 260px;
           pointer-events: none;
           z-index: 3;
         }
@@ -230,8 +230,8 @@ export default function DlaDzieci() {
           position: absolute;
           left: 0;
           bottom: 0;
-          width: 320px;
-          height: 240px;
+          width: 400px;
+          height: 260px;
           transform: translateX(-100%);
           animation: heroRide 11s linear infinite;
           filter: drop-shadow(6px 8px 8px rgba(13,27,61,.3));
@@ -246,49 +246,48 @@ export default function DlaDzieci() {
         /* Krecace sie kola - nakladki z gradientem szprych */
         .wheel {
           position: absolute;
-          bottom: 14px;
-          width: 72px;
-          height: 72px;
+          width: 78px;
+          height: 78px;
           border-radius: 50%;
           pointer-events: none;
           background:
             conic-gradient(
               from 0deg,
               transparent 0deg,
-              rgba(255,255,255,0.55) 4deg,
+              rgba(255,255,255,0.65) 4deg,
               transparent 12deg,
               transparent 86deg,
-              rgba(255,255,255,0.55) 94deg,
+              rgba(255,255,255,0.65) 94deg,
               transparent 102deg,
               transparent 176deg,
-              rgba(255,255,255,0.55) 184deg,
+              rgba(255,255,255,0.65) 184deg,
               transparent 192deg,
               transparent 266deg,
-              rgba(255,255,255,0.55) 274deg,
+              rgba(255,255,255,0.65) 274deg,
               transparent 282deg,
               transparent 360deg
             );
-          mask: radial-gradient(circle, transparent 16%, #000 18%, #000 86%, transparent 88%);
-          -webkit-mask: radial-gradient(circle, transparent 16%, #000 18%, #000 86%, transparent 88%);
+          mask: radial-gradient(circle, transparent 12%, #000 14%, #000 86%, transparent 88%);
+          -webkit-mask: radial-gradient(circle, transparent 12%, #000 14%, #000 86%, transparent 88%);
           animation: wheelSpin .25s linear infinite;
           will-change: transform;
         }
-        .wheel-back  { left: 54px;  bottom: 26px; }
-        .wheel-front { left: 214px; bottom: 26px; }
+        .wheel-back  { left: 56px;  bottom: 26px; }
+        .wheel-front { left: 266px; bottom: 26px; }
         @keyframes wheelSpin {
           to { transform: rotate(360deg); }
         }
         @keyframes heroRide {
-          0%   { transform: translateX(-320px); }
+          0%   { transform: translateX(-400px); }
           50%  { transform: translateX(50vw) translateY(-6px); }
           100% { transform: translateX(105vw); }
         }
         @media (max-width: 700px) {
-          .hero-rider { width: 220px; height: 165px; }
-          .hero-rider-track { bottom: 35px; height: 165px; }
-          .wheel { width: 52px; height: 52px; }
-          .wheel-back  { left: 37px;  bottom: 18px; }
-          .wheel-front { left: 147px; bottom: 18px; }
+          .hero-rider { width: 280px; height: 182px; }
+          .hero-rider-track { bottom: 35px; height: 182px; }
+          .wheel { width: 55px; height: 55px; }
+          .wheel-back  { left: 39px;  bottom: 18px; }
+          .wheel-front { left: 186px; bottom: 18px; }
         }
         @media (max-width: 900px) {
           .kids-hero { padding: 70px 0 180px; min-height: 480px; }
