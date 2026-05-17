@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import SubpageFooter from "@/components/SubpageFooter";
@@ -54,70 +54,112 @@ const BRAND_LOGOS = [
   { name: "RXF", color: "#ff8fab" },
 ];
 
-/* Ikony motocyklowe - prawdziwe miniaturki z CDN Twemoji (motorki, kaski, znaki drogowe) */
+/* Ikony - motocykle (rozne typy), znaki drogowe (rozne), kaski - z Twemoji CDN */
 const MOTO_DOODLES = [
+  // motocykle / pojazdy
   "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f3cd.svg", // motorcycle
   "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f6f5.svg", // motor scooter
-  "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1fa96.svg", // military helmet
-  "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/26d1.svg",  // helmet with cross
+  "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f3ce.svg", // racing car
+  // znaki drogowe / sygnaly
   "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f6d1.svg", // stop sign
+  "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/26d4.svg",  // no entry
   "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f6a6.svg", // vertical traffic light
   "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f6a5.svg", // horizontal traffic light
   "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/26a0.svg",  // warning
   "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f6a7.svg", // construction
-  "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f3c1.svg", // chequered flag
-  "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f3ce.svg", // racing car
-  "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f6e3.svg", // motorway
+  "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f6ab.svg", // prohibited
+  // kaski (rozne)
+  "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/26d1.svg",  // rescue helmet (red/white)
+  "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1fa96.svg", // military helmet (olive)
+  "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/26d1-fe0f.svg", // helmet variant
 ];
 
-/* ===== KOMPONENT: ledwo widoczne floatery na calej stronie =====
-   position: fixed -> sa zawsze widoczne w viewport, nad sekcjami z tlem */
-function BackgroundFloaters({ count = 900 }: { count?: number }) {
+/* ===== KOMPONENT: floatery zachowujace sie jak pilki w przestrzeni kosmicznej =====
+   position: fixed -> zawsze widoczne w viewport, 150 elementow ciagle w ruchu,
+   odbijaja sie od krawedzi viewportu, kazdy z wlasna predkoscia/kierunkiem */
+function BackgroundFloaters({ count = 150 }: { count?: number }) {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const elsRef = useRef<(HTMLImageElement | null)[]>([]);
+  const stateRef = useRef<Array<{ x: number; y: number; vx: number; vy: number; r: number; vr: number; size: number }>>([]);
+  const rafRef = useRef<number | null>(null);
+
+  // Stabilna permutacja ikon - sasiednie != ta sama ikona
   const L = MOTO_DOODLES.length;
-  // Deterministyczna permutacja - sasiednie indeksy != ta sama ikona
-  const pickIcon = (i: number) => MOTO_DOODLES[((i * 7) + ((i * 13) % 5)) % L];
-  const items = Array.from({ length: count }, (_, i) => {
-    // Naprzemiennie lewa / prawa kolumna boczna, szersze pasy blizej kafelkow (0..20vw lub 80..100vw)
-    const onRight = i % 2 === 1;
-    const sideOffset = ((i * 17 + 3) % 2000) / 100; // 0..20
-    const leftPct = onRight ? 80 + sideOffset : sideOffset;
-    // Rozsiane po calej dlugosci strony, zaczynajac PONIZEJ hero (~75vh)
-    const topVh = 75 + ((i * 53 + 7) % 620); // 75..694vh
-    const size = 42 + ((i * 13) % 70); // 42..112
-    const rot = (i * 41) % 360;
-    const delay = ((i * 11) % 30) / 9; // 0..3.3s
-    const dur = 1.5 + ((i * 5) % 10) / 4; // 1.5..4s - szybciej
-    // Przeciwne kierunki: parzyste w prawo+gora, nieparzyste w lewo+dol; wiekszy zakres ruchu
-    const dirX = i % 2 === 0 ? 1 : -1;
-    const dirY = i % 2 === 0 ? -1 : 1;
-    const ampX = 40 + ((i * 19) % 80); // 40..119 px
-    const ampY = 30 + ((i * 23) % 70); // 30..99 px
-    const driftX = dirX * ampX;
-    const driftY = dirY * ampY;
-    const opacity = 0.35 + ((i * 7) % 15) / 100; // 0.35..0.49
-    const src = pickIcon(i);
-    return { topVh, leftPct, size, rot, delay, dur, opacity, src, driftX, driftY };
-  });
+  const srcs = Array.from({ length: count }, (_, i) => MOTO_DOODLES[((i * 7) + ((i * 13) % 5)) % L]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const W = () => window.innerWidth;
+    const H = () => window.innerHeight;
+
+    // Inicjalizacja losowych pozycji i predkosci
+    stateRef.current = Array.from({ length: count }, () => {
+      const size = 28 + Math.random() * 44; // 28..72 px
+      const angle = Math.random() * Math.PI * 2;
+      const speed = 30 + Math.random() * 80; // px/s
+      return {
+        x: Math.random() * (W() - size),
+        y: Math.random() * (H() - size),
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        r: Math.random() * 360,
+        vr: (Math.random() - 0.5) * 60, // deg/s
+        size,
+      };
+    });
+
+    let last = performance.now();
+    const tick = (now: number) => {
+      const dt = Math.min(0.05, (now - last) / 1000);
+      last = now;
+      const w = W();
+      const h = H();
+      const st = stateRef.current;
+      for (let i = 0; i < st.length; i++) {
+        const p = st[i];
+        p.x += p.vx * dt;
+        p.y += p.vy * dt;
+        p.r += p.vr * dt;
+        // odbicie od krawedzi viewportu
+        if (p.x <= 0) { p.x = 0; p.vx = Math.abs(p.vx); }
+        else if (p.x + p.size >= w) { p.x = w - p.size; p.vx = -Math.abs(p.vx); }
+        if (p.y <= 0) { p.y = 0; p.vy = Math.abs(p.vy); }
+        else if (p.y + p.size >= h) { p.y = h - p.size; p.vy = -Math.abs(p.vy); }
+        const el = elsRef.current[i];
+        if (el) el.style.transform = `translate3d(${p.x}px, ${p.y}px, 0) rotate(${p.r}deg)`;
+      }
+      rafRef.current = requestAnimationFrame(tick);
+    };
+    rafRef.current = requestAnimationFrame(tick);
+
+    const onResize = () => {
+      const w = W();
+      const h = H();
+      for (const p of stateRef.current) {
+        if (p.x + p.size > w) p.x = Math.max(0, w - p.size);
+        if (p.y + p.size > h) p.y = Math.max(0, h - p.size);
+      }
+    };
+    window.addEventListener("resize", onResize);
+
+    return () => {
+      if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
+      window.removeEventListener("resize", onResize);
+    };
+  }, [count]);
+
   return (
-    <div className="bg-floaters" aria-hidden>
-      {items.map((d, i) => (
+    <div className="bg-floaters" aria-hidden ref={containerRef}>
+      {srcs.map((src, i) => (
         <img
           key={i}
-          src={d.src}
+          ref={(el) => { elsRef.current[i] = el; }}
+          src={src}
           alt=""
           className="bg-floater"
           style={{
-            top: `${d.topVh}vh`,
-            left: `${d.leftPct}vw`,
-            width: d.size,
-            height: d.size,
-            opacity: d.opacity,
-            animationDelay: `${d.delay}s`,
-            animationDuration: `${d.dur}s`,
-            // przekazujemy parametry do keyframes
-            ['--rot' as any]: `${d.rot}deg`,
-            ['--drift' as any]: `${d.driftX}px`,
-            ['--drifty' as any]: `${d.driftY}px`,
+            width: stateRef.current[i]?.size ?? 48,
+            height: stateRef.current[i]?.size ?? 48,
           }}
         />
       ))}
@@ -196,9 +238,9 @@ export default function DlaDzieci() {
         }
         :global([data-theme="dark"]) .kids-page-bg { background: #0e1322; }
 
-        /* ===== TLOWE FLOATERY - ledwo widoczne motocykle na calej stronie ===== */
+        /* ===== FLOATERY - pilki w przestrzeni kosmicznej (JS-rAF) ===== */
         .bg-floaters {
-          position: absolute;
+          position: fixed;
           inset: 0;
           pointer-events: none;
           overflow: hidden;
@@ -206,17 +248,14 @@ export default function DlaDzieci() {
         }
         .bg-floater {
           position: absolute;
-          animation: floatBob 12s ease-in-out infinite;
-          filter: drop-shadow(1px 2px 0 rgba(13,27,61,.2));
+          top: 0;
+          left: 0;
+          opacity: 0.45;
+          filter: drop-shadow(1px 2px 0 rgba(13,27,61,.25));
           will-change: transform;
-          transform: rotate(var(--rot, 0deg));
         }
         :global([data-theme="dark"]) .bg-floater {
           filter: invert(.85) brightness(1.1);
-        }
-        @keyframes floatBob {
-          0%, 100% { transform: translate(0, 0) rotate(var(--rot, 0deg)); }
-          50%      { transform: translate(var(--drift, 0px), var(--drifty, -22px)) rotate(calc(var(--rot, 0deg) + 12deg)); }
         }
 
         /* ===== HERO ===== */
