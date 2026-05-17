@@ -269,16 +269,17 @@ export default function DlaDzieci() {
         @media (max-width: 1240px) { .side-floaters { display: none; } }
 
         /* ===== PELNOSTRONICOWE FLOATERY - polprzezroczyste, rozsiane po calej stronie ===== */
+        /* position: fixed - sa widoczne na calej stronie nad WSZYSTKIMI sekcjami */
         .page-floaters {
-          position: absolute; inset: 0;
+          position: fixed; inset: 0;
           pointer-events: none;
           overflow: hidden;
-          z-index: 0;
+          z-index: 5;
         }
         .page-doodle {
           position: absolute;
           animation: kfloat 8s ease-in-out infinite;
-          filter: drop-shadow(1px 2px 0 rgba(13,27,61,.08));
+          filter: drop-shadow(1px 2px 0 rgba(13,27,61,.18));
         }
         :global([data-theme="dark"]) .page-doodle { filter: invert(.85) brightness(1.1); }
 
@@ -301,33 +302,39 @@ export default function DlaDzieci() {
           pointer-events: none;
           z-index: 0;
         }
-        /* Rider PNG - jedzie po drodze, obrocony w prawo */
+        /* Rider - jedzie po drodze, obrocony w prawo */
         .hero-rider-track {
           position: absolute;
           left: 0; right: 0;
-          bottom: 6px;
+          bottom: 70px; /* nad droga z hero-biker.svg */
           height: 0;
           pointer-events: none;
-          z-index: 1;
+          z-index: 3;
         }
         .hero-rider {
           position: absolute;
           bottom: 0;
-          left: -260px;
-          height: 170px;
-          width: auto;
-          /* obrot w prawo - obraz oryginalny patrzy w lewo, wiec lustro */
+          left: -280px;
+          width: 280px;
+          height: 172px;
+          display: block;
+          /* obrot w prawo - oryginal patrzy w lewo */
           transform: scaleX(-1);
-          animation: heroRide 14s linear infinite, heroBob 0.5s ease-in-out infinite;
-          filter: drop-shadow(4px 6px 0 rgba(13,27,61,.18));
+          animation: heroRide 12s linear infinite, heroBob 0.45s ease-in-out infinite;
+          filter: drop-shadow(4px 6px 0 rgba(13,27,61,.25));
+          will-change: left, transform;
         }
         @keyframes heroRide {
-          from { left: -260px; }
-          to   { left: 100%; }
+          from { left: -280px; }
+          to   { left: calc(100% + 20px); }
         }
         @keyframes heroBob {
           0%, 100% { transform: scaleX(-1) translateY(0); }
-          50%      { transform: scaleX(-1) translateY(-3px); }
+          50%      { transform: scaleX(-1) translateY(-4px); }
+        }
+        @media (max-width: 700px) {
+          .hero-rider { width: 200px; height: 123px; }
+          .hero-rider-track { bottom: 50px; }
         }
         @media (max-width: 900px) {
           .kids-hero { padding: 70px 0 180px; min-height: 480px; }
