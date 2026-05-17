@@ -301,6 +301,34 @@ export default function DlaDzieci() {
           pointer-events: none;
           z-index: 0;
         }
+        /* Rider PNG - jedzie po drodze, obrocony w prawo */
+        .hero-rider-track {
+          position: absolute;
+          left: 0; right: 0;
+          bottom: 6px;
+          height: 0;
+          pointer-events: none;
+          z-index: 1;
+        }
+        .hero-rider {
+          position: absolute;
+          bottom: 0;
+          left: -260px;
+          height: 170px;
+          width: auto;
+          /* obrot w prawo - obraz oryginalny patrzy w lewo, wiec lustro */
+          transform: scaleX(-1);
+          animation: heroRide 14s linear infinite, heroBob 0.5s ease-in-out infinite;
+          filter: drop-shadow(4px 6px 0 rgba(13,27,61,.18));
+        }
+        @keyframes heroRide {
+          from { left: -260px; }
+          to   { left: 100%; }
+        }
+        @keyframes heroBob {
+          0%, 100% { transform: scaleX(-1) translateY(0); }
+          50%      { transform: scaleX(-1) translateY(-3px); }
+        }
         @media (max-width: 900px) {
           .kids-hero { padding: 70px 0 180px; min-height: 480px; }
         }
@@ -602,6 +630,9 @@ export default function DlaDzieci() {
       <section className="kids-hero">
         <DoodleLayer count={10} opacity={0.35} />
         <img src="/pics/dzieci/hero-biker.svg" alt="" className="hero-biker" />
+        <div className="hero-rider-track" aria-hidden>
+          <img src="/pics/dzieci/rider-flip.png" alt="" className="hero-rider" />
+        </div>
         <div className="container" style={{ position: "relative", zIndex: 2 }}>
           <div className="breadcrumb" style={{ color: "#fff", justifyContent: "center", marginBottom: 30, fontWeight: 700 }}>
             <Link href="/" style={{ color: "#fff" }}>{t("bc.home")}</Link>

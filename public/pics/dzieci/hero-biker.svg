@@ -1,31 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 500" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Motocyklista jadacy na motorze">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 500" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Scena - droga, gory, slonce">
   <defs>
     <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#7fd0ff"/>
       <stop offset="1" stop-color="#cdebff"/>
     </linearGradient>
     <linearGradient id="mtn" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#7a93c9"/>
-      <stop offset="1" stop-color="#4f6aa6"/>
+      <stop offset="0" stop-color="#6edc7a"/>
+      <stop offset="1" stop-color="#3bbf5c"/>
     </linearGradient>
-    <linearGradient id="bikeBody" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#ff8a5b"/>
-      <stop offset="1" stop-color="#e64545"/>
-    </linearGradient>
-    <linearGradient id="bikeBodyDark" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#e64545"/>
-      <stop offset="1" stop-color="#b32a2a"/>
-    </linearGradient>
-    <radialGradient id="hub" cx=".5" cy=".5" r=".5">
-      <stop offset="0" stop-color="#c79bff"/>
-      <stop offset="1" stop-color="#7a4fb8"/>
-    </radialGradient>
   </defs>
-
-  <!-- Niebo -->
   <rect width="1600" height="500" fill="url(#sky)"/>
 
-  <!-- Slonce -->
   <g transform="translate(1320,170)">
     <circle r="40" fill="#ffd23f" stroke="#0d1b3d" stroke-width="3"/>
     <g stroke="#ffd23f" stroke-width="6" stroke-linecap="round" opacity="0.9">
@@ -41,7 +26,6 @@
     </g>
   </g>
 
-  <!-- Chmury -->
   <g fill="#ffffff" stroke="#0d1b3d" stroke-width="3" opacity="0.95">
     <g>
       <ellipse cx="0" cy="0" rx="55" ry="22"/>
@@ -63,21 +47,20 @@
     </g>
   </g>
 
-  <!-- Gory -->
   <g>
     <polygon points="-50,360 220,180 480,360" fill="url(#mtn)" stroke="#0d1b3d" stroke-width="3"/>
-    <polygon points="180,360 420,200 670,360" fill="#8aa0d3" stroke="#0d1b3d" stroke-width="3"/>
+    <polygon points="180,360 420,200 670,360" fill="#6edc7a" stroke="#0d1b3d" stroke-width="3"/>
     <polygon points="560,360 800,220 1040,360" fill="url(#mtn)" stroke="#0d1b3d" stroke-width="3"/>
-    <polygon points="980,360 1200,240 1420,360" fill="#8aa0d3" stroke="#0d1b3d" stroke-width="3"/>
+    <polygon points="980,360 1200,240 1420,360" fill="#6edc7a" stroke="#0d1b3d" stroke-width="3"/>
     <polygon points="1350,360 1520,250 1700,360" fill="url(#mtn)" stroke="#0d1b3d" stroke-width="3"/>
     <polygon points="180,225 220,180 260,225 240,235 220,220 200,235" fill="#ffffff" stroke="#0d1b3d" stroke-width="2"/>
     <polygon points="770,255 800,220 830,255 815,265 800,255 785,265" fill="#ffffff" stroke="#0d1b3d" stroke-width="2"/>
     <polygon points="1170,275 1200,240 1230,275 1215,285 1200,275 1185,285" fill="#ffffff" stroke="#0d1b3d" stroke-width="2"/>
   </g>
 
-  <!-- Drzewka -->
   <g>
     <symbol id="tree" viewBox="-14 -42 28 42">
+      <rect x="-2.5" y="-12" width="5" height="14" rx="1.2" fill="#a86c3a" stroke="#7a4f2b" stroke-width="1.5"/>
       <polygon points="0,-42 -12,-12 12,-12" fill="#3ddc97" stroke="#0d1b3d" stroke-width="2.5"/>
       <polygon points="0,-30 -14,0 14,0" fill="#2bb87f" stroke="#0d1b3d" stroke-width="2.5"/>
     </symbol>
@@ -96,10 +79,8 @@
     </g>
   </g>
 
-  <!-- Trawa -->
   <rect x="0" y="420" width="1600" height="50" fill="#3ddc97" stroke="#0d1b3d" stroke-width="3"/>
 
-  <!-- Droga -->
   <rect x="0" y="430" width="1600" height="70" fill="#3a3a4a"/>
   <rect x="0" y="430" width="1600" height="3" fill="#0d1b3d"/>
   <rect x="0" y="498" width="1600" height="3" fill="#0d1b3d"/>
@@ -120,119 +101,6 @@
       <rect x="1440" y="463" width="60" height="6"/>
       <rect x="1560" y="463" width="60" height="6"/>
       <animateTransform attributeName="transform" type="translate" from="0 0" to="-120 0" dur="1s" repeatCount="indefinite"/>
-    </g>
-  </g>
-
-  <!-- ===== MOTOCYKL + KIEROWCA - prawdziwa sylwetka motora, mniejsza skala ===== -->
-  <g>
-    <animateTransform attributeName="transform" type="translate" from="-180 0" to="1780 0" dur="14s" repeatCount="indefinite"/>
-    <g>
-      <animateTransform attributeName="transform" type="translate" values="0 0; 0 -1.5; 0 0; 0 -0.8; 0 0" dur="0.5s" repeatCount="indefinite" additive="sum"/>
-
-      <!-- Caly motor narysowany w skali zachowujacej rozpoznawalna sylwetke.
-           Kola: tylne x=10 y=455, przednie x=120 y=455. Promien kola = 22.
-           Cala kompozycja miesci sie w obszarze x=-25..160, y=395..477. -->
-
-      <!-- KOLA -->
-      <!-- Tylne -->
-      <g transform="translate(10,455)">
-        <circle r="22" fill="#1a1a2e" stroke="#0d1b3d" stroke-width="2.5"/>
-        <circle r="16" fill="#2a2a3e" stroke="#0d1b3d" stroke-width="1.5"/>
-        <circle r="9" fill="url(#hub)" stroke="#0d1b3d" stroke-width="1.5"/>
-        <circle r="3" fill="#3a2a5a"/>
-        <g stroke="#0d1b3d" stroke-width="1" opacity="0.7">
-          <line x1="-9" y1="0" x2="9" y2="0"/>
-          <line x1="0" y1="-9" x2="0" y2="9"/>
-        </g>
-        <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="0.5s" repeatCount="indefinite" additive="sum"/>
-      </g>
-      <!-- Przednie -->
-      <g transform="translate(120,455)">
-        <circle r="22" fill="#1a1a2e" stroke="#0d1b3d" stroke-width="2.5"/>
-        <circle r="16" fill="#2a2a3e" stroke="#0d1b3d" stroke-width="1.5"/>
-        <circle r="9" fill="url(#hub)" stroke="#0d1b3d" stroke-width="1.5"/>
-        <circle r="3" fill="#3a2a5a"/>
-        <g stroke="#0d1b3d" stroke-width="1" opacity="0.7">
-          <line x1="-9" y1="0" x2="9" y2="0"/>
-          <line x1="0" y1="-9" x2="0" y2="9"/>
-        </g>
-        <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="0.5s" repeatCount="indefinite" additive="sum"/>
-      </g>
-
-      <!-- Blotniki -->
-      <path d="M -10,448 Q 0,432 18,431 L 30,440 Q 12,440 -4,452 Z" fill="#2a2a3e" stroke="#0d1b3d" stroke-width="2"/>
-      <path d="M 100,448 Q 112,432 134,432 Q 146,434 150,448 L 144,450 Q 134,440 120,440 Q 108,442 104,452 Z" fill="#2a2a3e" stroke="#0d1b3d" stroke-width="2"/>
-
-      <!-- Rama motora - widelec przedni i tylny -->
-      <!-- Widelec przedni (do przedniego kola) -->
-      <line x1="120" y1="455" x2="118" y2="424" stroke="#0d1b3d" stroke-width="4" stroke-linecap="round"/>
-      <line x1="120" y1="455" x2="124" y2="424" stroke="#0d1b3d" stroke-width="4" stroke-linecap="round"/>
-      <!-- Wahacz tylny -->
-      <line x1="10" y1="455" x2="60" y2="442" stroke="#0d1b3d" stroke-width="4" stroke-linecap="round"/>
-
-      <!-- Silnik (mocna bryla) -->
-      <rect x="40" y="430" width="50" height="22" rx="4" fill="#1a1a2e" stroke="#0d1b3d" stroke-width="2.5"/>
-      <!-- Zebra silnika -->
-      <g stroke="#444" stroke-width="1.5">
-        <line x1="46" y1="434" x2="46" y2="448"/>
-        <line x1="52" y1="434" x2="52" y2="448"/>
-        <line x1="58" y1="434" x2="58" y2="448"/>
-        <line x1="64" y1="434" x2="64" y2="448"/>
-        <line x1="70" y1="434" x2="70" y2="448"/>
-        <line x1="76" y1="434" x2="76" y2="448"/>
-        <line x1="82" y1="434" x2="82" y2="448"/>
-      </g>
-
-      <!-- Bak (raised gas tank, charakterystyczny ksztalt) -->
-      <path d="M 32,424 Q 36,408 56,406 L 80,406 Q 96,408 100,422 L 100,430 L 32,430 Z" fill="url(#bikeBody)" stroke="#0d1b3d" stroke-width="2.5"/>
-      <!-- Niebieski akcent -->
-      <path d="M 38,418 Q 60,412 96,418" stroke="#3aa3ff" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-      <!-- Pomaranczowe oslony boczne (jak w sportowym motorze) -->
-      <path d="M 80,428 L 102,430 Q 110,438 108,452 L 92,452 Q 84,440 80,432 Z" fill="url(#bikeBodyDark)" stroke="#0d1b3d" stroke-width="2.5"/>
-
-      <!-- Siodelko -->
-      <path d="M 22,422 Q 18,418 14,420 Q 14,426 22,428 L 32,428 L 32,422 Z" fill="#1a1a2e" stroke="#0d1b3d" stroke-width="2"/>
-
-      <!-- Tylna oslona (numerek/blotniczek) -->
-      <path d="M 8,422 Q 0,418 -8,420 L -8,432 Q 0,432 14,428 Z" fill="url(#bikeBodyDark)" stroke="#0d1b3d" stroke-width="2"/>
-
-      <!-- Reflektor przedni -->
-      <path d="M 110,408 Q 122,406 128,418 L 124,424 Q 116,420 110,420 Z" fill="#ffd23f" stroke="#0d1b3d" stroke-width="2"/>
-      <circle cx="120" cy="416" r="2.5" fill="#fff8c8"/>
-
-      <!-- Kierownica -->
-      <path d="M 116,420 Q 124,408 128,400" stroke="#0d1b3d" stroke-width="4" fill="none" stroke-linecap="round"/>
-      <circle cx="128" cy="400" r="3" fill="#1a1a2e" stroke="#0d1b3d" stroke-width="1.5"/>
-      <line x1="116" y1="420" x2="108" y2="412" stroke="#0d1b3d" stroke-width="3.5" stroke-linecap="round"/>
-
-      <!-- Wydech -->
-      <path d="M 0,438 L -22,440 Q -28,440 -28,444 Q -28,448 -22,448 L 0,446 Z" fill="#c0c0c8" stroke="#0d1b3d" stroke-width="1.5"/>
-
-      <!-- Podnozek -->
-      <line x1="48" y1="452" x2="44" y2="460" stroke="#0d1b3d" stroke-width="2" stroke-linecap="round"/>
-
-      <!-- ====== KIEROWCA - maly, siedzacy ====== -->
-      <!-- Noga (widoczna, oparta o silnik) -->
-      <path d="M 38,424 L 36,448 Q 36,454 40,455 L 48,455 Q 52,454 52,448 L 52,432 Z" fill="#1f6fcf" stroke="#0d1b3d" stroke-width="2"/>
-      <!-- But -->
-      <ellipse cx="44" cy="458" rx="9" ry="4" fill="#1a1a2e" stroke="#0d1b3d" stroke-width="1.5"/>
-
-      <!-- Tulow / kurtka -->
-      <path d="M 30,420 Q 26,400 38,394 L 56,392 Q 70,394 72,410 L 70,424 L 32,424 Z" fill="#3aa3ff" stroke="#0d1b3d" stroke-width="2.5"/>
-      <!-- Zip/pasek -->
-      <line x1="50" y1="396" x2="50" y2="422" stroke="#ffd23f" stroke-width="1.5"/>
-
-      <!-- Ramie do kierownicy -->
-      <path d="M 66,400 Q 84,398 104,408 L 102,414 Q 88,406 68,408 Z" fill="#1f6fcf" stroke="#0d1b3d" stroke-width="2"/>
-      <circle cx="106" cy="412" r="4" fill="#1a1a2e" stroke="#0d1b3d" stroke-width="1.5"/>
-
-      <!-- Szyja -->
-      <rect x="44" y="386" width="6" height="8" fill="#f5c896" stroke="#0d1b3d" stroke-width="1.5"/>
-
-      <!-- Kask -->
-      <ellipse cx="47" cy="380" rx="14" ry="12" fill="#ff5d5d" stroke="#0d1b3d" stroke-width="2.5"/>
-      <path d="M 36,380 Q 36,374 42,372 L 56,372 Q 60,372 60,378 L 60,384 Q 60,386 56,386 L 38,386 Q 36,386 36,384 Z" fill="#1a1a2e" stroke="#0d1b3d" stroke-width="1.5"/>
-      <line x1="40" y1="376" x2="46" y2="376" stroke="#7fd0ff" stroke-width="1.5" stroke-linecap="round"/>
     </g>
   </g>
 </svg>
