@@ -139,192 +139,331 @@ export default function DlaDzieci() {
       <Navbar activeSection="Usługi" />
 
       <style>{`
-        /* ===== GLOBAL DOODLE BACKGROUND =====
-           Plik doodle-pattern.png to 640x640 szachownica: doodle1+doodle2 obok siebie,
-           uzywany jako prosty CSS repeat -> pokrywa cale tlo naprzemiennie. */
-        .kids-page-bg {
+        /* ===== KIDS SITE - prawdziwy pattern stron dla dzieci =====
+           Mocne kolory blokowe (nie pastele), plaskie cienie z offsetem,
+           naklejki, "comic" obramowania. Kazda sekcja = jedna strefa
+           z wlasnym kolorem przewodnim. */
+
+        :root {
+          --k-sky: #4ec3ff;
+          --k-sun: #ffd23f;
+          --k-tomato: #ff5d5d;
+          --k-mint: #3ddc97;
+          --k-plum: #9b5de5;
+          --k-ink: #0d1b3d;
+        }
+
+        .kids-page-bg { position: relative; isolation: isolate; background: #fffaf0; }
+        :global([data-theme="dark"]) .kids-page-bg { background: #0e1322; }
+
+        /* ===== HERO ===== */
+        .kids-hero {
           position: relative;
-          isolation: isolate;
+          padding: 90px 0 100px;
+          overflow: hidden;
+          background:
+            radial-gradient(circle at 85% 15%, #ffe066 0 14%, transparent 14.5%),
+            linear-gradient(180deg, #4ec3ff 0%, #7dd3fc 100%);
         }
-        .kids-page-bg::before {
+        /* doodle pattern jako delikatna tekstura TYLKO w hero */
+        .kids-hero::before {
           content: '';
-          position: absolute;
-          inset: 0;
-          background-image: url('/pics/dzieci/doodle-pattern.png');
-          background-repeat: repeat;
-          background-size: 540px 540px;
-          background-position: 0 0;
-          opacity: .18;
-          filter: saturate(.85);
-          pointer-events: none;
-          z-index: 0;
-        }
-        :global([data-theme="dark"]) .kids-page-bg::before {
+          position: absolute; inset: 0;
+          background: url('/pics/dzieci/doodle-pattern.png') repeat;
+          background-size: 480px 480px;
           opacity: .12;
-          filter: invert(.92) hue-rotate(180deg) saturate(.8);
+          mix-blend-mode: overlay;
+          pointer-events: none;
         }
-        .kids-page-bg > * { position: relative; z-index: 1; }
-
-        @media (max-width: 720px) {
-          .kids-page-bg::before { background-size: 380px 380px; }
+        .kids-title {
+          font-family: 'Outfit',sans-serif;
+          font-size: clamp(2.2rem, 7vw, 4.6rem);
+          font-weight: 900;
+          color: #fff;
+          text-shadow:
+            4px 4px 0 var(--k-ink),
+            -1px -1px 0 var(--k-ink),
+            1px -1px 0 var(--k-ink),
+            -1px 1px 0 var(--k-ink),
+            1px 1px 0 var(--k-ink);
+          text-align: center; line-height: 1.05; margin: 0;
+          letter-spacing: -.01em;
         }
-
-        .kids-hero { position: relative; padding: 80px 0 60px;
-          background: linear-gradient(135deg,#ffe066 0%,#ff8fab 35%,#a0e7e5 70%,#c9b6ff 100%);
-          overflow: hidden; }
-        .kids-title { font-family: 'Outfit',sans-serif; font-size: clamp(2rem,6vw,3.6rem); font-weight: 900;
-          color: #fff; text-shadow: 3px 3px 0 #ff6b6b, 6px 6px 0 rgba(0,0,0,.15);
-          text-align: center; line-height: 1.1; margin: 0; }
-        .kids-sub { text-align: center; font-size: 1.2rem; color: #fff; font-weight: 600; margin-top: 16px;
-          text-shadow: 1px 1px 0 rgba(0,0,0,.3); max-width: 720px; margin-left: auto; margin-right: auto; }
-
+        .kids-sub {
+          text-align: center;
+          font-size: clamp(1rem, 2vw, 1.2rem);
+          color: var(--k-ink);
+          font-weight: 700;
+          margin: 18px auto 0;
+          max-width: 720px;
+          background: rgba(255,255,255,.85);
+          padding: 14px 22px;
+          border-radius: 100px;
+          border: 3px solid var(--k-ink);
+          box-shadow: 0 6px 0 var(--k-ink);
+        }
         .doodle-layer { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
         .doodle { position: absolute; animation: kfloat 7s ease-in-out infinite; }
         @keyframes kfloat { 0%,100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-18px) rotate(15deg); } }
 
-        .kids-section { position: relative; padding: 80px 0; overflow: hidden; }
+        /* ===== QUICK NAV TILES - "wybierz strefe" ===== */
+        .kids-quicknav {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 18px;
+          max-width: 1100px;
+          margin: 50px auto -60px;
+          padding: 0 16px;
+          position: relative; z-index: 3;
+        }
+        .qnav-tile {
+          background: #fff;
+          border: 4px solid var(--k-ink);
+          border-radius: 24px;
+          padding: 22px 16px 18px;
+          text-align: center;
+          text-decoration: none;
+          color: var(--k-ink);
+          box-shadow: 0 8px 0 var(--k-ink);
+          transition: transform .2s, box-shadow .2s;
+          cursor: pointer;
+        }
+        .qnav-tile:hover { transform: translate(-2px,-4px); box-shadow: 0 12px 0 var(--k-ink); }
+        .qnav-tile:active { transform: translate(2px,4px); box-shadow: 0 2px 0 var(--k-ink); }
+        .qnav-emoji { font-size: 2.6rem; display: block; line-height: 1; margin-bottom: 8px; }
+        .qnav-label { font-family: 'Outfit',sans-serif; font-weight: 900; font-size: 1rem; }
+        .qnav-tile.t1 { background: #ffe27a; }
+        .qnav-tile.t2 { background: #ff8b8b; color: #fff; }
+        .qnav-tile.t2 .qnav-label { color: #fff; }
+        .qnav-tile.t3 { background: #6be5b0; }
+        .qnav-tile.t4 { background: #c7a8f7; }
+
+        /* ===== SEKCJE - kazda jedna mocna strefa ===== */
+        .kids-section { position: relative; padding: 110px 0 90px; overflow: hidden; }
         .kids-section .container { position: relative; z-index: 2; }
-        /* Kazda sekcja = STREFA z mocnym pelnym kolorem.
-           Doodle z tla prosi sie tylko w hero i w cienkich przerwach miedzy strefami. */
-        .kids-section--products {
-          background:
-            radial-gradient(900px 480px at 12% 0%, #ffd6e0 0%, transparent 70%),
-            radial-gradient(700px 420px at 90% 100%, #ffe3f1 0%, transparent 70%),
-            #fff5fa;
-        }
-        .kids-section--rxf {
-          background:
-            radial-gradient(900px 480px at 88% 0%, #cdeefc 0%, transparent 72%),
-            radial-gradient(700px 420px at 10% 100%, #d4f7ec 0%, transparent 72%),
-            #eaf7fb;
-        }
-        .kids-section--game {
-          background:
-            radial-gradient(900px 480px at 50% 0%, #fff1c2 0%, transparent 70%),
-            radial-gradient(700px 420px at 50% 100%, #ffe1d6 0%, transparent 70%),
-            #fff7e6;
-        }
-        .kids-section--alt {
-          background:
-            radial-gradient(900px 460px at 50% 0%, #ede0ff 0%, transparent 72%),
-            #f6f1ff;
-        }
-        :global([data-theme="dark"]) .kids-section--products { background: #2a1a22; }
-        :global([data-theme="dark"]) .kids-section--rxf { background: #112428; }
-        :global([data-theme="dark"]) .kids-section--game { background: #2a2418; }
-        :global([data-theme="dark"]) .kids-section--alt { background: #1f1a2c; }
 
-        /* SEPARATORY MIEDZY STREFAMI — falowane SVG */
-        .zone-sep { display: block; width: 100%; height: 60px; position: relative; z-index: 1; margin-top: -1px; margin-bottom: -1px; }
+        .kids-section--products { background: #fff3b0; }
+        .kids-section--rxf      { background: #ffe1e1; }
+        .kids-section--game     { background: #dcffe4; }
+        .kids-section--alt      { background: #e9defc; }
+        .kids-section--cta      { background: var(--k-ink); }
+
+        :global([data-theme="dark"]) .kids-section--products { background: #2e2616; }
+        :global([data-theme="dark"]) .kids-section--rxf      { background: #2e1a1a; }
+        :global([data-theme="dark"]) .kids-section--game     { background: #122e1e; }
+        :global([data-theme="dark"]) .kids-section--alt      { background: #1f1a2f; }
+
+        /* dekoracyjne blobki w rogach sekcji */
+        .blob {
+          position: absolute; pointer-events: none; z-index: 1;
+          width: 280px; height: 280px; border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%;
+          opacity: .55; filter: blur(2px);
+        }
+        .blob.tr { top: -90px; right: -90px; }
+        .blob.bl { bottom: -90px; left: -90px; }
+
+        /* falowy separator miedzy strefami */
+        .zone-sep { display: block; width: 100%; height: 70px; position: relative; z-index: 1; margin-top: -1px; margin-bottom: -1px; line-height: 0; }
         .zone-sep svg { display: block; width: 100%; height: 100%; }
-        /* w przerwach miedzy strefami doodle JEST widoczny -> separator jest przezroczysty */
 
-        .kids-h2 { font-family: 'Outfit',sans-serif; font-size: clamp(1.8rem,4vw,2.6rem); font-weight: 900;
-          text-align: center; margin: 0 0 14px; color: var(--text); }
-        .kids-h2 .rainbow { background: linear-gradient(90deg,#ff6b6b,#ffe66d,#4ecdc4,#c9b6ff);
-          -webkit-background-clip: text; background-clip: text; color: transparent; }
-        .kids-lead { text-align: center; color: var(--text-m); font-size: 1.05rem;
-          max-width: 720px; margin: 0 auto 44px; line-height: 1.6; }
+        /* tytuly sekcji w stylu naklejki */
+        .kids-h2 {
+          font-family: 'Outfit',sans-serif;
+          font-size: clamp(1.9rem, 4.5vw, 2.8rem);
+          font-weight: 900;
+          text-align: center;
+          margin: 0 0 14px;
+          color: var(--k-ink);
+          letter-spacing: -.01em;
+        }
+        :global([data-theme="dark"]) .kids-h2 { color: #fff; }
+        .kids-h2 .rainbow {
+          display: inline-block;
+          background: var(--k-tomato);
+          color: #fff;
+          padding: 2px 14px;
+          border-radius: 14px;
+          border: 3px solid var(--k-ink);
+          box-shadow: 4px 4px 0 var(--k-ink);
+          transform: rotate(-2deg);
+        }
+        .kids-lead { text-align: center; color: var(--k-ink); font-size: 1.05rem;
+          max-width: 720px; margin: 0 auto 44px; line-height: 1.6; font-weight: 600; }
+        :global([data-theme="dark"]) .kids-lead { color: #d8dcea; }
 
+        /* sticker badge - "NOWOSC!", "TOP!" itp. */
+        .sticker {
+          position: absolute; top: -14px; right: -10px;
+          background: var(--k-tomato);
+          color: #fff;
+          font-family: 'Outfit',sans-serif;
+          font-weight: 900;
+          font-size: .75rem;
+          letter-spacing: .08em;
+          padding: 6px 12px;
+          border-radius: 100px;
+          border: 3px solid var(--k-ink);
+          box-shadow: 3px 3px 0 var(--k-ink);
+          transform: rotate(8deg);
+          z-index: 3;
+        }
+        .sticker.s2 { background: var(--k-sun); color: var(--k-ink); transform: rotate(-6deg); }
+        .sticker.s3 { background: var(--k-mint); color: var(--k-ink); transform: rotate(4deg); }
+
+        /* ===== PRODUKTY - karty comic style ===== */
         .kids-grid { display: grid; grid-template-columns: repeat(3, minmax(220px, 1fr));
-          gap: 22px; max-width: 1100px; margin: 0 auto; }
-        .kids-card { border-radius: 24px; padding: 30px 20px 24px; text-align: center;
-          box-shadow: 0 14px 32px rgba(0,0,0,.10); transition: transform .25s, box-shadow .25s;
-          position: relative; overflow: hidden; }
-        .kids-card::after { content: ''; position: absolute; top: -30px; right: -30px;
-          width: 90px; height: 90px; background: rgba(255,255,255,.35); border-radius: 50%; }
-        .kids-card:hover { transform: translateY(-8px) rotate(-1deg); box-shadow: 0 22px 44px rgba(0,0,0,.18); }
-        .kids-card-img-wrap { width: 110px; height: 110px; margin: 0 auto 14px;
-          background: rgba(255,255,255,.55); border-radius: 24px;
+          gap: 26px; max-width: 1100px; margin: 0 auto; }
+        .kids-card {
+          background: #fff;
+          border: 4px solid var(--k-ink);
+          border-radius: 28px;
+          padding: 28px 20px 22px;
+          text-align: center;
+          box-shadow: 0 8px 0 var(--k-ink);
+          transition: transform .2s, box-shadow .2s;
+          position: relative;
+          overflow: visible;
+        }
+        .kids-card:hover { transform: translate(-2px,-6px) rotate(-1deg); box-shadow: 0 14px 0 var(--k-ink); }
+        .kids-card-img-wrap { width: 120px; height: 120px; margin: 0 auto 14px;
+          border-radius: 24px;
           display: flex; align-items: center; justify-content: center;
-          box-shadow: inset 0 -4px 12px rgba(0,0,0,.06); position: relative; z-index: 2; }
-        .kids-card-img-wrap img { width: 72px; height: 72px; }
-        .kids-card-name { font-family: 'Outfit',sans-serif; font-weight: 800; font-size: 1.1rem;
-          color: #1a1a2e; margin: 0 0 6px; position: relative; z-index: 2; }
-        .kids-card-brand { display: inline-block; background: rgba(255,255,255,.75);
-          padding: 4px 12px; border-radius: 100px; font-size: .7rem; font-weight: 800;
-          color: #1a1a2e; letter-spacing: .08em; text-transform: uppercase;
-          margin: 6px 0; position: relative; z-index: 2; }
-        .kids-card-cat { font-size: .85rem; color: #1a1a2e; opacity: .82; font-weight: 600;
-          margin: 0; position: relative; z-index: 2; }
+          border: 3px solid var(--k-ink);
+        }
+        .kids-card-img-wrap img { width: 78px; height: 78px; }
+        .kids-card-name { font-family: 'Outfit',sans-serif; font-weight: 900; font-size: 1.1rem;
+          color: var(--k-ink); margin: 0 0 8px; }
+        .kids-card-brand { display: inline-block; background: var(--k-ink); color: #fff;
+          padding: 4px 12px; border-radius: 100px; font-size: .7rem; font-weight: 900;
+          letter-spacing: .08em; text-transform: uppercase; margin: 4px 0 8px; }
+        .kids-card-cat { font-size: .85rem; color: var(--k-ink); opacity: .8; font-weight: 700;
+          margin: 0; }
 
+        /* ===== RXF ===== */
         .rxf-grid { display: grid; grid-template-columns: repeat(4, minmax(220px, 1fr));
           gap: 22px; max-width: 1100px; margin: 0 auto; justify-content: center; }
-        .rxf-card { background: var(--surface); border-radius: 24px; padding: 28px 18px 22px;
-          text-align: center; border: 3px solid; box-shadow: 0 10px 26px rgba(0,0,0,.10);
-          transition: var(--tr); position: relative; overflow: hidden; }
-        .rxf-card:hover { transform: scale(1.04) rotate(-.5deg); }
+        .rxf-card {
+          background: #fff;
+          border: 4px solid var(--k-ink);
+          border-radius: 24px;
+          padding: 26px 18px 22px;
+          text-align: center;
+          box-shadow: 0 8px 0 var(--k-ink);
+          transition: transform .2s, box-shadow .2s;
+          position: relative;
+        }
+        .rxf-card:hover { transform: translate(-2px,-6px); box-shadow: 0 14px 0 var(--k-ink); }
         .rxf-card-img-wrap { width: 130px; height: 130px; margin: 0 auto 12px; border-radius: 50%;
-          display: flex; align-items: center; justify-content: center; }
+          display: flex; align-items: center; justify-content: center;
+          border: 3px solid var(--k-ink); }
         .rxf-card-img-wrap img { width: 92px; height: 92px; }
         .rxf-card-name { font-family: 'Outfit',sans-serif; font-weight: 900; font-size: 1.25rem;
-          color: var(--text); margin: 8px 0 10px; }
-        .rxf-card-spec { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
-        .rxf-card-spec span { padding: 5px 12px; border-radius: 100px; font-size: .8rem; font-weight: 700; }
+          color: var(--k-ink); margin: 8px 0 10px; }
+        .rxf-card-spec { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+        .rxf-card-spec span { padding: 5px 12px; border-radius: 100px; font-size: .8rem;
+          font-weight: 800; color: #fff; border: 2px solid var(--k-ink); }
 
+        /* ===== MARKI ===== */
         .brand-bubbles { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; margin-top: 10px; }
-        .brand-bubble { padding: 12px 22px; border-radius: 100px; color: #1a1a2e;
-          font-family: 'Outfit',sans-serif; font-weight: 800; font-size: 1rem;
-          box-shadow: 0 6px 14px rgba(0,0,0,.12); transition: transform .2s; letter-spacing: .03em; }
-        .brand-bubble:hover { transform: translateY(-4px) scale(1.05); }
+        .brand-bubble { padding: 12px 22px; border-radius: 100px; color: var(--k-ink);
+          font-family: 'Outfit',sans-serif; font-weight: 900; font-size: 1rem;
+          border: 3px solid var(--k-ink);
+          box-shadow: 4px 4px 0 var(--k-ink);
+          transition: transform .15s, box-shadow .15s;
+          letter-spacing: .03em; }
+        .brand-bubble:hover { transform: translate(-2px,-3px); box-shadow: 6px 7px 0 var(--k-ink); }
 
+        /* ===== QUIZ - comic card ===== */
         .quiz-wrap { max-width: 680px; margin: 0 auto;
-          background: linear-gradient(135deg,#fff8e7 0%,#ffe3e3 100%);
+          background: #fff;
+          border: 4px solid var(--k-ink);
           border-radius: 28px; padding: 40px 30px;
-          box-shadow: 0 22px 50px rgba(255,107,107,.18);
-          position: relative; overflow: hidden; }
-        .quiz-wrap::before, .quiz-wrap::after { content: ''; position: absolute;
-          width: 140px; height: 140px; border-radius: 50%; }
-        .quiz-wrap::before { top: -50px; right: -50px; background: rgba(255,224,102,.45); }
-        .quiz-wrap::after { bottom: -50px; left: -50px; background: rgba(78,205,196,.35); }
-
-        .quiz-progress { position: relative; z-index: 2; text-align: center; font-family: 'Outfit',sans-serif;
-          font-weight: 700; color: #ff6b6b; letter-spacing: .1em; text-transform: uppercase; font-size: .85rem; }
-        .quiz-progress-bar { height: 10px; background: rgba(255,107,107,.18); border-radius: 100px;
-          margin: 12px auto 26px; max-width: 320px; overflow: hidden; }
+          box-shadow: 0 12px 0 var(--k-ink);
+          position: relative; }
+        .quiz-progress { text-align: center; font-family: 'Outfit',sans-serif;
+          font-weight: 900; color: var(--k-ink); letter-spacing: .08em; text-transform: uppercase; font-size: .85rem; }
+        .quiz-progress-bar { height: 14px; background: #f1f1f1; border-radius: 100px;
+          margin: 12px auto 26px; max-width: 320px; overflow: hidden;
+          border: 3px solid var(--k-ink); }
         .quiz-progress-fill { height: 100%;
-          background: linear-gradient(90deg,#ff6b6b,#ffe66d); transition: width .4s; }
-        .quiz-emoji { font-size: 5rem; text-align: center; display: block; position: relative; z-index: 2; }
-        .quiz-q { text-align: center; font-family: 'Outfit',sans-serif; font-weight: 800;
-          font-size: 1.4rem; color: var(--text); margin: 16px 0 24px;
-          position: relative; z-index: 2; line-height: 1.3; }
-        .quiz-answers { display: flex; flex-direction: column; gap: 12px; position: relative; z-index: 2; }
-        .quiz-ans { background: #fff; border: 3px solid #ffd6e0; border-radius: 16px;
-          padding: 16px 20px; font-family: 'Outfit',sans-serif; font-weight: 700;
-          font-size: 1.05rem; color: #1a1a2e; cursor: pointer; transition: var(--tr); text-align: left; }
-        .quiz-ans:hover:not(:disabled) { border-color: #ff6b6b; transform: translateX(4px); }
+          background: var(--k-mint); transition: width .4s; }
+        .quiz-emoji { font-size: 5rem; text-align: center; display: block; }
+        .quiz-q { text-align: center; font-family: 'Outfit',sans-serif; font-weight: 900;
+          font-size: 1.4rem; color: var(--k-ink); margin: 16px 0 24px; line-height: 1.3; }
+        .quiz-answers { display: flex; flex-direction: column; gap: 12px; }
+        .quiz-ans { background: #fff; border: 3px solid var(--k-ink); border-radius: 16px;
+          padding: 16px 20px; font-family: 'Outfit',sans-serif; font-weight: 800;
+          font-size: 1.05rem; color: var(--k-ink); cursor: pointer;
+          box-shadow: 0 5px 0 var(--k-ink);
+          transition: transform .15s, box-shadow .15s;
+          text-align: left; }
+        .quiz-ans:hover:not(:disabled) { transform: translate(-1px,-2px); box-shadow: 0 7px 0 var(--k-ink); }
         .quiz-ans:disabled { cursor: default; }
-        .quiz-ans--correct { background: #b4f8c8; border-color: #4ecdc4; color: #0d5c3f; }
-        .quiz-ans--wrong { background: #ffd6d6; border-color: #ff6b6b; color: #8b1a1a; }
+        .quiz-ans--correct { background: var(--k-mint); color: var(--k-ink); }
+        .quiz-ans--wrong { background: var(--k-tomato); color: #fff; }
 
         .quiz-tip { margin-top: 22px; padding: 16px 18px; border-radius: 14px;
-          background: rgba(78,205,196,.18); border-left: 5px solid #4ecdc4;
-          color: var(--text); font-size: .95rem; line-height: 1.5; position: relative; z-index: 2; }
-        .quiz-tip strong { color: #ff6b6b; }
-        .quiz-next-btn { margin-top: 20px; width: 100%; padding: 14px;
-          background: linear-gradient(90deg,#ff6b6b,#ffe66d);
-          color: #fff; border: none; border-radius: 14px;
-          font-family: 'Outfit',sans-serif; font-weight: 800; font-size: 1.1rem;
-          cursor: pointer; box-shadow: 0 8px 20px rgba(255,107,107,.35);
-          transition: transform .2s; position: relative; z-index: 2; }
-        .quiz-next-btn:hover { transform: translateY(-2px); }
-        .quiz-final { text-align: center; position: relative; z-index: 2; }
+          background: var(--k-sun);
+          border: 3px solid var(--k-ink);
+          color: var(--k-ink); font-size: .95rem; line-height: 1.5; font-weight: 600; }
+        .quiz-tip strong { color: var(--k-tomato); font-weight: 900; }
+        .quiz-next-btn { margin-top: 20px; width: 100%; padding: 16px;
+          background: var(--k-tomato);
+          color: #fff; border: 3px solid var(--k-ink); border-radius: 16px;
+          font-family: 'Outfit',sans-serif; font-weight: 900; font-size: 1.1rem;
+          cursor: pointer; box-shadow: 0 6px 0 var(--k-ink);
+          transition: transform .15s, box-shadow .15s; }
+        .quiz-next-btn:hover { transform: translate(-1px,-3px); box-shadow: 0 9px 0 var(--k-ink); }
+        .quiz-final { text-align: center; }
         .quiz-final-emoji { font-size: 6rem; }
         .quiz-final-score { font-family: 'Outfit',sans-serif; font-weight: 900;
-          font-size: 2.2rem; color: #ff6b6b; margin: 12px 0; }
-        .quiz-final-msg { color: var(--text); font-size: 1.05rem;
-          max-width: 480px; margin: 0 auto 24px; }
+          font-size: 2.4rem; color: var(--k-tomato); margin: 12px 0;
+          -webkit-text-stroke: 2px var(--k-ink); }
+        .quiz-final-msg { color: var(--k-ink); font-size: 1.05rem;
+          max-width: 480px; margin: 0 auto 24px; font-weight: 600; }
+
+        /* ===== CTA - mocna ciemna strefa ===== */
+        .kids-cta-card {
+          max-width: 720px; margin: 0 auto;
+          background: var(--k-sun);
+          border: 4px solid #fff;
+          border-radius: 32px;
+          padding: 50px 36px;
+          text-align: center;
+          box-shadow: 0 14px 0 rgba(255,255,255,.18);
+          position: relative;
+        }
+        .kids-cta-card .kids-h2 { color: var(--k-ink); }
+        .kids-cta-card .kids-lead { color: var(--k-ink); }
+        .cta-phone-btn {
+          display: inline-block;
+          background: var(--k-tomato);
+          color: #fff;
+          border: 3px solid var(--k-ink);
+          border-radius: 100px;
+          padding: 16px 36px;
+          font-family: 'Outfit',sans-serif; font-weight: 900; font-size: 1.15rem;
+          text-decoration: none;
+          box-shadow: 0 7px 0 var(--k-ink);
+          transition: transform .15s, box-shadow .15s;
+          margin-top: 12px;
+        }
+        .cta-phone-btn:hover { transform: translate(-2px,-4px); box-shadow: 0 11px 0 var(--k-ink); }
 
         @media (max-width: 900px) {
           .kids-grid { grid-template-columns: repeat(2, 1fr); }
           .rxf-grid { grid-template-columns: repeat(2, 1fr); }
+          .kids-quicknav { grid-template-columns: repeat(2, 1fr); margin-bottom: -40px; }
         }
         @media (max-width: 560px) {
-          .kids-hero { padding: 60px 0 40px; }
-          .kids-section { padding: 50px 0; }
+          .kids-hero { padding: 60px 0 80px; }
+          .kids-section { padding: 80px 0 60px; }
           .kids-grid { grid-template-columns: 1fr; }
           .rxf-grid { grid-template-columns: 1fr; }
           .quiz-wrap { padding: 30px 20px; }
+          .kids-quicknav { gap: 12px; }
+          .qnav-emoji { font-size: 2rem; }
+          .qnav-label { font-size: .85rem; }
         }
       `}</style>
 
@@ -333,7 +472,7 @@ export default function DlaDzieci() {
       <section className="kids-hero">
         <DoodleLayer count={14} opacity={0.45} />
         <div className="container" style={{ position: "relative", zIndex: 2 }}>
-          <div className="breadcrumb" style={{ color: "rgba(255,255,255,.85)", justifyContent: "center", marginBottom: 30 }}>
+          <div className="breadcrumb" style={{ color: "#fff", justifyContent: "center", marginBottom: 30, fontWeight: 700 }}>
             <Link href="/" style={{ color: "#fff" }}>{t("bc.home")}</Link>
             <span>/</span>
             <span style={{ color: "#fff" }}>{t("bc.kids")}</span>
@@ -345,9 +484,30 @@ export default function DlaDzieci() {
         </div>
       </section>
 
+      {/* ===== QUICK NAV ===== */}
+      <div className="kids-quicknav">
+        <a href="#strefa-produkty" className="qnav-tile t1">
+          <span className="qnav-emoji">🪖</span>
+          <span className="qnav-label">Kaski i zbroje</span>
+        </a>
+        <a href="#strefa-rxf" className="qnav-tile t2">
+          <span className="qnav-emoji">🏍️</span>
+          <span className="qnav-label">Motocykle RXF</span>
+        </a>
+        <a href="#strefa-gra" className="qnav-tile t3">
+          <span className="qnav-emoji">🎮</span>
+          <span className="qnav-label">Mini-gra</span>
+        </a>
+        <a href="#strefa-marki" className="qnav-tile t4">
+          <span className="qnav-emoji">⭐</span>
+          <span className="qnav-label">Marki</span>
+        </a>
+      </div>
+
       {/* ===== 1. PRODUKTY ===== */}
-      <ZoneSep from="transparent" to="#fff5fa" />
-      <section className="kids-section kids-section--products">
+      <section id="strefa-produkty" className="kids-section kids-section--products">
+        <span className="blob tr" style={{ background: "#ff8b8b" }} aria-hidden />
+        <span className="blob bl" style={{ background: "#6be5b0" }} aria-hidden />
         <div className="container">
           <EditableHTML id="kids.gear.h2" as="h2" className="kids-h2" defaultHtml='🪖 Kaski, zbroje i <span class="rainbow">kurtki dla dzieci</span>' />
           <Editable id="kids.gear.lead" as="p" className="kids-lead" multiline>
@@ -355,8 +515,11 @@ export default function DlaDzieci() {
           </Editable>
           <div className="kids-grid">
             {PRODUCTS.map((p, i) => (
-              <div className="kids-card" key={i} style={{ background: p.color }}>
-                <div className="kids-card-img-wrap"><img src={p.img} alt={p.name} /></div>
+              <div className="kids-card" key={i}>
+                {i === 0 && <span className="sticker">NOWOŚĆ!</span>}
+                {i === 3 && <span className="sticker s2">TOP!</span>}
+                {i === 5 && <span className="sticker s3">HIT!</span>}
+                <div className="kids-card-img-wrap" style={{ background: p.color }}><img src={p.img} alt={p.name} /></div>
                 <h3 className="kids-card-name">{p.name}</h3>
                 <span className="kids-card-brand">{p.brand}</span>
                 <p className="kids-card-cat">{p.cat}</p>
@@ -367,8 +530,10 @@ export default function DlaDzieci() {
       </section>
 
       {/* ===== 2. MOTOCYKLE RXF ===== */}
-      <ZoneSep from="#fff5fa" to="#eaf7fb" />
-      <section className="kids-section kids-section--rxf">
+      <ZoneSep from="#fff3b0" to="#ffe1e1" />
+      <section id="strefa-rxf" className="kids-section kids-section--rxf">
+        <span className="blob tr" style={{ background: "#ffd23f" }} aria-hidden />
+        <span className="blob bl" style={{ background: "#4ec3ff" }} aria-hidden />
         <div className="container">
           <EditableHTML id="kids.rxf.h2" as="h2" className="kids-h2" defaultHtml='🏍️ Motocykle <span class="rainbow">RXF</span> dla dzieci' />
           <Editable id="kids.rxf.lead" as="p" className="kids-lead" multiline>
@@ -376,14 +541,14 @@ export default function DlaDzieci() {
           </Editable>
           <div className="rxf-grid">
             {RXF_MOTOS.map((m, i) => (
-              <div className="rxf-card" key={i} style={{ borderColor: m.color }}>
-                <div className="rxf-card-img-wrap" style={{ background: m.color + "22" }}>
+              <div className="rxf-card" key={i}>
+                <div className="rxf-card-img-wrap" style={{ background: m.color + "33" }}>
                   <img src={m.img} alt={m.name} />
                 </div>
                 <h3 className="rxf-card-name">{m.name}</h3>
                 <div className="rxf-card-spec">
-                  <span style={{ background: m.color + "22", color: m.color }}>💨 {m.cc}</span>
-                  <span style={{ background: m.color + "22", color: m.color }}>👦 {m.age}</span>
+                  <span style={{ background: m.color }}>💨 {m.cc}</span>
+                  <span style={{ background: m.color }}>👦 {m.age}</span>
                 </div>
               </div>
             ))}
@@ -392,9 +557,10 @@ export default function DlaDzieci() {
       </section>
 
       {/* ===== 3. MINI GAME ===== */}
-      <ZoneSep from="#eaf7fb" to="#fff7e6" />
-      <section className="kids-section kids-section--game">
-        <DoodleLayer count={6} opacity={0.10} />
+      <ZoneSep from="#ffe1e1" to="#dcffe4" />
+      <section id="strefa-gra" className="kids-section kids-section--game">
+        <span className="blob tr" style={{ background: "#9b5de5" }} aria-hidden />
+        <span className="blob bl" style={{ background: "#ffd23f" }} aria-hidden />
         <div className="container">
           <EditableHTML id="kids.game.h2" as="h2" className="kids-h2" defaultHtml='🎮 Mini-gra: <span class="rainbow">Znaki Drogowe</span>' />
           <Editable id="kids.game.lead" as="p" className="kids-lead" multiline>
@@ -457,8 +623,10 @@ export default function DlaDzieci() {
       </section>
 
       {/* ===== 4. MARKI ===== */}
-      <ZoneSep from="#fff7e6" to="#f6f1ff" />
-      <section className="kids-section kids-section--alt">
+      <ZoneSep from="#dcffe4" to="#e9defc" />
+      <section id="strefa-marki" className="kids-section kids-section--alt">
+        <span className="blob tr" style={{ background: "#ff8b8b" }} aria-hidden />
+        <span className="blob bl" style={{ background: "#4ec3ff" }} aria-hidden />
         <div className="container">
           <EditableHTML id="kids.brands.h2" as="h2" className="kids-h2" defaultHtml='⭐ Współpracujemy <span class="rainbow">z najlepszymi</span>' />
           <Editable id="kids.brands.lead" as="p" className="kids-lead" multiline>
@@ -473,16 +641,16 @@ export default function DlaDzieci() {
       </section>
 
       {/* ===== 5. CTA ===== */}
-      <ZoneSep from="#f6f1ff" to="transparent" />
-      <section className="kids-section">
+      <ZoneSep from="#e9defc" to="#0d1b3d" />
+      <section className="kids-section kids-section--cta">
         <div className="container">
-          <div className="quiz-wrap" style={{ background: "linear-gradient(135deg,#a0e7e5 0%,#b4f8c8 100%)", textAlign: "center" }}>
-            <span style={{ fontSize: "4rem", display: "block", position: "relative", zIndex: 2 }}>📞</span>
+          <div className="kids-cta-card">
+            <span style={{ fontSize: "4rem", display: "block" }}>📞</span>
             <Editable id="kids.cta.title" as="h3" className="kids-h2">Chcesz zobaczyć ofertę dla dzieci?</Editable>
             <Editable id="kids.cta.desc" as="p" className="kids-lead" multiline>
               Zapraszamy do naszego salonu w Opolu! Mamy dla Was wszystko: kaski, zbroje, motocykle RXF i sporo dobrej zabawy.
             </Editable>
-            <a href="tel:601484242" className="quiz-next-btn" style={{ display: "inline-block", width: "auto", padding: "14px 32px", textDecoration: "none", marginTop: 12 }}>
+            <a href="tel:601484242" className="cta-phone-btn">
               📞 Zadzwoń: 601 48 42 42
             </a>
           </div>
