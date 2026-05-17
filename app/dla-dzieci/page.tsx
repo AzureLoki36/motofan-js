@@ -111,78 +111,16 @@ function BackgroundFloaters({ count = 30 }: { count?: number }) {
   );
 }
 
-/* ===== KOMPONENT: animowany motocyklista (inline SVG) =====
-   Caly motocyklista jako jeden komponent SVG - zero problemow z plikiem/cache.
-   Oryginal skierowany w LEWO; CSS scaleX(-1) ustawia go w prawo. */
+/* ===== KOMPONENT: motocyklista (PNG/JPG) + animowane kola =====
+   Obrazek-zrodlo jest skierowany w LEWO; scaleX(-1) odwraca w prawo.
+   Dwie nakladki .wheel z conic-gradient symuluja krecace sie szprychy. */
 function HeroRider() {
   return (
-    <svg
-      className="hero-rider"
-      viewBox="0 0 280 170"
-      xmlns="http://www.w3.org/2000/svg"
-      width="280"
-      height="170"
-      aria-hidden
-    >
-      {/* Tylne kolo */}
-      <circle cx="65" cy="128" r="36" fill="#1a1a2e" />
-      <circle cx="65" cy="128" r="25" fill="#2a2a4e" />
-      <circle cx="65" cy="128" r="8" fill="#e63946" />
-      <g stroke="#5a5aaa" strokeWidth="2.5" strokeLinecap="round">
-        <line x1="65" y1="92" x2="65" y2="164" />
-        <line x1="29" y1="128" x2="101" y2="128" />
-        <line x1="40" y1="103" x2="90" y2="153" />
-        <line x1="90" y1="103" x2="40" y2="153" />
-      </g>
-      {/* Przednie kolo */}
-      <circle cx="215" cy="128" r="32" fill="#1a1a2e" />
-      <circle cx="215" cy="128" r="22" fill="#2a2a4e" />
-      <circle cx="215" cy="128" r="7" fill="#e63946" />
-      <g stroke="#5a5aaa" strokeWidth="2.5" strokeLinecap="round">
-        <line x1="215" y1="96" x2="215" y2="160" />
-        <line x1="183" y1="128" x2="247" y2="128" />
-        <line x1="192" y1="105" x2="238" y2="151" />
-        <line x1="238" y1="105" x2="192" y2="151" />
-      </g>
-      {/* Rama + zbiornik */}
-      <path d="M75 122 L105 80 L165 75 L215 95 L205 122 Z" fill="#e63946" />
-      <ellipse cx="150" cy="80" rx="34" ry="17" fill="#ff6b00" />
-      <ellipse cx="150" cy="75" rx="29" ry="11" fill="#ff8c38" />
-      {/* Siodelko */}
-      <ellipse cx="118" cy="70" rx="22" ry="8" fill="#2a2a4e" />
-      {/* Silnik */}
-      <rect x="115" y="96" width="40" height="28" rx="6" fill="#333355" />
-      <rect x="120" y="100" width="11" height="9" rx="2" fill="#4a4a7a" />
-      <rect x="136" y="100" width="11" height="9" rx="2" fill="#4a4a7a" />
-      {/* Wydech */}
-      <path d="M115 116 Q95 126 80 128 Q72 130 68 127" stroke="#888" strokeWidth="5" fill="none" strokeLinecap="round" />
-      {/* Amortyzator */}
-      <line x1="200" y1="100" x2="215" y2="96" stroke="#999" strokeWidth="5" strokeLinecap="round" />
-      <line x1="205" y1="115" x2="215" y2="96" stroke="#777" strokeWidth="3.5" strokeLinecap="round" />
-      {/* Kierownica */}
-      <path d="M188 70 Q195 58 207 62 Q211 65 209 70" stroke="#333" strokeWidth="5" fill="none" strokeLinecap="round" />
-      <rect x="186" y="66" width="6" height="17" rx="3" fill="#555" />
-      {/* Nogi */}
-      <path d="M128 96 L120 116 L115 124" stroke="#1a1a2e" strokeWidth="8" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-      <ellipse cx="112" cy="124" rx="11" ry="5" fill="#1a1a2e" />
-      {/* Tulow */}
-      <path d="M118 74 Q116 80 115 92 L134 90 Q135 78 130 72 Z" fill="#e63946" />
-      <path d="M118 75 Q107 79 102 84 Q105 87 110 84 Q116 80 122 80" fill="#e63946" />
-      <path d="M130 74 Q145 68 156 65 Q158 70 154 72 Q142 75 132 80" fill="#e63946" />
-      <circle cx="156" cy="66" r="6" fill="#f5cba7" />
-      {/* Kask */}
-      <ellipse cx="124" cy="58" rx="23" ry="21" fill="#ffd23f" />
-      <path d="M107 58 Q115 71 140 66 Q144 58 138 50 Q124 46 107 58 Z" fill="#4ec3ff" opacity="0.85" />
-      <path d="M107 58 Q115 71 140 66 Q144 58 138 50 Q124 46 107 58 Z" fill="none" stroke="#1a1a2e" strokeWidth="2" />
-      <ellipse cx="124" cy="58" rx="23" ry="21" fill="none" stroke="#1a1a2e" strokeWidth="2.5" />
-      <rect x="117" y="42" width="15" height="4" rx="2" fill="#1a1a2e" />
-      {/* Reflektor */}
-      <ellipse cx="236" cy="100" rx="10" ry="7" fill="#fffacd" />
-      <ellipse cx="236" cy="100" rx="7" ry="5" fill="#fff" />
-      {/* Smugi predkosci - lewa strona (po flipie - z tylu) */}
-      <line x1="0" y1="125" x2="55" y2="125" stroke="#e63946" strokeWidth="3" strokeDasharray="8,6" opacity="0.7" />
-      <line x1="0" y1="118" x2="38" y2="118" stroke="#ff6b00" strokeWidth="2" strokeDasharray="5,8" opacity="0.5" />
-    </svg>
+    <div className="hero-rider" aria-hidden>
+      <img src="/pics/dzieci/rider.jpg" alt="" className="hero-rider-img" />
+      <span className="wheel wheel-back" />
+      <span className="wheel wheel-front" />
+    </div>
   );
 }
 
@@ -283,8 +221,8 @@ export default function DlaDzieci() {
         .hero-rider-track {
           position: absolute;
           left: 0; right: 0;
-          bottom: 60px; /* nad droga z hero-biker.svg */
-          height: 170px;
+          bottom: 50px; /* nad droga z hero-biker.svg */
+          height: 240px;
           pointer-events: none;
           z-index: 3;
         }
@@ -292,22 +230,68 @@ export default function DlaDzieci() {
           position: absolute;
           left: 0;
           bottom: 0;
-          width: 280px;
-          height: 170px;
-          /* scaleX(-1) odwraca obraz w prawo. translateX(0) start poza lewa krawedzia */
+          width: 320px;
+          height: 240px;
+          /* scaleX(-1) odwraca obrazek (oryginal patrzy w lewo, jedzie w prawo) */
           transform: translateX(-100%) scaleX(-1);
           animation: heroRide 11s linear infinite;
-          filter: drop-shadow(4px 6px 0 rgba(13,27,61,.25));
+          filter: drop-shadow(6px 8px 8px rgba(13,27,61,.3));
           will-change: transform;
         }
+        .hero-rider-img {
+          width: 100%;
+          height: 100%;
+          display: block;
+          object-fit: contain;
+          /* multiply: biale tlo jpg staje sie przezroczyste na niebieskim niebie */
+          mix-blend-mode: multiply;
+        }
+        /* Krecace sie kola - nakladki z gradientem szprych */
+        .wheel {
+          position: absolute;
+          bottom: 14px;
+          width: 72px;
+          height: 72px;
+          border-radius: 50%;
+          pointer-events: none;
+          background:
+            conic-gradient(
+              from 0deg,
+              transparent 0deg,
+              rgba(255,255,255,0.55) 4deg,
+              transparent 12deg,
+              transparent 86deg,
+              rgba(255,255,255,0.55) 94deg,
+              transparent 102deg,
+              transparent 176deg,
+              rgba(255,255,255,0.55) 184deg,
+              transparent 192deg,
+              transparent 266deg,
+              rgba(255,255,255,0.55) 274deg,
+              transparent 282deg,
+              transparent 360deg
+            );
+          mask: radial-gradient(circle, transparent 16%, #000 18%, #000 86%, transparent 88%);
+          -webkit-mask: radial-gradient(circle, transparent 16%, #000 18%, #000 86%, transparent 88%);
+          animation: wheelSpin .25s linear infinite;
+          will-change: transform;
+        }
+        .wheel-back  { left: 38px; }
+        .wheel-front { left: 218px; }
+        @keyframes wheelSpin {
+          to { transform: rotate(360deg); }
+        }
         @keyframes heroRide {
-          0%   { transform: translateX(-300px) scaleX(-1); }
-          50%  { transform: translateX(50vw) scaleX(-1) translateY(-5px); }
+          0%   { transform: translateX(-320px) scaleX(-1); }
+          50%  { transform: translateX(50vw) scaleX(-1) translateY(-6px); }
           100% { transform: translateX(105vw) scaleX(-1); }
         }
         @media (max-width: 700px) {
-          .hero-rider { width: 200px; height: 120px; }
-          .hero-rider-track { bottom: 40px; height: 120px; }
+          .hero-rider { width: 220px; height: 165px; }
+          .hero-rider-track { bottom: 35px; height: 165px; }
+          .wheel { width: 50px; height: 50px; bottom: 10px; }
+          .wheel-back { left: 26px; }
+          .wheel-front { left: 150px; }
         }
         @media (max-width: 900px) {
           .kids-hero { padding: 70px 0 180px; min-height: 480px; }
