@@ -62,6 +62,63 @@ const DOODLES = [
   "/pics/dzieci/doodle-route.svg",
 ];
 
+/* Doodle TYLKO o tematyce motocyklowej - uzywane jako boczne floatery */
+const MOTO_DOODLES = [
+  "/pics/dzieci/rxf-mini.svg",
+  "/pics/dzieci/rxf-open.svg",
+  "/pics/dzieci/rxf-freeride.svg",
+  "/pics/dzieci/rxf-racing.svg",
+  "/pics/dzieci/doodle-helmet.svg",
+  "/pics/dzieci/doodle-tools.svg",
+  "/pics/dzieci/doodle-speed.svg",
+  "/pics/dzieci/doodle-route.svg",
+  "/pics/dzieci/doodle-flag.svg",
+  "/pics/dzieci/doodle-trophy.svg",
+  "/pics/dzieci/doodle-cone.svg",
+  "/pics/dzieci/product-helmet1.svg",
+  "/pics/dzieci/product-helmet2.svg",
+  "/pics/dzieci/product-boots.svg",
+  "/pics/dzieci/product-gloves.svg",
+];
+
+/* Boczne floatery - latajace ikony motocyklowe w lewym i prawym pasie,
+   wzdluz calej dlugosci strony. Ukryte na waskich ekranach. */
+function SideFloaters({ count = 22 }: { count?: number }) {
+  const items = Array.from({ length: count }, (_, i) => {
+    const side = i % 2 === 0 ? "left" : "right";
+    // rownomiernie rozlozyc po calej dlugosci strony (0..100%) z lekkim jitterem
+    const topPct = Math.min(98, Math.max(2, (i / count) * 100 + (((i * 7) % 10) - 5)));
+    const lane = (i * 29) % 5; // 0..4 - subtle pozycja w pasie
+    const size = 38 + ((i * 11) % 36);
+    const rot = (i * 53) % 360;
+    const delay = ((i * 7) % 18) / 2;
+    const dur = 6 + ((i * 3) % 6);
+    const src = MOTO_DOODLES[i % MOTO_DOODLES.length];
+    return { side, topPct, lane, size, rot, delay, dur, src };
+  });
+  return (
+    <div className="side-floaters" aria-hidden>
+      {items.map((d, i) => (
+        <img
+          key={i}
+          src={d.src}
+          alt=""
+          className="side-doodle"
+          style={{
+            top: `${d.topPct}%`,
+            [d.side]: `${d.lane * 1.2}%`,
+            width: d.size,
+            height: d.size,
+            transform: `rotate(${d.rot}deg)`,
+            animationDelay: `${d.delay}s`,
+            animationDuration: `${d.dur}s`,
+          } as React.CSSProperties}
+        />
+      ))}
+    </div>
+  );
+}
+
 function DoodleLayer({ count = 8, opacity = 0.18 }: { count?: number; opacity?: number }) {
   const items = Array.from({ length: count }, (_, i) => {
     const top = (i * 13 + 7) % 90;
@@ -156,24 +213,51 @@ export default function DlaDzieci() {
         .kids-page-bg { position: relative; isolation: isolate; background: #fffaf0; }
         :global([data-theme="dark"]) .kids-page-bg { background: #0e1322; }
 
+        /* ===== BOCZNE FLOATERY - latajace ikony motocyklowe wzdluz calej strony ===== */
+        .side-floaters {
+          position: absolute; inset: 0;
+          pointer-events: none;
+          overflow: hidden;
+          z-index: 0;
+        }
+        .side-doodle {
+          position: absolute;
+          opacity: .55;
+          filter: drop-shadow(2px 3px 0 rgba(13,27,61,.18));
+          animation: kfloat 7s ease-in-out infinite;
+        }
+        :global([data-theme="dark"]) .side-doodle { opacity: .35; }
+        @media (max-width: 1240px) { .side-floaters { display: none; } }
+
         /* ===== HERO ===== */
         .kids-hero {
           position: relative;
-          padding: 90px 0 100px;
+          padding: 90px 0 120px;
           overflow: hidden;
-          background:
-            radial-gradient(circle at 85% 15%, #ffe066 0 14%, transparent 14.5%),
-            linear-gradient(180deg, #4ec3ff 0%, #7dd3fc 100%);
+          background: linear-gradient(180deg, #4ec3ff 0%, #7dd3fc 60%, #b6e6ff 100%);
         }
-        /* doodle pattern jako delikatna tekstura TYLKO w hero */
+        /* doodle pattern jako bardzo delikatna tekstura TYLKO w hero */
         .kids-hero::before {
           content: '';
           position: absolute; inset: 0;
           background: url('/pics/dzieci/doodle-pattern.png') repeat;
           background-size: 480px 480px;
-          opacity: .12;
+          opacity: .06;
           mix-blend-mode: overlay;
           pointer-events: none;
+        }
+        /* MOTOCYKLISTA w prawym dolnym rogu hero */
+        .hero-biker {
+          position: absolute;
+          right: 0; bottom: -10px;
+          width: min(620px, 55vw);
+          height: auto;
+          pointer-events: none;
+          z-index: 1;
+          filter: drop-shadow(0 8px 18px rgba(13,27,61,.25));
+        }
+        @media (max-width: 900px) {
+          .hero-biker { width: 70vw; opacity: .85; right: -20px; bottom: -20px; }
         }
         .kids-title {
           font-family: 'Outfit',sans-serif;
@@ -468,9 +552,11 @@ export default function DlaDzieci() {
       `}</style>
 
       <div className="kids-page-bg">
+      <SideFloaters count={26} />
       {/* ===== HERO ===== */}
       <section className="kids-hero">
-        <DoodleLayer count={14} opacity={0.45} />
+        <DoodleLayer count={10} opacity={0.35} />
+        <img src="/pics/dzieci/hero-biker.svg" alt="" className="hero-biker" />
         <div className="container" style={{ position: "relative", zIndex: 2 }}>
           <div className="breadcrumb" style={{ color: "#fff", justifyContent: "center", marginBottom: 30, fontWeight: 700 }}>
             <Link href="/" style={{ color: "#fff" }}>{t("bc.home")}</Link>

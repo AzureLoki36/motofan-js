@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" fill="none">
+  <defs>
+    <linearGradient id="rd" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4a5568"/>
+      <stop offset="1" stop-color="#1a202c"/>
+    </linearGradient>
+    <linearGradient id="sun" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff6c2"/>
+      <stop offset="1" stop-color="#ffd23f" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fff8d4" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#fff8d4" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- subtelne dalekie pasmo gor -->
+  <path d="M0,260 Q120,220 240,250 T480,240 T720,255 T800,250 L800,310 L0,310 Z" fill="#7c9cc9" opacity=".55"/>
+  <path d="M0,275 Q150,255 300,275 T600,270 T800,278 L800,310 L0,310 Z" fill="#5b7aab" opacity=".55"/>
+
+  <!-- horyzont / mgielka -->
+  <ellipse cx="500" cy="290" rx="260" ry="50" fill="url(#glow)"/>
+
+  <!-- DROGA - perspektywiczna -->
+  <path d="M260,500 L540,500 L470,290 L355,290 Z" fill="url(#rd)" stroke="#0d1b3d" stroke-width="3" stroke-linejoin="round"/>
+
+  <!-- krawedz drogi (jasne pobocza) -->
+  <path d="M260,500 L355,290" stroke="#ffd23f" stroke-width="4" stroke-linecap="round"/>
+  <path d="M540,500 L470,290" stroke="#ffd23f" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- bialy pas srodkowy - przerywany -->
+  <g stroke="#fff" stroke-linecap="round">
+    <line x1="400" y1="500" x2="404" y2="450" stroke-width="14"/>
+    <line x1="406" y1="430" x2="410" y2="395" stroke-width="11"/>
+    <line x1="411" y1="380" x2="413" y2="355" stroke-width="9"/>
+    <line x1="414" y1="345" x2="415" y2="328" stroke-width="6"/>
+    <line x1="416" y1="320" x2="417" y2="308" stroke-width="4"/>
+  </g>
+
+  <!-- MOTOCYKLISTA - w oddali, widok od tylu -->
+  <g transform="translate(395,250)">
+    <!-- cien pod motocyklem -->
+    <ellipse cx="14" cy="48" rx="34" ry="5" fill="#0d1b3d" opacity=".35"/>
+
+    <!-- tylne kolo -->
+    <circle cx="-8" cy="40" r="11" fill="#1a202c" stroke="#0d1b3d" stroke-width="2"/>
+    <circle cx="-8" cy="40" r="4" fill="#888"/>
+
+    <!-- przednie kolo (mniej widoczne) -->
+    <circle cx="32" cy="40" r="9" fill="#1a202c" stroke="#0d1b3d" stroke-width="2"/>
+    <circle cx="32" cy="40" r="3" fill="#888"/>
+
+    <!-- bak/sylwetka motocykla (czerwony pitbike) -->
+    <path d="M-12,30 L-2,18 L18,14 L30,18 L36,30 L28,38 L-4,38 Z" fill="#ff5d5d" stroke="#0d1b3d" stroke-width="2.2" stroke-linejoin="round"/>
+    <!-- siodelko -->
+    <path d="M-4,22 L18,18 L22,22 L0,26 Z" fill="#0d1b3d"/>
+    <!-- akcent zolty -->
+    <path d="M2,30 L20,28 L22,33 L4,34 Z" fill="#ffd23f"/>
+
+    <!-- nogi jezdzca -->
+    <rect x="-2" y="14" width="6" height="14" rx="2" fill="#1e3a8a" stroke="#0d1b3d" stroke-width="2"/>
+    <rect x="18" y="14" width="6" height="14" rx="2" fill="#1e3a8a" stroke="#0d1b3d" stroke-width="2"/>
+
+    <!-- tulow + kurtka (niebieska) -->
+    <path d="M-4,16 L8,-2 L20,-2 L28,16 L20,18 L4,18 Z" fill="#4ec3ff" stroke="#0d1b3d" stroke-width="2.2" stroke-linejoin="round"/>
+
+    <!-- ramiona/rece na kierownicy -->
+    <path d="M-2,8 Q-8,18 -10,30" stroke="#4ec3ff" stroke-width="6" stroke-linecap="round" fill="none"/>
+    <path d="M-2,8 Q-8,18 -10,30" stroke="#0d1b3d" stroke-width="2" stroke-linecap="round" fill="none"/>
+    <path d="M28,8 Q34,18 36,30" stroke="#4ec3ff" stroke-width="6" stroke-linecap="round" fill="none"/>
+    <path d="M28,8 Q34,18 36,30" stroke="#0d1b3d" stroke-width="2" stroke-linecap="round" fill="none"/>
+
+    <!-- kask -->
+    <ellipse cx="13" cy="-4" rx="11" ry="10" fill="#ffd23f" stroke="#0d1b3d" stroke-width="2.2"/>
+    <!-- wizjer -->
+    <path d="M5,-6 Q13,-1 22,-6 L22,-2 Q13,3 5,-2 Z" fill="#0d1b3d"/>
+    <!-- akcent na kasku -->
+    <path d="M3,-7 L23,-7" stroke="#ff5d5d" stroke-width="2.5" stroke-linecap="round"/>
+
+    <!-- linie ruchu / szybkosci -->
+    <g stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".85">
+      <line x1="-30" y1="20" x2="-45" y2="22"/>
+      <line x1="-32" y1="30" x2="-50" y2="32"/>
+      <line x1="-28" y1="40" x2="-42" y2="42"/>
+      <line x1="44" y1="20" x2="58" y2="22"/>
+      <line x1="46" y1="30" x2="62" y2="32"/>
+      <line x1="42" y1="40" x2="55" y2="42"/>
+    </g>
+  </g>
+
+  <!-- chmurki -->
+  <g fill="#fff" opacity=".75">
+    <ellipse cx="120" cy="80" rx="40" ry="14"/>
+    <ellipse cx="145" cy="72" rx="28" ry="12"/>
+    <ellipse cx="105" cy="74" rx="22" ry="10"/>
+
+    <ellipse cx="660" cy="110" rx="45" ry="14"/>
+    <ellipse cx="685" cy="100" rx="30" ry="12"/>
+    <ellipse cx="640" cy="102" rx="22" ry="10"/>
+
+    <ellipse cx="380" cy="60" rx="36" ry="11"/>
+    <ellipse cx="400" cy="54" rx="22" ry="9"/>
+  </g>
+</svg>
