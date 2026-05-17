@@ -125,6 +125,32 @@ export default function DlaDzieci() {
       <Navbar activeSection="Usługi" />
 
       <style>{`
+        /* ===== GLOBAL DOODLE BACKGROUND ===== */
+        .kids-page-bg {
+          position: relative;
+          isolation: isolate;
+        }
+        .kids-page-bg::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background-image:
+            url('/pics/dzieci/doodle-set-1.jpg'),
+            url('/pics/dzieci/doodle-set-2.jpg');
+          background-size: 420px auto, 420px auto;
+          background-repeat: repeat, repeat;
+          background-position: 0 0, 210px 200px;
+          opacity: .10;
+          mix-blend-mode: multiply;
+          pointer-events: none;
+          z-index: 0;
+        }
+        :global([data-theme="dark"]) .kids-page-bg::before {
+          opacity: .14;
+          mix-blend-mode: screen;
+        }
+        .kids-page-bg > * { position: relative; z-index: 1; }
+
         .kids-hero { position: relative; padding: 80px 0 60px;
           background: linear-gradient(135deg,#ffe066 0%,#ff8fab 35%,#a0e7e5 70%,#c9b6ff 100%);
           overflow: hidden; }
@@ -140,10 +166,10 @@ export default function DlaDzieci() {
 
         .kids-section { position: relative; padding: 70px 0; overflow: hidden; }
         .kids-section .container { position: relative; z-index: 2; }
-        .kids-section--products { background: linear-gradient(180deg,#fff7f9 0%,#fef3ff 100%); }
-        .kids-section--rxf { background: linear-gradient(180deg,#f0fdfa 0%,#ecfeff 100%); }
-        .kids-section--game { background: linear-gradient(180deg,#fffbe6 0%,#fff5f5 100%); }
-        .kids-section--alt { background: linear-gradient(180deg, var(--bg) 0%, rgba(255,224,102,.08) 100%); }
+        .kids-section--products { background: linear-gradient(180deg, rgba(255,247,249,.82) 0%, rgba(254,243,255,.82) 100%); }
+        .kids-section--rxf { background: linear-gradient(180deg, rgba(240,253,250,.82) 0%, rgba(236,254,255,.82) 100%); }
+        .kids-section--game { background: linear-gradient(180deg, rgba(255,251,230,.82) 0%, rgba(255,245,245,.82) 100%); }
+        .kids-section--alt { background: linear-gradient(180deg, rgba(255,255,255,.55) 0%, rgba(255,224,102,.10) 100%); }
 
         .kids-h2 { font-family: 'Outfit',sans-serif; font-size: clamp(1.8rem,4vw,2.6rem); font-weight: 900;
           text-align: center; margin: 0 0 14px; color: var(--text); }
@@ -254,6 +280,7 @@ export default function DlaDzieci() {
         }
       `}</style>
 
+      <div className="kids-page-bg">
       {/* ===== HERO ===== */}
       <section className="kids-hero">
         <DoodleLayer count={14} opacity={0.45} />
@@ -411,6 +438,7 @@ export default function DlaDzieci() {
           </div>
         </div>
       </section>
+      </div>
 
       <SubpageFooter />
     </>

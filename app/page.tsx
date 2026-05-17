@@ -328,8 +328,8 @@ export default function Home() {
             </a>
 
             <a href="/dla-dzieci" className="service-card service-card--kids" id="svc-kids">
-              <div className="service-icon-wrap service-photo" style={{ background: "linear-gradient(135deg,#ffe066,#ff8fab,#a0e7e5)" }}>
-                <span style={{ fontSize: "5rem", filter: "drop-shadow(0 4px 8px rgba(0,0,0,.25))" }}>🏍️</span>
+              <div className="service-icon-wrap service-photo">
+                <EditableImage id="home.img.svc.kids" src="/pics/dzieci/kids-hero.png" alt="Mały motocyklista RFX – Strefa dla dzieci" />
               </div>
               <Editable id="home.svc.kids.title" as="h3">Strefa Małego Motocyklisty</Editable>
               <Editable id="home.svc.kids.desc" as="p" multiline>
