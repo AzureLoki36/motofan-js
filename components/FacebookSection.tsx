@@ -8,8 +8,8 @@ export default function FacebookSection() {
       <div className="container">
         <div className="section-header">
           <Editable id="home.fb.tag" as="span" className="section-tag">Aktualności</Editable>
-          <EditableHTML id="home.fb.title" as="h2" className="section-title" defaultHtml='Ostatnie wpisy na <span class="gradient-text">Facebooku</span>' />
-          <Editable id="home.fb.desc" as="p" className="section-desc">Najświeższe informacje, promocje i aktualności prosto z naszego profilu.</Editable>
+          <EditableHTML id="home.fb.title" as="h2" className="section-title" defaultHtml='Co nowego <span class="gradient-text">u nas</span>' />
+          <Editable id="home.fb.desc" as="p" className="section-desc">Najświeższe informacje, promocje i aktualności prosto z naszych profili na Facebooku i Instagramie.</Editable>
         </div>
         <div className="fb-section-wrap">
           <div className="fb-feed-container" id="fbFeedWrap">
