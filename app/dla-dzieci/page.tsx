@@ -212,6 +212,7 @@ export default function DlaDzieci() {
           display: block;
           width: 100%;
           height: auto;
+          margin-top: clamp(-220px, -16vw, -60px);
           pointer-events: none;
           position: relative;
           z-index: 0;
