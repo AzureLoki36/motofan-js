@@ -211,6 +211,7 @@ section{padding:96px 0}
 /* ===== SERVICES ===== */
 .services{background:var(--bg2)}
 .services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.services-grid>.service-card:last-child:nth-child(3n+1){grid-column:2 / 3}
 .service-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:26px;transition:var(--tr)}
 .service-card:hover{border-color:var(--primary);transform:translateY(-4px);box-shadow:var(--shadow-h)}
 .service-icon-wrap{width:52px;height:52px;background:rgba(230,57,70,.08);border:1px solid rgba(230,57,70,.15);border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:18px}
