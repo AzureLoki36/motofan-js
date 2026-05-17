@@ -205,10 +205,14 @@ export default function DlaDzieci() {
           position: relative;
           padding: 90px 0 220px;
           overflow: hidden;
-          background: linear-gradient(180deg, #6cc9ff 0%, #bfe7ff 100%);
+          background:
+            url('/pics/dzieci/banner.gif') repeat,
+            linear-gradient(180deg, #6cc9ff 0%, #bfe7ff 100%);
+          background-size: 160px auto, auto;
           min-height: 560px;
           z-index: 2;
         }
+        .kids-hero > * { position: relative; z-index: 1; }
         .hero-biker {
           position: absolute;
           inset: 0;
