@@ -191,7 +191,7 @@ export default function DlaDzieci() {
           inset: 0;
           pointer-events: none;
           overflow: hidden;
-          z-index: 1;
+          z-index: 60;
         }
         .bg-floater {
           position: absolute;
