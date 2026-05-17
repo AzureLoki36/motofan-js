@@ -598,10 +598,6 @@ export default function DlaDzieci() {
             playsInline
             aria-hidden
           />
-          <img src="/pics/dzieci/hero-biker.svg" alt="" className="hero-biker" />
-          <div className="hero-rider-track">
-            <HeroRider />
-          </div>
           <div className="container" style={{ position: "relative", zIndex: 4 }}>
             <div className="breadcrumb" style={{ color: "#fff", justifyContent: "center", marginBottom: 30, fontWeight: 700 }}>
               <Link href="/" style={{ color: "#fff" }}>{t("bc.home")}</Link>
