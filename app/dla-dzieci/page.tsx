@@ -75,20 +75,22 @@ const MOTO_DOODLES = [
 
 /* ===== KOMPONENT: ledwo widoczne floatery na calej stronie =====
    position: fixed -> sa zawsze widoczne w viewport, nad sekcjami z tlem */
-function BackgroundFloaters({ count = 30 }: { count?: number }) {
+function BackgroundFloaters({ count = 60 }: { count?: number }) {
   const items = Array.from({ length: count }, (_, i) => {
     // Naprzemiennie lewa / prawa kolumna boczna (0..7vw lub 93..100vw)
     const onRight = i % 2 === 1;
     const sideOffset = ((i * 17 + 3) % 700) / 100; // 0..7
     const leftPct = onRight ? 93 + sideOffset : sideOffset;
-    const topPct = ((i * 37 + 5) % 9500) / 100; // 0..95
+    // Rozsiane po calej dlugosci strony, zaczynajac PONIZEJ hero (~75vh)
+    const topVh = 75 + ((i * 53 + 7) % 620); // 75..694vh
     const size = 42 + ((i * 13) % 70); // 42..112
     const rot = (i * 41) % 360;
     const delay = ((i * 11) % 30) / 3; // 0..10s
     const dur = 9 + ((i * 5) % 10); // 9..19s
+    const driftX = ((i * 19) % 40) - 20; // -20..20 px drift poziomy
     const opacity = 0.10 + ((i * 7) % 10) / 100; // 0.10..0.19 ledwo widoczne
     const src = MOTO_DOODLES[i % MOTO_DOODLES.length];
-    return { topPct, leftPct, size, rot, delay, dur, opacity, src };
+    return { topVh, leftPct, size, rot, delay, dur, opacity, src, driftX };
   });
   return (
     <div className="bg-floaters" aria-hidden>
@@ -99,14 +101,16 @@ function BackgroundFloaters({ count = 30 }: { count?: number }) {
           alt=""
           className="bg-floater"
           style={{
-            top: `${d.topPct}vh`,
+            top: `${d.topVh}vh`,
             left: `${d.leftPct}vw`,
             width: d.size,
             height: d.size,
-            transform: `rotate(${d.rot}deg)`,
             opacity: d.opacity,
             animationDelay: `${d.delay}s`,
             animationDuration: `${d.dur}s`,
+            // przekazujemy parametry do keyframes
+            ['--rot' as any]: `${d.rot}deg`,
+            ['--drift' as any]: `${d.driftX}px`,
           }}
         />
       ))}
@@ -187,7 +191,7 @@ export default function DlaDzieci() {
 
         /* ===== TLOWE FLOATERY - ledwo widoczne motocykle na calej stronie ===== */
         .bg-floaters {
-          position: fixed;
+          position: absolute;
           inset: 0;
           pointer-events: none;
           overflow: hidden;
@@ -198,13 +202,14 @@ export default function DlaDzieci() {
           animation: floatBob 12s ease-in-out infinite;
           filter: drop-shadow(1px 2px 0 rgba(13,27,61,.2));
           will-change: transform;
+          transform: rotate(var(--rot, 0deg));
         }
         :global([data-theme="dark"]) .bg-floater {
           filter: invert(.85) brightness(1.1);
         }
         @keyframes floatBob {
-          0%, 100% { transform: translateY(0) rotate(0); }
-          50%      { transform: translateY(-22px) rotate(8deg); }
+          0%, 100% { transform: translate(0, 0) rotate(var(--rot, 0deg)); }
+          50%      { transform: translate(var(--drift, 0px), -22px) rotate(calc(var(--rot, 0deg) + 8deg)); }
         }
 
         /* ===== HERO ===== */
