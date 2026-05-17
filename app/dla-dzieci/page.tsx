@@ -54,28 +54,25 @@ const BRAND_LOGOS = [
   { name: "RXF", color: "#ff8fab" },
 ];
 
-/* Ikony motocyklowe wykorzystywane w tlowych floaterach */
+/* Ikony motocyklowe wykorzystywane w tlowych floaterach: motorki, kaski, znaki drogowe */
 const MOTO_DOODLES = [
   "/pics/dzieci/rxf-mini.svg",
   "/pics/dzieci/rxf-open.svg",
   "/pics/dzieci/rxf-freeride.svg",
   "/pics/dzieci/rxf-racing.svg",
   "/pics/dzieci/doodle-helmet.svg",
-  "/pics/dzieci/doodle-tools.svg",
-  "/pics/dzieci/doodle-speed.svg",
-  "/pics/dzieci/doodle-route.svg",
-  "/pics/dzieci/doodle-flag.svg",
-  "/pics/dzieci/doodle-trophy.svg",
-  "/pics/dzieci/doodle-cone.svg",
   "/pics/dzieci/product-helmet1.svg",
   "/pics/dzieci/product-helmet2.svg",
-  "/pics/dzieci/product-boots.svg",
-  "/pics/dzieci/product-gloves.svg",
+  "/pics/dzieci/doodle-road-sign.svg",
+  "/pics/dzieci/doodle-stop.svg",
+  "/pics/dzieci/doodle-traffic-light.svg",
+  "/pics/dzieci/doodle-cone.svg",
+  "/pics/dzieci/doodle-route.svg",
 ];
 
 /* ===== KOMPONENT: ledwo widoczne floatery na calej stronie =====
    position: fixed -> sa zawsze widoczne w viewport, nad sekcjami z tlem */
-function BackgroundFloaters({ count = 60 }: { count?: number }) {
+function BackgroundFloaters({ count = 120 }: { count?: number }) {
   const items = Array.from({ length: count }, (_, i) => {
     // Naprzemiennie lewa / prawa kolumna boczna (0..7vw lub 93..100vw)
     const onRight = i % 2 === 1;
@@ -88,7 +85,7 @@ function BackgroundFloaters({ count = 60 }: { count?: number }) {
     const delay = ((i * 11) % 30) / 3; // 0..10s
     const dur = 9 + ((i * 5) % 10); // 9..19s
     const driftX = ((i * 19) % 40) - 20; // -20..20 px drift poziomy
-    const opacity = 0.10 + ((i * 7) % 10) / 100; // 0.10..0.19 ledwo widoczne
+    const opacity = 0.35 + ((i * 7) % 15) / 100; // 0.35..0.49 - ok 30% mniej przezroczyste
     const src = MOTO_DOODLES[i % MOTO_DOODLES.length];
     return { topVh, leftPct, size, rot, delay, dur, opacity, src, driftX };
   });
