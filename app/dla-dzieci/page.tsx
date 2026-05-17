@@ -119,6 +119,45 @@ function SideFloaters({ count = 22 }: { count?: number }) {
   );
 }
 
+/* Pelnostronicowe polprzezroczyste floatery - rozsiane po calej powierzchni
+   strony (rowniez nad srodkiem). Wieksza opacity transparentnosci niz Side. */
+function FullPageFloaters({ count = 28 }: { count?: number }) {
+  // wstepnie obliczone pozycje (deterministyczne, by uniknac rerendera)
+  const items = Array.from({ length: count }, (_, i) => {
+    const topPct = ((i * 37 + 5) % 9700) / 100; // 0..97
+    const leftPct = ((i * 73 + 13) % 9400) / 100; // 0..94
+    const size = 32 + ((i * 13) % 44);
+    const rot = (i * 41) % 360;
+    const delay = ((i * 11) % 20) / 2;
+    const dur = 7 + ((i * 5) % 8);
+    const opacity = 0.10 + ((i * 7) % 12) / 100; // 0.10 .. 0.21
+    const src = MOTO_DOODLES[(i + 3) % MOTO_DOODLES.length];
+    return { topPct, leftPct, size, rot, delay, dur, opacity, src };
+  });
+  return (
+    <div className="page-floaters" aria-hidden>
+      {items.map((d, i) => (
+        <img
+          key={i}
+          src={d.src}
+          alt=""
+          className="page-doodle"
+          style={{
+            top: `${d.topPct}%`,
+            left: `${d.leftPct}%`,
+            width: d.size,
+            height: d.size,
+            transform: `rotate(${d.rot}deg)`,
+            opacity: d.opacity,
+            animationDelay: `${d.delay}s`,
+            animationDuration: `${d.dur}s`,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
 function DoodleLayer({ count = 8, opacity = 0.18 }: { count?: number; opacity?: number }) {
   const items = Array.from({ length: count }, (_, i) => {
     const top = (i * 13 + 7) % 90;
@@ -228,6 +267,20 @@ export default function DlaDzieci() {
         }
         :global([data-theme="dark"]) .side-doodle { opacity: .35; }
         @media (max-width: 1240px) { .side-floaters { display: none; } }
+
+        /* ===== PELNOSTRONICOWE FLOATERY - polprzezroczyste, rozsiane po calej stronie ===== */
+        .page-floaters {
+          position: absolute; inset: 0;
+          pointer-events: none;
+          overflow: hidden;
+          z-index: 0;
+        }
+        .page-doodle {
+          position: absolute;
+          animation: kfloat 8s ease-in-out infinite;
+          filter: drop-shadow(1px 2px 0 rgba(13,27,61,.08));
+        }
+        :global([data-theme="dark"]) .page-doodle { filter: invert(.85) brightness(1.1); }
 
         /* ===== HERO ===== */
         .kids-hero {
@@ -545,6 +598,7 @@ export default function DlaDzieci() {
 
       <div className="kids-page-bg">
       <SideFloaters count={26} />
+      <FullPageFloaters count={32} />
       {/* ===== HERO ===== */}
       <section className="kids-hero">
         <DoodleLayer count={10} opacity={0.35} />
