@@ -117,7 +117,7 @@ function BackgroundFloaters({ count = 30 }: { count?: number }) {
 function HeroRider() {
   return (
     <div className="hero-rider" aria-hidden>
-      <img src="/pics/dzieci/rider.png" alt="" className="hero-rider-img" />
+      <img src="/pics/dzieci/rider.svg" alt="" className="hero-rider-img" />
       <span className="wheel wheel-back" />
       <span className="wheel wheel-front" />
     </div>
@@ -232,8 +232,7 @@ export default function DlaDzieci() {
           bottom: 0;
           width: 320px;
           height: 240px;
-          /* scaleX(-1) odwraca obrazek (oryginal patrzy w lewo, jedzie w prawo) */
-          transform: translateX(-100%) scaleX(-1);
+          transform: translateX(-100%);
           animation: heroRide 11s linear infinite;
           filter: drop-shadow(6px 8px 8px rgba(13,27,61,.3));
           will-change: transform;
@@ -274,22 +273,22 @@ export default function DlaDzieci() {
           animation: wheelSpin .25s linear infinite;
           will-change: transform;
         }
-        .wheel-back  { left: 38px; }
-        .wheel-front { left: 218px; }
+        .wheel-back  { left: 54px;  bottom: 26px; }
+        .wheel-front { left: 214px; bottom: 26px; }
         @keyframes wheelSpin {
           to { transform: rotate(360deg); }
         }
         @keyframes heroRide {
-          0%   { transform: translateX(-320px) scaleX(-1); }
-          50%  { transform: translateX(50vw) scaleX(-1) translateY(-6px); }
-          100% { transform: translateX(105vw) scaleX(-1); }
+          0%   { transform: translateX(-320px); }
+          50%  { transform: translateX(50vw) translateY(-6px); }
+          100% { transform: translateX(105vw); }
         }
         @media (max-width: 700px) {
           .hero-rider { width: 220px; height: 165px; }
           .hero-rider-track { bottom: 35px; height: 165px; }
-          .wheel { width: 50px; height: 50px; bottom: 10px; }
-          .wheel-back { left: 26px; }
-          .wheel-front { left: 150px; }
+          .wheel { width: 52px; height: 52px; }
+          .wheel-back  { left: 37px;  bottom: 18px; }
+          .wheel-front { left: 147px; bottom: 18px; }
         }
         @media (max-width: 900px) {
           .kids-hero { padding: 70px 0 180px; min-height: 480px; }
