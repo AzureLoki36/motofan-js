@@ -205,14 +205,20 @@ export default function DlaDzieci() {
           position: relative;
           padding: 90px 0 220px;
           overflow: hidden;
-          background:
-            url('/pics/dzieci/banner.gif') repeat,
-            linear-gradient(180deg, #6cc9ff 0%, #bfe7ff 100%);
-          background-size: 160px auto, auto;
+          background: linear-gradient(180deg, #6cc9ff 0%, #bfe7ff 100%);
           min-height: 560px;
           z-index: 2;
         }
-        .kids-hero > * { position: relative; z-index: 1; }
+        .hero-video {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center;
+          pointer-events: none;
+          z-index: 0;
+        }
         .hero-biker {
           position: absolute;
           inset: 0;
@@ -583,6 +589,15 @@ export default function DlaDzieci() {
 
         {/* ===== HERO ===== */}
         <section className="kids-hero">
+          <video
+            className="hero-video"
+            src="/pics/dzieci/banner.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            aria-hidden
+          />
           <img src="/pics/dzieci/hero-biker.svg" alt="" className="hero-biker" />
           <div className="hero-rider-track">
             <HeroRider />
