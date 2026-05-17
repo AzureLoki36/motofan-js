@@ -1,104 +1,156 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 500" preserveAspectRatio="xMidYMid slice" fill="none">
   <defs>
-    <linearGradient id="rd" x1="0" y1="0" x2="0" y2="1">
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6cc9ff"/>
+      <stop offset="1" stop-color="#bfe7ff"/>
+    </linearGradient>
+    <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8ad36b"/>
+      <stop offset="1" stop-color="#4f9f3c"/>
+    </linearGradient>
+    <linearGradient id="road" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#4a5568"/>
-      <stop offset="1" stop-color="#1a202c"/>
+      <stop offset="1" stop-color="#2d3748"/>
     </linearGradient>
-    <linearGradient id="sun" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#fff6c2"/>
-      <stop offset="1" stop-color="#ffd23f" stop-opacity="0"/>
-    </linearGradient>
-    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
-      <stop offset="0" stop-color="#fff8d4" stop-opacity="0.85"/>
-      <stop offset="1" stop-color="#fff8d4" stop-opacity="0"/>
+    <radialGradient id="sunGlow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fff6c2" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#fff6c2" stop-opacity="0"/>
     </radialGradient>
+
+    <symbol id="biker" viewBox="-90 -90 180 110" overflow="visible">
+      <ellipse cx="0" cy="14" rx="55" ry="6" fill="#0d1b3d" opacity=".25"/>
+      <g>
+        <circle cx="-40" cy="0" r="22" fill="#1a202c" stroke="#0d1b3d" stroke-width="3"/>
+        <circle cx="-40" cy="0" r="8" fill="#cbd5e1"/>
+        <g stroke="#cbd5e1" stroke-width="2">
+          <line x1="-40" y1="-18" x2="-40" y2="18"/>
+          <line x1="-58" y1="0" x2="-22" y2="0"/>
+          <line x1="-53" y1="-13" x2="-27" y2="13"/>
+          <line x1="-53" y1="13" x2="-27" y2="-13"/>
+          <animateTransform attributeName="transform" type="rotate" from="0 -40 0" to="360 -40 0" dur="0.4s" repeatCount="indefinite"/>
+        </g>
+      </g>
+      <g>
+        <circle cx="40" cy="0" r="22" fill="#1a202c" stroke="#0d1b3d" stroke-width="3"/>
+        <circle cx="40" cy="0" r="8" fill="#cbd5e1"/>
+        <g stroke="#cbd5e1" stroke-width="2">
+          <line x1="40" y1="-18" x2="40" y2="18"/>
+          <line x1="22" y1="0" x2="58" y2="0"/>
+          <line x1="27" y1="-13" x2="53" y2="13"/>
+          <line x1="27" y1="13" x2="53" y2="-13"/>
+          <animateTransform attributeName="transform" type="rotate" from="0 40 0" to="360 40 0" dur="0.4s" repeatCount="indefinite"/>
+        </g>
+      </g>
+      <path d="M-40,-6 L-22,-18 L-2,-26 L24,-26 L40,-12 L40,-2 L24,-10 L4,-10 L-22,-4 Z" fill="#ff5d5d" stroke="#0d1b3d" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M-2,-26 L20,-30 L26,-22 L4,-18 Z" fill="#ffd23f" stroke="#0d1b3d" stroke-width="2.5" stroke-linejoin="round"/>
+      <path d="M-4,-22 L20,-26 L24,-22 L0,-18 Z" fill="#0d1b3d"/>
+      <path d="M30,-14 Q44,-22 56,-12" stroke="#0d1b3d" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M-58,-8 Q-50,-18 -40,-18" stroke="#0d1b3d" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <line x1="40" y1="-12" x2="48" y2="-32" stroke="#0d1b3d" stroke-width="3" stroke-linecap="round"/>
+      <line x1="44" y1="-34" x2="56" y2="-30" stroke="#0d1b3d" stroke-width="4" stroke-linecap="round"/>
+      <path d="M-4,-20 L-12,0 L-6,2 L4,-18 Z" fill="#1e3a8a" stroke="#0d1b3d" stroke-width="2.5"/>
+      <path d="M-6,-44 L-12,-22 L22,-22 L16,-44 Z" fill="#4ec3ff" stroke="#0d1b3d" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M10,-42 Q26,-40 44,-32" stroke="#4ec3ff" stroke-width="9" stroke-linecap="round" fill="none"/>
+      <path d="M10,-42 Q26,-40 44,-32" stroke="#0d1b3d" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+      <circle cx="6" cy="-54" r="14" fill="#ffd23f" stroke="#0d1b3d" stroke-width="3"/>
+      <path d="M-4,-58 Q6,-50 18,-58 L18,-52 Q6,-44 -4,-52 Z" fill="#0d1b3d"/>
+      <path d="M-6,-60 L18,-60" stroke="#ff5d5d" stroke-width="3" stroke-linecap="round"/>
+      <g stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".85">
+        <line x1="-70" y1="-28" x2="-95" y2="-26"><animate attributeName="opacity" values="0;.9;0" dur="0.45s" repeatCount="indefinite"/></line>
+        <line x1="-72" y1="-14" x2="-100" y2="-12"><animate attributeName="opacity" values=".9;0;.9" dur="0.45s" repeatCount="indefinite"/></line>
+        <line x1="-70" y1="-2" x2="-92" y2="0"><animate attributeName="opacity" values="0;.9;0" dur="0.5s" repeatCount="indefinite"/></line>
+      </g>
+      <animateTransform attributeName="transform" type="translate" values="0,0; 0,-2; 0,0; 0,-1; 0,0" dur="0.6s" repeatCount="indefinite"/>
+    </symbol>
+
+    <symbol id="tree" viewBox="-30 -66 60 76" overflow="visible">
+      <rect x="-4" y="-10" width="8" height="20" fill="#5a3a22"/>
+      <polygon points="-26,-10 26,-10 0,-58" fill="#2f7a3d" stroke="#0d1b3d" stroke-width="2.5" stroke-linejoin="round"/>
+      <polygon points="-22,-26 22,-26 0,-66" fill="#3a8f4a"/>
+    </symbol>
+
+    <symbol id="cloud" viewBox="-60 -20 120 40" overflow="visible">
+      <g fill="#fff">
+        <ellipse cx="0" cy="0" rx="40" ry="14"/>
+        <ellipse cx="-22" cy="-4" rx="22" ry="11"/>
+        <ellipse cx="22" cy="-4" rx="26" ry="12"/>
+      </g>
+    </symbol>
   </defs>
 
-  <!-- subtelne dalekie pasmo gor -->
-  <path d="M0,260 Q120,220 240,250 T480,240 T720,255 T800,250 L800,310 L0,310 Z" fill="#7c9cc9" opacity=".55"/>
-  <path d="M0,275 Q150,255 300,275 T600,270 T800,278 L800,310 L0,310 Z" fill="#5b7aab" opacity=".55"/>
+  <rect width="1600" height="500" fill="url(#sky)"/>
 
-  <!-- horyzont / mgielka -->
-  <ellipse cx="500" cy="290" rx="260" ry="50" fill="url(#glow)"/>
-
-  <!-- DROGA - perspektywiczna -->
-  <path d="M260,500 L540,500 L470,290 L355,290 Z" fill="url(#rd)" stroke="#0d1b3d" stroke-width="3" stroke-linejoin="round"/>
-
-  <!-- krawedz drogi (jasne pobocza) -->
-  <path d="M260,500 L355,290" stroke="#ffd23f" stroke-width="4" stroke-linecap="round"/>
-  <path d="M540,500 L470,290" stroke="#ffd23f" stroke-width="4" stroke-linecap="round"/>
-
-  <!-- bialy pas srodkowy - przerywany -->
-  <g stroke="#fff" stroke-linecap="round">
-    <line x1="400" y1="500" x2="404" y2="450" stroke-width="14"/>
-    <line x1="406" y1="430" x2="410" y2="395" stroke-width="11"/>
-    <line x1="411" y1="380" x2="413" y2="355" stroke-width="9"/>
-    <line x1="414" y1="345" x2="415" y2="328" stroke-width="6"/>
-    <line x1="416" y1="320" x2="417" y2="308" stroke-width="4"/>
+  <!-- SLONECZKO -->
+  <g transform="translate(1380,110)">
+    <circle cx="0" cy="0" r="80" fill="url(#sunGlow)"/>
+    <g>
+      <g stroke="#ffd23f" stroke-width="6" stroke-linecap="round">
+        <line x1="0" y1="-58" x2="0" y2="-78"/>
+        <line x1="0" y1="58" x2="0" y2="78"/>
+        <line x1="-58" y1="0" x2="-78" y2="0"/>
+        <line x1="58" y1="0" x2="78" y2="0"/>
+        <line x1="-42" y1="-42" x2="-56" y2="-56"/>
+        <line x1="42" y1="-42" x2="56" y2="-56"/>
+        <line x1="-42" y1="42" x2="-56" y2="56"/>
+        <line x1="42" y1="42" x2="56" y2="56"/>
+      </g>
+      <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="20s" repeatCount="indefinite"/>
+    </g>
+    <circle cx="0" cy="0" r="44" fill="#ffd23f" stroke="#f59e0b" stroke-width="4"/>
+    <circle cx="-12" cy="-6" r="3" fill="#0d1b3d"/>
+    <circle cx="12" cy="-6" r="3" fill="#0d1b3d"/>
+    <path d="M-12,8 Q0,18 12,8" stroke="#0d1b3d" stroke-width="3" stroke-linecap="round" fill="none"/>
   </g>
 
-  <!-- MOTOCYKLISTA - w oddali, widok od tylu -->
-  <g transform="translate(395,250)">
-    <!-- cien pod motocyklem -->
-    <ellipse cx="14" cy="48" rx="34" ry="5" fill="#0d1b3d" opacity=".35"/>
+  <!-- CHMURKI -->
+  <use href="#cloud" y="80"><animateTransform attributeName="transform" type="translate" from="1700 0" to="-300 0" dur="40s" repeatCount="indefinite"/></use>
+  <use href="#cloud" y="140" transform="scale(.8)"><animateTransform attributeName="transform" type="translate" from="2000 0" to="-400 0" dur="55s" repeatCount="indefinite"/></use>
+  <use href="#cloud" y="60" transform="scale(1.2)"><animateTransform attributeName="transform" type="translate" from="1400 0" to="-300 0" dur="48s" repeatCount="indefinite"/></use>
+  <use href="#cloud" y="170" transform="scale(.7)"><animateTransform attributeName="transform" type="translate" from="1800 0" to="-400 0" dur="60s" repeatCount="indefinite"/></use>
 
-    <!-- tylne kolo -->
-    <circle cx="-8" cy="40" r="11" fill="#1a202c" stroke="#0d1b3d" stroke-width="2"/>
-    <circle cx="-8" cy="40" r="4" fill="#888"/>
+  <!-- DALEKIE GORY trojkaty -->
+  <g opacity=".7">
+    <polygon points="0,330 160,200 320,330" fill="#7c9cc9"/>
+    <polygon points="220,330 380,180 540,330" fill="#5b7aab"/>
+    <polygon points="460,330 620,210 780,330" fill="#7c9cc9"/>
+    <polygon points="700,330 880,170 1060,330" fill="#5b7aab"/>
+    <polygon points="980,330 1140,200 1300,330" fill="#7c9cc9"/>
+    <polygon points="1240,330 1400,190 1560,330" fill="#5b7aab"/>
+    <polygon points="1480,330 1640,210 1800,330" fill="#7c9cc9"/>
+  </g>
 
-    <!-- przednie kolo (mniej widoczne) -->
-    <circle cx="32" cy="40" r="9" fill="#1a202c" stroke="#0d1b3d" stroke-width="2"/>
-    <circle cx="32" cy="40" r="3" fill="#888"/>
+  <!-- ZIEMIA -->
+  <rect x="0" y="380" width="1600" height="120" fill="url(#ground)"/>
 
-    <!-- bak/sylwetka motocykla (czerwony pitbike) -->
-    <path d="M-12,30 L-2,18 L18,14 L30,18 L36,30 L28,38 L-4,38 Z" fill="#ff5d5d" stroke="#0d1b3d" stroke-width="2.2" stroke-linejoin="round"/>
-    <!-- siodelko -->
-    <path d="M-4,22 L18,18 L22,22 L0,26 Z" fill="#0d1b3d"/>
-    <!-- akcent zolty -->
-    <path d="M2,30 L20,28 L22,33 L4,34 Z" fill="#ffd23f"/>
-
-    <!-- nogi jezdzca -->
-    <rect x="-2" y="14" width="6" height="14" rx="2" fill="#1e3a8a" stroke="#0d1b3d" stroke-width="2"/>
-    <rect x="18" y="14" width="6" height="14" rx="2" fill="#1e3a8a" stroke="#0d1b3d" stroke-width="2"/>
-
-    <!-- tulow + kurtka (niebieska) -->
-    <path d="M-4,16 L8,-2 L20,-2 L28,16 L20,18 L4,18 Z" fill="#4ec3ff" stroke="#0d1b3d" stroke-width="2.2" stroke-linejoin="round"/>
-
-    <!-- ramiona/rece na kierownicy -->
-    <path d="M-2,8 Q-8,18 -10,30" stroke="#4ec3ff" stroke-width="6" stroke-linecap="round" fill="none"/>
-    <path d="M-2,8 Q-8,18 -10,30" stroke="#0d1b3d" stroke-width="2" stroke-linecap="round" fill="none"/>
-    <path d="M28,8 Q34,18 36,30" stroke="#4ec3ff" stroke-width="6" stroke-linecap="round" fill="none"/>
-    <path d="M28,8 Q34,18 36,30" stroke="#0d1b3d" stroke-width="2" stroke-linecap="round" fill="none"/>
-
-    <!-- kask -->
-    <ellipse cx="13" cy="-4" rx="11" ry="10" fill="#ffd23f" stroke="#0d1b3d" stroke-width="2.2"/>
-    <!-- wizjer -->
-    <path d="M5,-6 Q13,-1 22,-6 L22,-2 Q13,3 5,-2 Z" fill="#0d1b3d"/>
-    <!-- akcent na kasku -->
-    <path d="M3,-7 L23,-7" stroke="#ff5d5d" stroke-width="2.5" stroke-linecap="round"/>
-
-    <!-- linie ruchu / szybkosci -->
-    <g stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".85">
-      <line x1="-30" y1="20" x2="-45" y2="22"/>
-      <line x1="-32" y1="30" x2="-50" y2="32"/>
-      <line x1="-28" y1="40" x2="-42" y2="42"/>
-      <line x1="44" y1="20" x2="58" y2="22"/>
-      <line x1="46" y1="30" x2="62" y2="32"/>
-      <line x1="42" y1="40" x2="55" y2="42"/>
+  <!-- DRZEWA (paralaksa) - leca w lewo -->
+  <g>
+    <g><use href="#tree" x="120" y="385"/><use href="#tree" x="320" y="380" transform="translate(0,0) scale(.9)"/><use href="#tree" x="540" y="385"/><use href="#tree" x="780" y="380"/><use href="#tree" x="1020" y="385"/><use href="#tree" x="1260" y="380"/><use href="#tree" x="1500" y="385"/>
+      <animateTransform attributeName="transform" type="translate" from="0 0" to="-240 0" dur="6s" repeatCount="indefinite"/>
+    </g>
+    <g><use href="#tree" x="0" y="385"/><use href="#tree" x="240" y="380"/><use href="#tree" x="480" y="385"/><use href="#tree" x="720" y="380"/><use href="#tree" x="960" y="385"/><use href="#tree" x="1200" y="380"/><use href="#tree" x="1440" y="385"/>
+      <animateTransform attributeName="transform" type="translate" from="240 0" to="0 0" dur="6s" repeatCount="indefinite"/>
     </g>
   </g>
 
-  <!-- chmurki -->
-  <g fill="#fff" opacity=".75">
-    <ellipse cx="120" cy="80" rx="40" ry="14"/>
-    <ellipse cx="145" cy="72" rx="28" ry="12"/>
-    <ellipse cx="105" cy="74" rx="22" ry="10"/>
+  <!-- DROGA -->
+  <rect x="0" y="395" width="1600" height="70" fill="url(#road)" stroke="#0d1b3d" stroke-width="3"/>
 
-    <ellipse cx="660" cy="110" rx="45" ry="14"/>
-    <ellipse cx="685" cy="100" rx="30" ry="12"/>
-    <ellipse cx="640" cy="102" rx="22" ry="10"/>
+  <!-- pas drogowy animowany -->
+  <line x1="-100" y1="430" x2="1700" y2="430" stroke="#ffd23f" stroke-width="6" stroke-dasharray="40 30" stroke-linecap="round">
+    <animate attributeName="stroke-dashoffset" from="0" to="-70" dur="0.35s" repeatCount="indefinite"/>
+  </line>
 
-    <ellipse cx="380" cy="60" rx="36" ry="11"/>
-    <ellipse cx="400" cy="54" rx="22" ry="9"/>
+  <!-- kamyki na poboczu -->
+  <g fill="#0d1b3d" opacity=".55">
+    <rect y="470" width="14" height="3" rx="1.5"><animate attributeName="x" from="1700" to="-50" dur="2s" repeatCount="indefinite"/></rect>
+    <rect y="478" width="10" height="3" rx="1.5"><animate attributeName="x" from="1700" to="-50" dur="2.4s" repeatCount="indefinite"/></rect>
+    <rect y="472" width="16" height="3" rx="1.5"><animate attributeName="x" from="1700" to="-50" dur="1.8s" repeatCount="indefinite"/></rect>
+    <rect y="480" width="9" height="3" rx="1.5"><animate attributeName="x" from="1700" to="-50" dur="2.2s" repeatCount="indefinite"/></rect>
+    <rect y="474" width="14" height="3" rx="1.5"><animate attributeName="x" from="1700" to="-50" dur="1.9s" repeatCount="indefinite"/></rect>
   </g>
+
+  <!-- MOTOCYKLISTA jadacy z lewa w prawo -->
+  <use href="#biker" y="430">
+    <animateTransform attributeName="transform" type="translate" values="-200 0; 1800 0" dur="9s" repeatCount="indefinite"/>
+  </use>
 </svg>

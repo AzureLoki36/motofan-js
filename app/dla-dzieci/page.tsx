@@ -232,32 +232,24 @@ export default function DlaDzieci() {
         /* ===== HERO ===== */
         .kids-hero {
           position: relative;
-          padding: 90px 0 120px;
+          padding: 90px 0 220px;
           overflow: hidden;
-          background: linear-gradient(180deg, #4ec3ff 0%, #7dd3fc 60%, #b6e6ff 100%);
+          background: linear-gradient(180deg, #6cc9ff 0%, #bfe7ff 100%);
+          min-height: 540px;
         }
-        /* doodle pattern jako bardzo delikatna tekstura TYLKO w hero */
-        .kids-hero::before {
-          content: '';
-          position: absolute; inset: 0;
-          background: url('/pics/dzieci/doodle-pattern.png') repeat;
-          background-size: 480px 480px;
-          opacity: .06;
-          mix-blend-mode: overlay;
-          pointer-events: none;
-        }
-        /* MOTOCYKLISTA w prawym dolnym rogu hero */
+        .kids-hero::before { content: none; }
+        /* Animowana scena - motocyklista jadacy w prawo za tytulem */
         .hero-biker {
           position: absolute;
-          right: 0; bottom: -10px;
-          width: min(620px, 55vw);
-          height: auto;
+          inset: 0;
+          width: 100%; height: 100%;
+          object-fit: cover;
+          object-position: center bottom;
           pointer-events: none;
-          z-index: 1;
-          filter: drop-shadow(0 8px 18px rgba(13,27,61,.25));
+          z-index: 0;
         }
         @media (max-width: 900px) {
-          .hero-biker { width: 70vw; opacity: .85; right: -20px; bottom: -20px; }
+          .kids-hero { padding: 70px 0 180px; min-height: 480px; }
         }
         .kids-title {
           font-family: 'Outfit',sans-serif;
