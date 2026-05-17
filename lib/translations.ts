@@ -76,6 +76,7 @@ export const translations: Record<Locale, Dict> = {
     "bc.historia": "Historia",
     "bc.nowe": "Motocykle nowe",
     "bc.uzywane": "Motocykle używane",
+    "bc.kids": "Strefa Małego Motocyklisty",
 
     // Section tags
     "tag.about": "O nas",
@@ -204,6 +205,7 @@ export const translations: Record<Locale, Dict> = {
     "bc.historia": "History",
     "bc.nowe": "New motorcycles",
     "bc.uzywane": "Used motorcycles",
+    "bc.kids": "Little Rider Zone",
 
     "tag.about": "About us",
     "tag.brands": "Authorizations",
@@ -325,6 +327,7 @@ export const translations: Record<Locale, Dict> = {
     "bc.historia": "Історія",
     "bc.nowe": "Нові мотоцикли",
     "bc.uzywane": "Вживані мотоцикли",
+    "bc.kids": "Зона маленького мотоцикліста",
 
     "tag.about": "Про нас",
     "tag.brands": "Авторизації",

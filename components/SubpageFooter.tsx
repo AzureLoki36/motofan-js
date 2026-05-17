@@ -13,7 +13,7 @@ export default function SubpageFooter() {
           <div className="footer-brand">
             <div className="footer-logo">
               <span className="logo-text">
-                MOTO<span className="logo-accent">FAN</span>
+                MOTO<span className="logo-accent">FUN</span>
               </span>
               <span className="logo-sub">Opole</span>
             </div>

@@ -6,9 +6,9 @@ import AdminToolbar from "@/components/AdminToolbar";
 import { LocaleProvider } from "@/components/LocaleProvider";
 
 export const metadata: Metadata = {
-  title: "MotoFan Opole – Kawasaki · Benelli · Kymco",
+  title: "MotoFun Opole – Kawasaki · Benelli · Kymco · RXF",
   description:
-    "MotoFan Opole – autoryzowany dealer i serwis Kawasaki, Benelli, Kymco. Serwis motocyklowy, sklep, odzież, części. ul. Partyzancka 85, Opole. Tel. 601 48 42 42",
+    "MotoFun Opole – autoryzowany dealer i serwis Kawasaki, Benelli, Kymco. Motocykle dla dzieci RXF, serwis motocyklowy, sklep, odzież, części. ul. Partyzancka 85, Opole. Tel. 601 48 42 42",
 };
 
 export default function RootLayout({

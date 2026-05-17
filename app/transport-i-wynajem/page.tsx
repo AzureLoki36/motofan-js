@@ -45,7 +45,7 @@ export default function TransportIWynajem() {
             <div className="tw-block" id="transport">
               <div className="tw-photos">
                 <div className="tw-photo" onClick={() => setLightboxIdx(0)}>
-                  <EditableImage id="transport.img.bus1" src="/pics/glowna/bus1.jpg" alt="Bus transportowy MotoFan – widok z boku" />
+                  <EditableImage id="transport.img.bus1" src="/pics/glowna/bus1.jpg" alt="Bus transportowy MotoFun – widok z boku" />
                   <Editable id="transport.photo1.label" as="span" className="tw-photo-label">Nasz bus</Editable>
                   <span className="tw-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /><line x1="11" y1="8" x2="11" y2="14" /><line x1="8" y1="11" x2="14" y2="11" /></svg></span>
                 </div>

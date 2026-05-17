@@ -48,7 +48,7 @@ export default function Navbar({ isHome = false, activeSection }: NavbarProps) {
         <Link href="/" className="nav-logo">
           <img
             src="/pics/logo.jpg"
-            alt="MotoFan logo"
+            alt="MotoFun logo"
             className="nav-logo-img"
             onError={(e) => {
               (e.target as HTMLImageElement).style.display = "none";
@@ -56,7 +56,7 @@ export default function Navbar({ isHome = false, activeSection }: NavbarProps) {
           />
           <div>
             <div className="logo-text">
-              MOTO<span className="logo-accent">FAN</span>
+              MOTO<span className="logo-accent">FUN</span>
             </div>
             <div className="logo-sub">Opole</div>
           </div>

@@ -58,7 +58,7 @@ export default function MotocykleNowe() {
             <span>{t("bc.nowe")}</span>
           </div>
           <EditableHTML id="nowe.title" as="h1" className="page-title" defaultHtml='Nowe <span class="gradient-text">Motocykle</span>' />
-          <Editable id="nowe.desc" as="p" className="page-desc">Autoryzowany salon Kawasaki, Benelli i Kymco w Opolu. Pełna gama nowych motocykli, skuterów i quadów z gwarancją producenta.</Editable>
+          <Editable id="nowe.desc" as="p" className="page-desc">Autoryzowany salon Kawasaki, Benelli, Kymco i RXF w Opolu. Pełna gama nowych motocykli, skuterów, quadów oraz motocykli dziecięcych i pitbikeów RXF – z gwarancją producenta.</Editable>
         </div>
       </section>
 

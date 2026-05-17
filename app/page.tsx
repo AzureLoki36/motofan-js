@@ -80,10 +80,10 @@ export default function Home() {
               }}
             >
               <Editable id="home.about.lead" as="p" className="about-lead" multiline>
-                Firma MOTOFAN powstała w 1999 roku w Opolu i od samego początku stawia na jakość, pasję i profesjonalną obsługę każdego motocyklisty.
+                Firma MotoFun powstała w 1999 roku w Opolu i od samego początku stawia na jakość, pasję i profesjonalną obsługę każdego motocyklisty.
               </Editable>
               <Editable id="home.about.text" as="p" multiline>
-                Dziś MotoFan to nowoczesny salon o powierzchni 500 m² przy ul. Partyzanckiej 85, gdzie oferujemy sprzedaż nowych i używanych motocykli, kompletny serwis, sklep z odzieżą oraz transport i wynajem przyczep.
+                Dziś MotoFun to nowoczesny salon o powierzchni 500 m² przy ul. Partyzanckiej 85, gdzie oferujemy sprzedaż nowych i używanych motocykli, kompletny serwis, sklep z odzieżą oraz transport i wynajem przyczep.
               </Editable>
               <div style={{ textAlign: "center", marginTop: 30 }}>
                 <a href="/historia" className="btn btn-primary">
@@ -94,7 +94,7 @@ export default function Home() {
                 <EditableImage
                   id="home.about.image"
                   src="/pics/glowna/wejscie.jpg"
-                  alt="Wejście do salonu MotoFan"
+                  alt="Wejście do salonu MotoFun"
                   style={{
                     maxWidth: "100%",
                     borderRadius: 16,
@@ -265,14 +265,15 @@ export default function Home() {
               </div>
               <Editable id="home.svc.sklep.title" as="h3">Sklep z odzieżą i akcesoriami</Editable>
               <Editable id="home.svc.sklep.desc" as="p" multiline>
-                Odzież motocyklowa SECA, kaski AGV i Nolan, oleje Motul, rękawice, buty i akcesoria.
+                Odzież motocyklowa SECA, kaski AGV i Nolan, oleje Motul, rękawice, buty, odzież przeciwdeszczowa i akcesoria.
               </Editable>
               <ul className="service-list">
-                <Editable id="home.svc.sklep.li1" as="li">Kaski (pełne, szczękowe, turystyczne)</Editable>
+                <Editable id="home.svc.sklep.li1" as="li">Kaski (integralne, szczękowe, otwarte, krosowe)</Editable>
                 <Editable id="home.svc.sklep.li2" as="li">Kurtki motocyklowe</Editable>
                 <Editable id="home.svc.sklep.li3" as="li">Spodnie motocyklowe</Editable>
                 <Editable id="home.svc.sklep.li4" as="li">Rękawice (letnie, zimowe)</Editable>
                 <Editable id="home.svc.sklep.li5" as="li">Buty motocyklowe</Editable>
+                <Editable id="home.svc.sklep.li6" as="li">Odzież przeciwdeszczowa (kombinezony, peleryny, pokrowce)</Editable>
               </ul>
             </a>
 
@@ -295,17 +296,18 @@ export default function Home() {
 
             <a href="/motocykle-nowe" className="service-card" id="svc-new">
               <div className="service-icon-wrap service-photo">
-                <EditableImage id="home.img.svc.nowe" src="/pics/glowna/moto_nowe.jpg" alt="Nowe motocykle w salonie MotoFan" />
+                <EditableImage id="home.img.svc.nowe" src="/pics/glowna/moto_nowe.jpg" alt="Nowe motocykle w salonie MotoFun" />
               </div>
               <Editable id="home.svc.nowe.title" as="h3">Nowe motocykle</Editable>
               <Editable id="home.svc.nowe.desc" as="p" multiline>
-                Autoryzowany salon Kawasaki, Benelli i Kymco. Pełna gama nowych motocykli, skuterów i quadów z gwarancją producenta.
+                Autoryzowany salon Kawasaki, Benelli, Kymco i RXF. Pełna gama nowych motocykli, skuterów, quadów i pitbike’ów z gwarancją producenta.
               </Editable>
               <ul className="service-list">
                 <Editable id="home.svc.nowe.li1" as="li">Motocykle Kawasaki – cała gama modeli</Editable>
                 <Editable id="home.svc.nowe.li2" as="li">Motocykle i skutery Benelli</Editable>
                 <Editable id="home.svc.nowe.li3" as="li">Skutery i quady Kymco</Editable>
-                <Editable id="home.svc.nowe.li4" as="li">Kredyt, leasing, rejestracja na miejscu</Editable>
+                <Editable id="home.svc.nowe.li4" as="li">Motocykle dziecięce i pitbike RXF</Editable>
+                <Editable id="home.svc.nowe.li5" as="li">Kredyt, leasing, rejestracja na miejscu</Editable>
               </ul>
             </a>
 
@@ -322,6 +324,22 @@ export default function Home() {
                 <Editable id="home.svc.uzywane.li2" as="li">Weryfikacja techniczna przed zakupem</Editable>
                 <Editable id="home.svc.uzywane.li3" as="li">Pomoc w formalnościach</Editable>
                 <Editable id="home.svc.uzywane.li4" as="li">Skup motocykli</Editable>
+              </ul>
+            </a>
+
+            <a href="/dla-dzieci" className="service-card service-card--kids" id="svc-kids">
+              <div className="service-icon-wrap service-photo" style={{ background: "linear-gradient(135deg,#ffe066,#ff8fab,#a0e7e5)" }}>
+                <span style={{ fontSize: "5rem", filter: "drop-shadow(0 4px 8px rgba(0,0,0,.25))" }}>🏍️</span>
+              </div>
+              <Editable id="home.svc.kids.title" as="h3">Strefa Małego Motocyklisty</Editable>
+              <Editable id="home.svc.kids.desc" as="p" multiline>
+                Pitbike i motocykle dziecięce RXF, kaski, zbroje i kurtki w rozmiarach dziecięcych. Plus kolorowa mini-gra o przepisach drogowych!
+              </Editable>
+              <ul className="service-list">
+                <Editable id="home.svc.kids.li1" as="li">Motocykle dziecięce RXF (50–150 cm³)</Editable>
+                <Editable id="home.svc.kids.li2" as="li">Kaski dziecięce (LS2, HJC, Givi)</Editable>
+                <Editable id="home.svc.kids.li3" as="li">Zbroje, kurtki i ochraniacze</Editable>
+                <Editable id="home.svc.kids.li4" as="li">Mini-gra: znaki drogowe dla dzieci</Editable>
               </ul>
             </a>
 
@@ -416,7 +434,7 @@ export default function Home() {
                       rel="noopener noreferrer"
                       className="contact-link"
                     >
-                      <Editable id="home.contact.facebook" as="span">Motofan Tomasz Kokoszka</Editable>
+                      <Editable id="home.contact.facebook" as="span">MotoFun Tomasz Kokoszka</Editable>
                     </a>
                   </div>
                 </div>
@@ -435,7 +453,7 @@ export default function Home() {
             </div>
             <div className="contact-map">
               <iframe
-                title="MotoFan Opole na mapie"
+                title="MotoFun Opole na mapie"
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2498.177604432097!2d17.932745076929643!3d50.64931777159756!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4711173f891d099b%3A0x9abbc4453888e0f0!2sPartyzancka%2085%2C%2045-801%20Opole!5e0!3m2!1spl!2spl!4v1712000000000!5m2!1spl!2spl"
                 style={{ border: 0, width: "100%", height: "100%" }}
                 allowFullScreen

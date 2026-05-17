@@ -28,13 +28,13 @@ export default function FacebookSection() {
               frameBorder="0"
               allowFullScreen
               allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-              title="Aktualności MotoFan na Facebooku"
+              title="Aktualności MotoFun na Facebooku"
             ></iframe>
           </div>
 
           {/* MOBILE CTA */}
           <div className="mobile-fb-cta">
-            <img src="/pics/logo.jpg" alt="Motofan" className="mobile-cta-logo" />
+            <img src="/pics/logo.jpg" alt="MotoFun" className="mobile-cta-logo" />
             <Editable id="home.fb.mobile.title" as="h3">Jesteśmy na Facebooku!</Editable>
             <Editable id="home.fb.mobile.desc" as="p">Ze względów bezpieczeństwa na urządzeniach mobilnych zalecamy przeglądanie naszych aktualności bezpośrednio w aplikacji.</Editable>
             <a
@@ -53,7 +53,7 @@ export default function FacebookSection() {
               >
                 <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
               </svg>
-              <Editable id="home.fb.mobile.btn" as="span">Odpal Motofan na Facebooku</Editable>
+              <Editable id="home.fb.mobile.btn" as="span">Odpal MotoFun na Facebooku</Editable>
             </a>
           </div>
 
@@ -61,14 +61,14 @@ export default function FacebookSection() {
             <div className="fb-profile-card">
               <img
                 src="/pics/logo.jpg"
-                alt="Motofan Tomasz Kokoszka"
+                alt="MotoFun Tomasz Kokoszka"
                 className="fb-profile-img"
                 onError={(e) => {
                   (e.target as HTMLImageElement).style.display = "none";
                 }}
               />
               <div className="fb-profile-info">
-                <h4>Motofan Tomasz Kokoszka</h4>
+                <h4>MotoFun Tomasz Kokoszka</h4>
                 <span className="fb-handle">@tomko.koko.9</span>
                 <div className="fb-stats-row">
                   <div className="fb-stat-item">

@@ -17,7 +17,7 @@ const galleryImages = [
   { src: "/pics/historia/n.jpg", caption: "Pokrywanie dachu - 3.11.2017" },
   { src: "/pics/historia/678.jpg", caption: "Prace wykończeniowe - Maj 2018" },
   { src: "/pics/historia/567.jpg", caption: "Budynek gotowy - Koniec 2018" },
-  { src: "/pics/historia/987.jpg", caption: "Otwarcie salonu MotoFan!" },
+  { src: "/pics/historia/987.jpg", caption: "Otwarcie salonu MotoFun!" },
 ];
 
 const timelineItems = [
@@ -152,8 +152,8 @@ export default function Historia() {
       <section className="content-section">
         <div className="container">
           <div className="content-text" style={{ maxWidth: "900px" }}>
-            <EditableHTML id="historia.h2.firma" as="h2" defaultHtml='Firma <span class="gradient-text">MOTOFAN</span>' />
-            <Editable id="historia.firma.lead" as="p" className="lead" multiline>Firma MOTOFAN powstała w 1999 roku w Opolu i od samego początku stawia na jakość, pasję i profesjonalną obsługę każdego motocyklisty.</Editable>
+            <EditableHTML id="historia.h2.firma" as="h2" defaultHtml='Firma <span class="gradient-text">MotoFun</span>' />
+            <Editable id="historia.firma.lead" as="p" className="lead" multiline>Firma MotoFun powstała w 1999 roku w Opolu i od samego początku stawia na jakość, pasję i profesjonalną obsługę każdego motocyklisty.</Editable>
             <Editable id="historia.firma.p1" as="p" multiline>Początkowo zajmowaliśmy się współorganizowaniem imprez integracyjnych dla firm i osób prywatnych, dostarczając rozrywkę w formie quadów. Kolejnym etapem było rozszerzenie usług o wypożyczalnię skuterów. Od początku działalności firma opiera się na sprawdzonym sprzęcie firmy Yamaha.</Editable>
             <Editable id="historia.firma.p2" as="p">W chwili obecnej firma podzielona jest na kilka działów:</Editable>
             <ul style={{ margin: "20px 0 30px", paddingLeft: "24px", color: "var(--text-m)", lineHeight: 2 }}>

@@ -18,13 +18,13 @@ export default function HomeFooter() {
             <div className="footer-logo">
               <img
                 src="/pics/logo.jpg"
-                alt="MotoFan Tomasz Kokoszka"
+                alt="MotoFun Tomasz Kokoszka"
                 onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
                   (e.target as HTMLImageElement).style.display = "none";
                 }}
               />
               <div className="logo-text">
-                MOTO<span className="logo-accent">FAN</span>
+                MOTO<span className="logo-accent">FUN</span>
               </div>
             </div>
             <Editable id="footer.home.desc" as="p">
@@ -107,7 +107,7 @@ export default function HomeFooter() {
           </div>
         </div>
         <div className="footer-bottom">
-          <Editable id="footer.home.copy" as="p">&copy; 2026 MotoFan Opole. Wszelkie prawa zastrzeżone.</Editable>
+          <Editable id="footer.home.copy" as="p">&copy; 2026 MotoFun Opole. Wszelkie prawa zastrzeżone.</Editable>
           <Editable id="footer.home.tagline" as="p">Zaprojektowano z pasją dla motocyklistów</Editable>
         </div>
       </div>
