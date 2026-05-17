@@ -125,7 +125,9 @@ export default function DlaDzieci() {
       <Navbar activeSection="Usługi" />
 
       <style>{`
-        /* ===== GLOBAL DOODLE BACKGROUND ===== */
+        /* ===== GLOBAL DOODLE BACKGROUND =====
+           Plik doodle-pattern.png to 640x640 szachownica: doodle1+doodle2 obok siebie,
+           uzywany jako prosty CSS repeat -> pokrywa cale tlo naprzemiennie. */
         .kids-page-bg {
           position: relative;
           isolation: isolate;
@@ -134,22 +136,23 @@ export default function DlaDzieci() {
           content: '';
           position: absolute;
           inset: 0;
-          background-image:
-            url('/pics/dzieci/doodle-set-1.jpg'),
-            url('/pics/dzieci/doodle-set-2.jpg');
-          background-size: 420px auto, 420px auto;
-          background-repeat: repeat, repeat;
-          background-position: 0 0, 210px 200px;
-          opacity: .10;
-          mix-blend-mode: multiply;
+          background-image: url('/pics/dzieci/doodle-pattern.png');
+          background-repeat: repeat;
+          background-size: 640px 640px;
+          background-position: 0 0;
+          opacity: .55;
           pointer-events: none;
           z-index: 0;
         }
         :global([data-theme="dark"]) .kids-page-bg::before {
-          opacity: .14;
-          mix-blend-mode: screen;
+          opacity: .35;
+          filter: invert(.92) hue-rotate(180deg);
         }
         .kids-page-bg > * { position: relative; z-index: 1; }
+
+        @media (max-width: 720px) {
+          .kids-page-bg::before { background-size: 440px 440px; }
+        }
 
         .kids-hero { position: relative; padding: 80px 0 60px;
           background: linear-gradient(135deg,#ffe066 0%,#ff8fab 35%,#a0e7e5 70%,#c9b6ff 100%);
@@ -166,10 +169,10 @@ export default function DlaDzieci() {
 
         .kids-section { position: relative; padding: 70px 0; overflow: hidden; }
         .kids-section .container { position: relative; z-index: 2; }
-        .kids-section--products { background: linear-gradient(180deg, rgba(255,247,249,.82) 0%, rgba(254,243,255,.82) 100%); }
-        .kids-section--rxf { background: linear-gradient(180deg, rgba(240,253,250,.82) 0%, rgba(236,254,255,.82) 100%); }
-        .kids-section--game { background: linear-gradient(180deg, rgba(255,251,230,.82) 0%, rgba(255,245,245,.82) 100%); }
-        .kids-section--alt { background: linear-gradient(180deg, rgba(255,255,255,.55) 0%, rgba(255,224,102,.10) 100%); }
+        .kids-section--products { background: linear-gradient(180deg, rgba(255,247,249,.55) 0%, rgba(254,243,255,.55) 100%); }
+        .kids-section--rxf { background: linear-gradient(180deg, rgba(240,253,250,.55) 0%, rgba(236,254,255,.55) 100%); }
+        .kids-section--game { background: linear-gradient(180deg, rgba(255,251,230,.55) 0%, rgba(255,245,245,.55) 100%); }
+        .kids-section--alt { background: linear-gradient(180deg, rgba(255,255,255,.30) 0%, rgba(255,224,102,.10) 100%); }
 
         .kids-h2 { font-family: 'Outfit',sans-serif; font-size: clamp(1.8rem,4vw,2.6rem); font-weight: 900;
           text-align: center; margin: 0 0 14px; color: var(--text); }
