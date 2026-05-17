@@ -77,13 +77,16 @@ const MOTO_DOODLES = [
    position: fixed -> sa zawsze widoczne w viewport, nad sekcjami z tlem */
 function BackgroundFloaters({ count = 30 }: { count?: number }) {
   const items = Array.from({ length: count }, (_, i) => {
+    // Naprzemiennie lewa / prawa kolumna boczna (0..7vw lub 93..100vw)
+    const onRight = i % 2 === 1;
+    const sideOffset = ((i * 17 + 3) % 700) / 100; // 0..7
+    const leftPct = onRight ? 93 + sideOffset : sideOffset;
     const topPct = ((i * 37 + 5) % 9500) / 100; // 0..95
-    const leftPct = ((i * 73 + 11) % 9400) / 100; // 0..94
-    const size = 36 + ((i * 13) % 56); // 36..92
+    const size = 42 + ((i * 13) % 70); // 42..112
     const rot = (i * 41) % 360;
     const delay = ((i * 11) % 30) / 3; // 0..10s
     const dur = 9 + ((i * 5) % 10); // 9..19s
-    const opacity = 0.07 + ((i * 7) % 8) / 100; // 0.07..0.14 ledwo widoczne
+    const opacity = 0.10 + ((i * 7) % 10) / 100; // 0.10..0.19 ledwo widoczne
     const src = MOTO_DOODLES[i % MOTO_DOODLES.length];
     return { topPct, leftPct, size, rot, delay, dur, opacity, src };
   });
@@ -175,7 +178,11 @@ export default function DlaDzieci() {
           --k-ink: #0d1b3d;
         }
 
-        .kids-page-bg { position: relative; isolation: isolate; background: #fffaf0; }
+        .kids-page-bg {
+          position: relative;
+          isolation: isolate;
+          background: linear-gradient(180deg, #bfe7ff 0%, #eaf4ff 18%, #fff3b0 32%, #ffe1e1 52%, #dcffe4 72%, #e9defc 90%, #0d1b3d 100%);
+        }
         :global([data-theme="dark"]) .kids-page-bg { background: #0e1322; }
 
         /* ===== TLOWE FLOATERY - ledwo widoczne motocykle na calej stronie ===== */
