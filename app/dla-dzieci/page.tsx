@@ -95,6 +95,20 @@ function DoodleLayer({ count = 8, opacity = 0.18 }: { count?: number; opacity?: 
   );
 }
 
+/* Falowany separator miedzy strefami.
+   `from` = kolor sekcji ponad separatorem (oddanej w gore), `to` = kolor pod.
+   "transparent" pokazuje doodle tlo. */
+function ZoneSep({ from, to, flip = false }: { from: string; to: string; flip?: boolean }) {
+  return (
+    <div className="zone-sep" aria-hidden style={{ transform: flip ? "scaleY(-1)" : undefined }}>
+      <svg viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,0 L1440,0 L1440,18 C1200,55 960,5 720,30 C480,55 240,5 0,30 Z" fill={from} />
+        <path d="M0,60 L1440,60 L1440,42 C1200,5 960,55 720,30 C480,5 240,55 0,30 Z" fill={to} />
+      </svg>
+    </div>
+  );
+}
+
 export default function DlaDzieci() {
   const { t } = useLocale();
   const [qIdx, setQIdx] = useState(0);
@@ -138,20 +152,21 @@ export default function DlaDzieci() {
           inset: 0;
           background-image: url('/pics/dzieci/doodle-pattern.png');
           background-repeat: repeat;
-          background-size: 640px 640px;
+          background-size: 540px 540px;
           background-position: 0 0;
-          opacity: .55;
+          opacity: .18;
+          filter: saturate(.85);
           pointer-events: none;
           z-index: 0;
         }
         :global([data-theme="dark"]) .kids-page-bg::before {
-          opacity: .35;
-          filter: invert(.92) hue-rotate(180deg);
+          opacity: .12;
+          filter: invert(.92) hue-rotate(180deg) saturate(.8);
         }
         .kids-page-bg > * { position: relative; z-index: 1; }
 
         @media (max-width: 720px) {
-          .kids-page-bg::before { background-size: 440px 440px; }
+          .kids-page-bg::before { background-size: 380px 380px; }
         }
 
         .kids-hero { position: relative; padding: 80px 0 60px;
@@ -167,12 +182,42 @@ export default function DlaDzieci() {
         .doodle { position: absolute; animation: kfloat 7s ease-in-out infinite; }
         @keyframes kfloat { 0%,100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-18px) rotate(15deg); } }
 
-        .kids-section { position: relative; padding: 70px 0; overflow: hidden; }
+        .kids-section { position: relative; padding: 80px 0; overflow: hidden; }
         .kids-section .container { position: relative; z-index: 2; }
-        .kids-section--products { background: linear-gradient(180deg, rgba(255,247,249,.55) 0%, rgba(254,243,255,.55) 100%); }
-        .kids-section--rxf { background: linear-gradient(180deg, rgba(240,253,250,.55) 0%, rgba(236,254,255,.55) 100%); }
-        .kids-section--game { background: linear-gradient(180deg, rgba(255,251,230,.55) 0%, rgba(255,245,245,.55) 100%); }
-        .kids-section--alt { background: linear-gradient(180deg, rgba(255,255,255,.30) 0%, rgba(255,224,102,.10) 100%); }
+        /* Kazda sekcja = STREFA z mocnym pelnym kolorem.
+           Doodle z tla prosi sie tylko w hero i w cienkich przerwach miedzy strefami. */
+        .kids-section--products {
+          background:
+            radial-gradient(900px 480px at 12% 0%, #ffd6e0 0%, transparent 70%),
+            radial-gradient(700px 420px at 90% 100%, #ffe3f1 0%, transparent 70%),
+            #fff5fa;
+        }
+        .kids-section--rxf {
+          background:
+            radial-gradient(900px 480px at 88% 0%, #cdeefc 0%, transparent 72%),
+            radial-gradient(700px 420px at 10% 100%, #d4f7ec 0%, transparent 72%),
+            #eaf7fb;
+        }
+        .kids-section--game {
+          background:
+            radial-gradient(900px 480px at 50% 0%, #fff1c2 0%, transparent 70%),
+            radial-gradient(700px 420px at 50% 100%, #ffe1d6 0%, transparent 70%),
+            #fff7e6;
+        }
+        .kids-section--alt {
+          background:
+            radial-gradient(900px 460px at 50% 0%, #ede0ff 0%, transparent 72%),
+            #f6f1ff;
+        }
+        :global([data-theme="dark"]) .kids-section--products { background: #2a1a22; }
+        :global([data-theme="dark"]) .kids-section--rxf { background: #112428; }
+        :global([data-theme="dark"]) .kids-section--game { background: #2a2418; }
+        :global([data-theme="dark"]) .kids-section--alt { background: #1f1a2c; }
+
+        /* SEPARATORY MIEDZY STREFAMI — falowane SVG */
+        .zone-sep { display: block; width: 100%; height: 60px; position: relative; z-index: 1; margin-top: -1px; margin-bottom: -1px; }
+        .zone-sep svg { display: block; width: 100%; height: 100%; }
+        /* w przerwach miedzy strefami doodle JEST widoczny -> separator jest przezroczysty */
 
         .kids-h2 { font-family: 'Outfit',sans-serif; font-size: clamp(1.8rem,4vw,2.6rem); font-weight: 900;
           text-align: center; margin: 0 0 14px; color: var(--text); }
@@ -301,8 +346,8 @@ export default function DlaDzieci() {
       </section>
 
       {/* ===== 1. PRODUKTY ===== */}
+      <ZoneSep from="transparent" to="#fff5fa" />
       <section className="kids-section kids-section--products">
-        <DoodleLayer count={6} opacity={0.10} />
         <div className="container">
           <EditableHTML id="kids.gear.h2" as="h2" className="kids-h2" defaultHtml='🪖 Kaski, zbroje i <span class="rainbow">kurtki dla dzieci</span>' />
           <Editable id="kids.gear.lead" as="p" className="kids-lead" multiline>
@@ -322,8 +367,8 @@ export default function DlaDzieci() {
       </section>
 
       {/* ===== 2. MOTOCYKLE RXF ===== */}
+      <ZoneSep from="#fff5fa" to="#eaf7fb" />
       <section className="kids-section kids-section--rxf">
-        <DoodleLayer count={6} opacity={0.10} />
         <div className="container">
           <EditableHTML id="kids.rxf.h2" as="h2" className="kids-h2" defaultHtml='🏍️ Motocykle <span class="rainbow">RXF</span> dla dzieci' />
           <Editable id="kids.rxf.lead" as="p" className="kids-lead" multiline>
@@ -347,8 +392,9 @@ export default function DlaDzieci() {
       </section>
 
       {/* ===== 3. MINI GAME ===== */}
+      <ZoneSep from="#eaf7fb" to="#fff7e6" />
       <section className="kids-section kids-section--game">
-        <DoodleLayer count={8} opacity={0.12} />
+        <DoodleLayer count={6} opacity={0.10} />
         <div className="container">
           <EditableHTML id="kids.game.h2" as="h2" className="kids-h2" defaultHtml='🎮 Mini-gra: <span class="rainbow">Znaki Drogowe</span>' />
           <Editable id="kids.game.lead" as="p" className="kids-lead" multiline>
@@ -411,8 +457,8 @@ export default function DlaDzieci() {
       </section>
 
       {/* ===== 4. MARKI ===== */}
+      <ZoneSep from="#fff7e6" to="#f6f1ff" />
       <section className="kids-section kids-section--alt">
-        <DoodleLayer count={5} opacity={0.08} />
         <div className="container">
           <EditableHTML id="kids.brands.h2" as="h2" className="kids-h2" defaultHtml='⭐ Współpracujemy <span class="rainbow">z najlepszymi</span>' />
           <Editable id="kids.brands.lead" as="p" className="kids-lead" multiline>
@@ -427,6 +473,7 @@ export default function DlaDzieci() {
       </section>
 
       {/* ===== 5. CTA ===== */}
+      <ZoneSep from="#f6f1ff" to="transparent" />
       <section className="kids-section">
         <div className="container">
           <div className="quiz-wrap" style={{ background: "linear-gradient(135deg,#a0e7e5 0%,#b4f8c8 100%)", textAlign: "center" }}>
