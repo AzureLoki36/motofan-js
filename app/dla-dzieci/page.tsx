@@ -54,25 +54,25 @@ const BRAND_LOGOS = [
   { name: "RXF", color: "#ff8fab" },
 ];
 
-/* Ikony motocyklowe wykorzystywane w tlowych floaterach: motorki, kaski, znaki drogowe */
+/* Ikony motocyklowe - prawdziwe miniaturki z CDN Twemoji (motorki, kaski, znaki drogowe) */
 const MOTO_DOODLES = [
-  "/pics/dzieci/rxf-mini.svg",
-  "/pics/dzieci/rxf-open.svg",
-  "/pics/dzieci/rxf-freeride.svg",
-  "/pics/dzieci/rxf-racing.svg",
-  "/pics/dzieci/doodle-helmet.svg",
-  "/pics/dzieci/product-helmet1.svg",
-  "/pics/dzieci/product-helmet2.svg",
-  "/pics/dzieci/doodle-road-sign.svg",
-  "/pics/dzieci/doodle-stop.svg",
-  "/pics/dzieci/doodle-traffic-light.svg",
-  "/pics/dzieci/doodle-cone.svg",
-  "/pics/dzieci/doodle-route.svg",
+  "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f3cd.svg", // motorcycle
+  "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f6f5.svg", // motor scooter
+  "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1fa96.svg", // military helmet
+  "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/26d1.svg",  // helmet with cross
+  "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f6d1.svg", // stop sign
+  "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f6a6.svg", // vertical traffic light
+  "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f6a5.svg", // horizontal traffic light
+  "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/26a0.svg",  // warning
+  "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f6a7.svg", // construction
+  "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f3c1.svg", // chequered flag
+  "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f3ce.svg", // racing car
+  "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f6e3.svg", // motorway
 ];
 
 /* ===== KOMPONENT: ledwo widoczne floatery na calej stronie =====
    position: fixed -> sa zawsze widoczne w viewport, nad sekcjami z tlem */
-function BackgroundFloaters({ count = 120 }: { count?: number }) {
+function BackgroundFloaters({ count = 300 }: { count?: number }) {
   const items = Array.from({ length: count }, (_, i) => {
     // Naprzemiennie lewa / prawa kolumna boczna (0..7vw lub 93..100vw)
     const onRight = i % 2 === 1;
@@ -82,10 +82,10 @@ function BackgroundFloaters({ count = 120 }: { count?: number }) {
     const topVh = 75 + ((i * 53 + 7) % 620); // 75..694vh
     const size = 42 + ((i * 13) % 70); // 42..112
     const rot = (i * 41) % 360;
-    const delay = ((i * 11) % 30) / 3; // 0..10s
-    const dur = 9 + ((i * 5) % 10); // 9..19s
+    const delay = ((i * 11) % 30) / 9; // 0..3.3s
+    const dur = 3 + ((i * 5) % 10) / 3; // 3..6.3s - 3x szybciej
     const driftX = ((i * 19) % 40) - 20; // -20..20 px drift poziomy
-    const opacity = 0.35 + ((i * 7) % 15) / 100; // 0.35..0.49 - ok 30% mniej przezroczyste
+    const opacity = 0.35 + ((i * 7) % 15) / 100; // 0.35..0.49
     const src = MOTO_DOODLES[i % MOTO_DOODLES.length];
     return { topVh, leftPct, size, rot, delay, dur, opacity, src, driftX };
   });
