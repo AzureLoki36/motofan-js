@@ -598,7 +598,6 @@ export default function DlaDzieci() {
 
       <div className="kids-page-bg">
       <SideFloaters count={26} />
-      <FullPageFloaters count={32} />
       {/* ===== HERO ===== */}
       <section className="kids-hero">
         <DoodleLayer count={10} opacity={0.35} />
