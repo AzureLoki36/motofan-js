@@ -631,7 +631,7 @@ export default function DlaDzieci() {
         <DoodleLayer count={10} opacity={0.35} />
         <img src="/pics/dzieci/hero-biker.svg" alt="" className="hero-biker" />
         <div className="hero-rider-track" aria-hidden>
-          <img src="/pics/dzieci/rider-flip.png" alt="" className="hero-rider" />
+          <img src="/pics/dzieci/rider-flip.svg" alt="" className="hero-rider" />
         </div>
         <div className="container" style={{ position: "relative", zIndex: 2 }}>
           <div className="breadcrumb" style={{ color: "#fff", justifyContent: "center", marginBottom: 30, fontWeight: 700 }}>

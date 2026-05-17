@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 160" width="260" height="160">
+  <!-- Motocykl dziecięcy + jeździec, oryginał patrzy w LEWO (CSS scaleX(-1) odwróci w prawo) -->
+
+  <!-- Tylne koło -->
+  <circle cx="60" cy="120" r="34" fill="#1a1a2e" />
+  <circle cx="60" cy="120" r="24" fill="#2a2a4e" />
+  <circle cx="60" cy="120" r="8" fill="#e63946" />
+  <!-- Szprychy tylne -->
+  <line x1="60" y1="86" x2="60" y2="154" stroke="#5a5aaa" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="26" y1="120" x2="94" y2="120" stroke="#5a5aaa" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="36" y1="96" x2="84" y2="144" stroke="#5a5aaa" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="84" y1="96" x2="36" y2="144" stroke="#5a5aaa" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Przednie koło -->
+  <circle cx="200" cy="120" r="30" fill="#1a1a2e" />
+  <circle cx="200" cy="120" r="21" fill="#2a2a4e" />
+  <circle cx="200" cy="120" r="7" fill="#e63946" />
+  <!-- Szprychy przednie -->
+  <line x1="200" y1="90" x2="200" y2="150" stroke="#5a5aaa" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="170" y1="120" x2="230" y2="120" stroke="#5a5aaa" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="179" y1="99" x2="221" y2="141" stroke="#5a5aaa" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="221" y1="99" x2="179" y2="141" stroke="#5a5aaa" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Rama motocykla -->
+  <path d="M70 115 L100 75 L155 70 L200 90 L190 115 Z" fill="#e63946"/>
+  <path d="M100 75 L115 115" stroke="#c1121f" stroke-width="3" fill="none"/>
+  <path d="M70 115 L190 115" stroke="#c1121f" stroke-width="3"/>
+
+  <!-- Zbiornik paliwa -->
+  <ellipse cx="140" cy="75" rx="32" ry="16" fill="#ff6b00"/>
+  <ellipse cx="140" cy="70" rx="28" ry="10" fill="#ff8c38"/>
+
+  <!-- Siodełko -->
+  <ellipse cx="110" cy="68" rx="22" ry="9" fill="#1a1a2e"/>
+  <ellipse cx="110" cy="65" rx="20" ry="7" fill="#2a2a4e"/>
+
+  <!-- Silnik -->
+  <rect x="108" y="90" width="36" height="26" rx="6" fill="#333355"/>
+  <rect x="113" y="94" width="10" height="8" rx="2" fill="#4a4a7a"/>
+  <rect x="127" y="94" width="10" height="8" rx="2" fill="#4a4a7a"/>
+
+  <!-- Wydech -->
+  <path d="M108 108 Q90 118 75 120" stroke="#888" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <path d="M75 120 Q68 122 64 119" stroke="#666" stroke-width="4" fill="none" stroke-linecap="round"/>
+
+  <!-- Przedni amortyzator -->
+  <line x1="185" y1="95" x2="200" y2="90" stroke="#999" stroke-width="5" stroke-linecap="round"/>
+  <line x1="190" y1="108" x2="200" y2="90" stroke="#777" stroke-width="3.5" stroke-linecap="round"/>
+
+  <!-- Kierownica -->
+  <path d="M175 65 Q182 55 192 58 Q196 60 195 65" stroke="#333" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <rect x="173" y="61" width="6" height="16" rx="3" fill="#555"/>
+
+  <!-- NOGI JEŹDŹCA -->
+  <path d="M120 90 L112 108 L108 115" stroke="#1a1a2e" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- But -->
+  <ellipse cx="106" cy="116" rx="10" ry="5" fill="#1a1a2e"/>
+
+  <!-- TUŁÓW JEŹDŹCA (kombinezon) -->
+  <path d="M110 70 Q108 75 107 85 L125 83 Q126 73 122 68 Z" fill="#e63946"/>
+  <!-- Rękaw lewy (ku tyłowi) -->
+  <path d="M110 72 Q100 75 95 80 Q98 83 103 80 Q108 77 114 76" fill="#e63946"/>
+  <!-- Rękaw prawy (do przodu na kierownicy) -->
+  <path d="M122 70 Q135 65 145 62 Q147 66 144 68 Q133 70 124 75" fill="#e63946"/>
+  <!-- Dłoń na kierownicy -->
+  <circle cx="145" cy="63" r="6" fill="#f5cba7"/>
+
+  <!-- GŁOWA (kask) -->
+  <ellipse cx="116" cy="55" rx="22" ry="20" fill="#ffd23f"/>
+  <ellipse cx="116" cy="54" rx="20" ry="18" fill="#ffd23f"/>
+  <!-- Przyłbica kasku -->
+  <path d="M100 55 Q107 67 130 62 Q134 55 128 48 Q116 44 100 55 Z" fill="#4ec3ff" opacity="0.85"/>
+  <path d="M100 55 Q107 67 130 62 Q134 55 128 48 Q116 44 100 55 Z" fill="none" stroke="#1a1a2e" stroke-width="2"/>
+  <!-- Obramowanie kasku -->
+  <ellipse cx="116" cy="55" rx="22" ry="20" fill="none" stroke="#1a1a2e" stroke-width="2.5"/>
+  <!-- Wentylacja kasku -->
+  <rect x="109" y="40" width="14" height="4" rx="2" fill="#1a1a2e"/>
+
+  <!-- Naklejka na kasku -->
+  <path d="M118 58 l3 -5 l3 5 l-5.5 -2 l5.5 -2 Z" fill="#e63946"/>
+
+  <!-- Reflektor -->
+  <ellipse cx="220" cy="95" rx="10" ry="7" fill="#fffacd"/>
+  <ellipse cx="220" cy="95" rx="7" ry="5" fill="#fff"/>
+  <ellipse cx="220" cy="95" rx="10" ry="7" fill="none" stroke="#999" stroke-width="1.5"/>
+
+  <!-- Linia prędkości (smuga) -->
+  <line x1="0" y1="120" x2="50" y2="120" stroke="#e63946" stroke-width="3" stroke-dasharray="8,6" opacity="0.6"/>
+  <line x1="0" y1="114" x2="35" y2="114" stroke="#ff6b00" stroke-width="2" stroke-dasharray="5,8" opacity="0.4"/>
+</svg>
