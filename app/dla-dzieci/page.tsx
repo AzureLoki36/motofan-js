@@ -204,7 +204,7 @@ export default function DlaDzieci() {
         .kids-hero {
           position: relative;
           overflow: hidden;
-          max-height: clamp(440px, 64vw, 780px);
+          max-height: clamp(470px, 68vw, 830px);
           background: linear-gradient(180deg, #6cc9ff 0%, #bfe7ff 100%);
           z-index: 2;
         }
@@ -212,7 +212,7 @@ export default function DlaDzieci() {
           display: block;
           width: 100%;
           height: auto;
-          margin-top: clamp(-310px, -22vw, -85px);
+          margin-top: clamp(-340px, -24vw, -95px);
           pointer-events: none;
           position: relative;
           z-index: 0;
