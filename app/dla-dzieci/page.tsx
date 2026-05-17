@@ -203,22 +203,27 @@ export default function DlaDzieci() {
         /* ===== HERO ===== */
         .kids-hero {
           position: relative;
-          padding: 90px 0 220px;
           overflow: hidden;
           background: linear-gradient(180deg, #6cc9ff 0%, #bfe7ff 100%);
-          min-height: 560px;
           z-index: 2;
         }
         .hero-video {
+          display: block;
+          width: 100%;
+          height: auto;
+          pointer-events: none;
+          position: relative;
+          z-index: 0;
+        }
+        .hero-overlay {
           position: absolute;
           inset: 0;
-          width: 100%;
-          height: 100%;
-          object-fit: contain;
-          object-position: center;
-          background: #000;
-          pointer-events: none;
-          z-index: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          padding: 40px 16px;
+          z-index: 4;
         }
         .hero-biker {
           position: absolute;
@@ -599,6 +604,7 @@ export default function DlaDzieci() {
             playsInline
             aria-hidden
           />
+          <div className="hero-overlay">
           <div className="container" style={{ position: "relative", zIndex: 4 }}>
             <div className="breadcrumb" style={{ color: "#fff", justifyContent: "center", marginBottom: 30, fontWeight: 700 }}>
               <Link href="/" style={{ color: "#fff" }}>{t("bc.home")}</Link>
@@ -609,6 +615,7 @@ export default function DlaDzieci() {
             <Editable id="kids.sub" as="p" className="kids-sub" multiline>
               Wszystko dla najmłodszych motocyklistów: kaski, zbroje, motocykle RXF i kolorowa gra o przepisach drogowych!
             </Editable>
+          </div>
           </div>
         </section>
 
