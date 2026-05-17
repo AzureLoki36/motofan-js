@@ -72,22 +72,31 @@ const MOTO_DOODLES = [
 
 /* ===== KOMPONENT: ledwo widoczne floatery na calej stronie =====
    position: fixed -> sa zawsze widoczne w viewport, nad sekcjami z tlem */
-function BackgroundFloaters({ count = 300 }: { count?: number }) {
+function BackgroundFloaters({ count = 900 }: { count?: number }) {
+  const L = MOTO_DOODLES.length;
+  // Deterministyczna permutacja - sasiednie indeksy != ta sama ikona
+  const pickIcon = (i: number) => MOTO_DOODLES[((i * 7) + ((i * 13) % 5)) % L];
   const items = Array.from({ length: count }, (_, i) => {
-    // Naprzemiennie lewa / prawa kolumna boczna (0..7vw lub 93..100vw)
+    // Naprzemiennie lewa / prawa kolumna boczna, szersze pasy blizej kafelkow (0..20vw lub 80..100vw)
     const onRight = i % 2 === 1;
-    const sideOffset = ((i * 17 + 3) % 700) / 100; // 0..7
-    const leftPct = onRight ? 93 + sideOffset : sideOffset;
+    const sideOffset = ((i * 17 + 3) % 2000) / 100; // 0..20
+    const leftPct = onRight ? 80 + sideOffset : sideOffset;
     // Rozsiane po calej dlugosci strony, zaczynajac PONIZEJ hero (~75vh)
     const topVh = 75 + ((i * 53 + 7) % 620); // 75..694vh
     const size = 42 + ((i * 13) % 70); // 42..112
     const rot = (i * 41) % 360;
     const delay = ((i * 11) % 30) / 9; // 0..3.3s
-    const dur = 3 + ((i * 5) % 10) / 3; // 3..6.3s - 3x szybciej
-    const driftX = ((i * 19) % 40) - 20; // -20..20 px drift poziomy
+    const dur = 1.5 + ((i * 5) % 10) / 4; // 1.5..4s - szybciej
+    // Przeciwne kierunki: parzyste w prawo+gora, nieparzyste w lewo+dol; wiekszy zakres ruchu
+    const dirX = i % 2 === 0 ? 1 : -1;
+    const dirY = i % 2 === 0 ? -1 : 1;
+    const ampX = 40 + ((i * 19) % 80); // 40..119 px
+    const ampY = 30 + ((i * 23) % 70); // 30..99 px
+    const driftX = dirX * ampX;
+    const driftY = dirY * ampY;
     const opacity = 0.35 + ((i * 7) % 15) / 100; // 0.35..0.49
-    const src = MOTO_DOODLES[i % MOTO_DOODLES.length];
-    return { topVh, leftPct, size, rot, delay, dur, opacity, src, driftX };
+    const src = pickIcon(i);
+    return { topVh, leftPct, size, rot, delay, dur, opacity, src, driftX, driftY };
   });
   return (
     <div className="bg-floaters" aria-hidden>
@@ -108,6 +117,7 @@ function BackgroundFloaters({ count = 300 }: { count?: number }) {
             // przekazujemy parametry do keyframes
             ['--rot' as any]: `${d.rot}deg`,
             ['--drift' as any]: `${d.driftX}px`,
+            ['--drifty' as any]: `${d.driftY}px`,
           }}
         />
       ))}
@@ -206,7 +216,7 @@ export default function DlaDzieci() {
         }
         @keyframes floatBob {
           0%, 100% { transform: translate(0, 0) rotate(var(--rot, 0deg)); }
-          50%      { transform: translate(var(--drift, 0px), -22px) rotate(calc(var(--rot, 0deg) + 8deg)); }
+          50%      { transform: translate(var(--drift, 0px), var(--drifty, -22px)) rotate(calc(var(--rot, 0deg) + 12deg)); }
         }
 
         /* ===== HERO ===== */
