@@ -117,7 +117,7 @@ function BackgroundFloaters({ count = 30 }: { count?: number }) {
 function HeroRider() {
   return (
     <div className="hero-rider" aria-hidden>
-      <img src="/pics/dzieci/rider.jpg" alt="" className="hero-rider-img" />
+      <img src="/pics/dzieci/rider.png" alt="" className="hero-rider-img" />
       <span className="wheel wheel-back" />
       <span className="wheel wheel-front" />
     </div>
@@ -243,8 +243,6 @@ export default function DlaDzieci() {
           height: 100%;
           display: block;
           object-fit: contain;
-          /* multiply: biale tlo jpg staje sie przezroczyste na niebieskim niebie */
-          mix-blend-mode: multiply;
         }
         /* Krecace sie kola - nakladki z gradientem szprych */
         .wheel {
