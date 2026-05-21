@@ -71,82 +71,128 @@ const MOTO_DOODLES = [
   "/pics/latajace/helmet-moto2.svg",
 ];
 
-/* Szerokosc kolumny tresci (.container) - floatery lataja tylko POZA nia */
-const CONTENT_W = 1200;
-
-/* ===== KOMPONENT: floatery odbijajace sie TYLKO w bocznych marginesach =====
-   position: fixed; kazdy element przypisany do lewego albo prawego pustego pasa
-   (poza kolumna tresci CONTENT_W), odbija sie w granicach tego pasa.
+/* ===== KOMPONENT: floatery latajace po calej stronie, omijajace tekst =====
+   position: fixed; odbijaja sie od krawedzi viewportu ORAZ od blokow tekstu/
+   tresci (naglowki, akapity, karty, kafle) - dzieki temu lataja wszedzie tam,
+   gdzie nie ma tekstu (marginesy, przerwy miedzy sekcjami itd.).
    Caly kontener znika nad hero, zeby floatery nie najezdzaly na wideo. */
 function BackgroundFloaters({ count = 20 }: { count?: number }) {
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const elsRef = useRef<(HTMLImageElement | null)[]>([]);
-  const stateRef = useRef<Array<{ x: number; y: number; vx: number; vy: number; r: number; vr: number; size: number; side: number }>>([]);
+  const stateRef = useRef<Array<{ x: number; y: number; vx: number; vy: number; r: number; vr: number; size: number }>>([]);
+  const rectsRef = useRef<Array<{ left: number; top: number; right: number; bottom: number }>>([]);
   const rafRef = useRef<number | null>(null);
-  const [hasSpace, setHasSpace] = useState(false);
+  const [enabled, setEnabled] = useState(false);
 
   const L = MOTO_DOODLES.length;
   const srcs = Array.from({ length: count }, (_, i) => MOTO_DOODLES[(i * 5) % L]);
 
-  // Sa marginesy boczne? (szeroki ekran) - inaczej nie pokazujemy floaterow
+  // Na waskich ekranach (telefon/tablet) brak miejsca poza tekstem - nie pokazujemy
   useEffect(() => {
-    const check = () => setHasSpace((window.innerWidth - CONTENT_W) / 2 >= 70);
+    const check = () => setEnabled(window.innerWidth >= 1000);
     check();
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
   }, []);
 
   useEffect(() => {
-    if (!hasSpace) return;
+    if (!enabled) return;
+    const NAV_H = 84;
     const W = () => window.innerWidth;
     const H = () => window.innerHeight;
-    const margin = () => Math.max(0, (W() - CONTENT_W) / 2);
     const heroH = () => {
       const el = document.querySelector(".kids-hero") as HTMLElement | null;
       return el ? el.offsetHeight : H() * 0.8;
     };
-    // Granice poziome pasa: side 0 = lewy, side 1 = prawy
-    const bounds = (side: number, size: number) => {
-      const m = margin();
-      if (side === 0) return { minX: 4, maxX: Math.max(4, m - size - 4) };
-      const minX = W() - m + 4;
-      return { minX, maxX: Math.max(minX, W() - size - 4) };
+
+    // Bloki tresci/tekstu, ktore floatery maja omijac (wsp. viewportu)
+    const TEXT_SEL =
+      ".breadcrumb, .kids-sub, .kids-h2, .kids-lead, .qnav-tile, .kids-card, .rxf-card, .quiz-wrap, .brand-bubble, .kids-cta-card";
+    const refreshRects = () => {
+      const pad = 12;
+      const out: Array<{ left: number; top: number; right: number; bottom: number }> = [];
+      document.querySelectorAll(TEXT_SEL).forEach((el) => {
+        const r = (el as HTMLElement).getBoundingClientRect();
+        if (r.width === 0 || r.bottom < -40 || r.top > H() + 40) return;
+        out.push({ left: r.left - pad, top: r.top - pad, right: r.right + pad, bottom: r.bottom + pad });
+      });
+      rectsRef.current = out;
     };
 
-    stateRef.current = Array.from({ length: count }, (_, i) => {
-      const side = i % 2;
-      const size = 22 + Math.random() * 26; // 22..48 px
-      const b = bounds(side, size);
+    type Rect = { left: number; top: number; right: number; bottom: number };
+    const blocking = (x: number, y: number, s: number): Rect | null => {
+      const rects = rectsRef.current;
+      for (let k = 0; k < rects.length; k++) {
+        const r = rects[k];
+        if (x < r.right && x + s > r.left && y < r.bottom && y + s > r.top) return r;
+      }
+      return null;
+    };
+
+    refreshRects();
+
+    const place = (s: number) => {
+      for (let t = 0; t < 25; t++) {
+        const x = 4 + Math.random() * Math.max(1, W() - s - 8);
+        const y = NAV_H + Math.random() * Math.max(1, H() - s - NAV_H - 6);
+        if (!blocking(x, y, s)) return { x, y };
+      }
+      return { x: 6, y: NAV_H + Math.random() * Math.max(1, H() - s - NAV_H - 6) };
+    };
+
+    stateRef.current = Array.from({ length: count }, () => {
+      const size = 27 + Math.random() * 31; // 27..58 px (+~20% wzgledem 22..48)
+      const pos = place(size);
       const angle = Math.random() * Math.PI * 2;
       const speed = 22 + Math.random() * 50; // px/s
       return {
-        x: b.minX + Math.random() * Math.max(1, b.maxX - b.minX),
-        y: Math.random() * (H() - size),
+        x: pos.x,
+        y: pos.y,
         vx: Math.cos(angle) * speed,
         vy: Math.sin(angle) * speed,
         r: Math.random() * 360,
         vr: (Math.random() - 0.5) * 50, // deg/s
         size,
-        side,
       };
     });
 
     let last = performance.now();
+    let frame = 0;
     const tick = (now: number) => {
       const dt = Math.min(0.05, (now - last) / 1000);
       last = now;
+      if (frame % 6 === 0) refreshRects();
+      frame++;
+      const w = W();
       const h = H();
       const st = stateRef.current;
       for (let i = 0; i < st.length; i++) {
         const p = st[i];
-        const b = bounds(p.side, p.size);
-        p.x += p.vx * dt;
-        p.y += p.vy * dt;
+        // ruch w X - odbicie od krawedzi viewportu lub bloku tekstu
+        const nx = p.x + p.vx * dt;
+        if (nx <= 2 || nx + p.size >= w - 2) p.vx = -p.vx;
+        else if (blocking(nx, p.y, p.size)) p.vx = -p.vx;
+        else p.x = nx;
+        // ruch w Y
+        const ny = p.y + p.vy * dt;
+        if (ny <= NAV_H || ny + p.size >= h - 2) p.vy = -p.vy;
+        else if (blocking(p.x, ny, p.size)) p.vy = -p.vy;
+        else p.y = ny;
+        // Jesli tekst najechal podczas scrolla - wypchnij najkrotsza droga
+        const hit = blocking(p.x, p.y, p.size);
+        if (hit) {
+          const exitL = hit.left - (p.x + p.size);
+          const exitR = hit.right - p.x;
+          const exitU = hit.top - (p.y + p.size);
+          const exitD = hit.bottom - p.y;
+          const aL = Math.abs(exitL), aR = Math.abs(exitR), aU = Math.abs(exitU), aD = Math.abs(exitD);
+          const m = Math.min(aL, aR, aU, aD);
+          if (m === aL) { p.x += exitL; p.vx = -Math.abs(p.vx); }
+          else if (m === aR) { p.x += exitR; p.vx = Math.abs(p.vx); }
+          else if (m === aU) { p.y += exitU; p.vy = -Math.abs(p.vy); }
+          else { p.y += exitD; p.vy = Math.abs(p.vy); }
+        }
         p.r += p.vr * dt;
-        if (p.x <= b.minX) { p.x = b.minX; p.vx = Math.abs(p.vx); }
-        else if (p.x >= b.maxX) { p.x = b.maxX; p.vx = -Math.abs(p.vx); }
-        if (p.y <= 0) { p.y = 0; p.vy = Math.abs(p.vy); }
-        else if (p.y + p.size >= h) { p.y = h - p.size; p.vy = -Math.abs(p.vy); }
         const el = elsRef.current[i];
         if (el) el.style.transform = `translate3d(${p.x}px, ${p.y}px, 0) rotate(${p.r}deg)`;
       }
@@ -154,7 +200,7 @@ function BackgroundFloaters({ count = 20 }: { count?: number }) {
     };
     rafRef.current = requestAnimationFrame(tick);
 
-    // Fade: floatery widoczne dopiero po zjechaniu ponizej hero
+    // Fade: floatery widoczne dopiero po zjechaniu ponizej hero (nie na wideo)
     const onScroll = () => {
       if (wrapRef.current) {
         wrapRef.current.style.opacity = window.scrollY > heroH() * 0.6 ? "1" : "0";
@@ -164,12 +210,11 @@ function BackgroundFloaters({ count = 20 }: { count?: number }) {
     window.addEventListener("scroll", onScroll, { passive: true });
 
     const onResize = () => {
+      const w = W();
       const h = H();
       for (const p of stateRef.current) {
-        const b = bounds(p.side, p.size);
-        if (p.x < b.minX) p.x = b.minX;
-        if (p.x > b.maxX) p.x = b.maxX;
-        if (p.y + p.size > h) p.y = Math.max(0, h - p.size);
+        if (p.x + p.size > w) p.x = Math.max(2, w - p.size - 2);
+        if (p.y + p.size > h) p.y = Math.max(NAV_H, h - p.size - 2);
       }
     };
     window.addEventListener("resize", onResize);
@@ -179,9 +224,9 @@ function BackgroundFloaters({ count = 20 }: { count?: number }) {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onResize);
     };
-  }, [hasSpace, count]);
+  }, [enabled, count]);
 
-  if (!hasSpace) return null;
+  if (!enabled) return null;
 
   return (
     <div className="bg-floaters" aria-hidden ref={wrapRef}>
@@ -193,8 +238,8 @@ function BackgroundFloaters({ count = 20 }: { count?: number }) {
           alt=""
           className="bg-floater"
           style={{
-            width: stateRef.current[i]?.size ?? 40,
-            height: stateRef.current[i]?.size ?? 40,
+            width: stateRef.current[i]?.size ?? 44,
+            height: stateRef.current[i]?.size ?? 44,
           }}
         />
       ))}
@@ -287,7 +332,7 @@ export default function DlaDzieci() {
           position: absolute;
           top: 0;
           left: 0;
-          opacity: 0.65;
+          opacity: 0.52;
           filter: drop-shadow(1px 2px 0 rgba(13,27,61,.25));
           will-change: transform;
         }
