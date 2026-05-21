@@ -71,15 +71,15 @@ const MOTO_DOODLES = [
   "/pics/latajace/helmet-moto2.svg",
 ];
 
-/* ===== KOMPONENT: floatery latajace po calej stronie, omijajace tekst =====
-   position: fixed; odbijaja sie od krawedzi viewportu ORAZ od blokow tekstu/
-   tresci (naglowki, akapity, karty, kafle) - dzieki temu lataja wszedzie tam,
-   gdzie nie ma tekstu (marginesy, przerwy miedzy sekcjami itd.).
+/* ===== KOMPONENT: floatery latajace po calej stronie =====
+   position: fixed; odbijaja sie tylko od krawedzi viewportu, a gdy dotkna
+   bloku tekstu/tresci (naglowki, akapity, karty, kafle) albo innej banki -
+   PEKAJA jak banka wodna (skala+zanik) i odradzaja sie w pustym miejscu.
    Caly kontener znika nad hero, zeby floatery nie najezdzaly na wideo. */
 function BackgroundFloaters({ count = 20 }: { count?: number }) {
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const elsRef = useRef<(HTMLImageElement | null)[]>([]);
-  const stateRef = useRef<Array<{ x: number; y: number; vx: number; vy: number; r: number; vr: number; size: number }>>([]);
+  const stateRef = useRef<Array<{ x: number; y: number; vx: number; vy: number; r: number; vr: number; size: number; phase: "alive" | "pop" | "spawn"; pt: number }>>([]);
   const rectsRef = useRef<Array<{ left: number; top: number; right: number; bottom: number }>>([]);
   const rafRef = useRef<number | null>(null);
   const [enabled, setEnabled] = useState(false);
@@ -141,7 +141,7 @@ function BackgroundFloaters({ count = 20 }: { count?: number }) {
     };
 
     stateRef.current = Array.from({ length: count }, () => {
-      const size = 27 + Math.random() * 31; // 27..58 px (+~20% wzgledem 22..48)
+      const size = 30 + Math.random() * 34; // 30..64 px (+~10% wzgledem 27..58)
       const pos = place(size);
       const angle = Math.random() * Math.PI * 2;
       const speed = 22 + Math.random() * 50; // px/s
@@ -153,8 +153,17 @@ function BackgroundFloaters({ count = 20 }: { count?: number }) {
         r: Math.random() * 360,
         vr: (Math.random() - 0.5) * 50, // deg/s
         size,
+        phase: "alive" as const,
+        pt: 0,
       };
     });
+
+    type F = (typeof stateRef.current)[number];
+    const POP_DUR = 0.34;   // czas trwania pekniecia
+    const SPAWN_DUR = 0.3;  // czas pojawienia sie nowej banki
+    const BASE_OP = 0.52;
+    const overlap = (a: F, b: F) =>
+      a.x < b.x + b.size && a.x + a.size > b.x && a.y < b.y + b.size && a.y + a.size > b.y;
 
     let last = performance.now();
     let frame = 0;
@@ -168,33 +177,52 @@ function BackgroundFloaters({ count = 20 }: { count?: number }) {
       const st = stateRef.current;
       for (let i = 0; i < st.length; i++) {
         const p = st[i];
-        // ruch w X - odbicie od krawedzi viewportu lub bloku tekstu
-        const nx = p.x + p.vx * dt;
-        if (nx <= 2 || nx + p.size >= w - 2) p.vx = -p.vx;
-        else if (blocking(nx, p.y, p.size)) p.vx = -p.vx;
-        else p.x = nx;
-        // ruch w Y
-        const ny = p.y + p.vy * dt;
-        if (ny <= NAV_H || ny + p.size >= h - 2) p.vy = -p.vy;
-        else if (blocking(p.x, ny, p.size)) p.vy = -p.vy;
-        else p.y = ny;
-        // Jesli tekst najechal podczas scrolla - wypchnij najkrotsza droga
-        const hit = blocking(p.x, p.y, p.size);
-        if (hit) {
-          const exitL = hit.left - (p.x + p.size);
-          const exitR = hit.right - p.x;
-          const exitU = hit.top - (p.y + p.size);
-          const exitD = hit.bottom - p.y;
-          const aL = Math.abs(exitL), aR = Math.abs(exitR), aU = Math.abs(exitU), aD = Math.abs(exitD);
-          const m = Math.min(aL, aR, aU, aD);
-          if (m === aL) { p.x += exitL; p.vx = -Math.abs(p.vx); }
-          else if (m === aR) { p.x += exitR; p.vx = Math.abs(p.vx); }
-          else if (m === aU) { p.y += exitU; p.vy = -Math.abs(p.vy); }
-          else { p.y += exitD; p.vy = Math.abs(p.vy); }
+
+        if (p.phase === "alive") {
+          // ruch + odbicie od krawedzi viewportu
+          const nx = p.x + p.vx * dt;
+          if (nx <= 2 || nx + p.size >= w - 2) p.vx = -p.vx; else p.x = nx;
+          const ny = p.y + p.vy * dt;
+          if (ny <= NAV_H || ny + p.size >= h - 2) p.vy = -p.vy; else p.y = ny;
+          p.r += p.vr * dt;
+          // dotyk tekstu/elementu lub innej banki -> pekniecie
+          let pop = !!blocking(p.x, p.y, p.size);
+          if (!pop) {
+            for (let j = 0; j < st.length; j++) {
+              if (j === i) continue;
+              const b = st[j];
+              if (b.phase !== "alive") continue;
+              if (overlap(p, b)) { b.phase = "pop"; b.pt = 0; pop = true; break; }
+            }
+          }
+          if (pop) { p.phase = "pop"; p.pt = 0; }
+        } else if (p.phase === "pop") {
+          p.pt += dt;
+          if (p.pt >= POP_DUR) {
+            // odrodzenie w pustym miejscu
+            const pos = place(p.size);
+            p.x = pos.x; p.y = pos.y;
+            const a = Math.random() * Math.PI * 2;
+            const sp = 22 + Math.random() * 50;
+            p.vx = Math.cos(a) * sp; p.vy = Math.sin(a) * sp;
+            p.r = Math.random() * 360;
+            p.phase = "spawn"; p.pt = 0;
+          }
+        } else {
+          // spawn - bez kolizji, banka pojawia sie powoli
+          p.pt += dt;
+          if (p.pt >= SPAWN_DUR) { p.phase = "alive"; p.pt = 0; }
         }
-        p.r += p.vr * dt;
+
+        // wizualizacja: skala + krycie wg fazy
+        let sc = 1, opf = 1;
+        if (p.phase === "pop") { const pr = p.pt / POP_DUR; sc = 1 + pr * 0.8; opf = 1 - pr; }
+        else if (p.phase === "spawn") { const pr = p.pt / SPAWN_DUR; sc = 0.3 + pr * 0.7; opf = pr; }
         const el = elsRef.current[i];
-        if (el) el.style.transform = `translate3d(${p.x}px, ${p.y}px, 0) rotate(${p.r}deg)`;
+        if (el) {
+          el.style.transform = `translate3d(${p.x}px, ${p.y}px, 0) rotate(${p.r}deg) scale(${sc.toFixed(3)})`;
+          el.style.opacity = (BASE_OP * opf).toFixed(3);
+        }
       }
       rafRef.current = requestAnimationFrame(tick);
     };
@@ -333,8 +361,9 @@ export default function DlaDzieci() {
           top: 0;
           left: 0;
           opacity: 0.52;
+          transform-origin: center center;
           filter: drop-shadow(1px 2px 0 rgba(13,27,61,.25));
-          will-change: transform;
+          will-change: transform, opacity;
         }
         :global([data-theme="dark"]) .bg-floater {
           filter: invert(.85) brightness(1.1);
@@ -740,8 +769,8 @@ export default function DlaDzieci() {
       `}</style>
 
       <div className="kids-page-bg">
-        {/* Motocyklowe SVG odbijajace sie tylko w bocznych marginesach */}
-        <BackgroundFloaters count={20} />
+        {/* Motocyklowe SVG latajace po stronie - pekaja przy dotknieciu tekstu/elementu */}
+        <BackgroundFloaters count={40} />
 
         {/* ===== HERO ===== */}
         <section className="kids-hero">
