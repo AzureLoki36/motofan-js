@@ -54,57 +54,80 @@ const BRAND_LOGOS = [
   { name: "RXF", color: "#ff8fab" },
 ];
 
-/* Ikony - motocykle (rozne typy), znaki drogowe (rozne), kaski - z Twemoji CDN */
+/* Latajace elementy - lokalne motocyklowe SVG z folderu /pics/latajace */
 const MOTO_DOODLES = [
-  // motocykle / pojazdy
-  "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f3cd.svg", // motorcycle
-  "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f6f5.svg", // motor scooter
-  "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f3ce.svg", // racing car
-  // znaki drogowe / sygnaly
-  "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f6d1.svg", // stop sign
-  "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/26d4.svg",  // no entry
-  "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f6a6.svg", // vertical traffic light
-  "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f6a5.svg", // horizontal traffic light
-  "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/26a0.svg",  // warning
-  "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f6a7.svg", // construction
-  "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f6ab.svg", // prohibited
-  // kaski (rozne)
-  "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/26d1.svg",  // rescue helmet (red/white)
-  "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1fa96.svg", // military helmet (olive)
-  "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/26d1-fe0f.svg", // helmet variant
+  "/pics/latajace/biker.svg",
+  "/pics/latajace/motorcycle.svg",
+  "/pics/latajace/helmet.svg",
+  "/pics/latajace/cogwheel.svg",
+  "/pics/latajace/motorcyclist.svg",
+  "/pics/latajace/goggles.svg",
+  "/pics/latajace/motorbike.svg",
+  "/pics/latajace/helmet-moto.svg",
+  "/pics/latajace/motorcycle2.svg",
+  "/pics/latajace/mechanic.svg",
+  "/pics/latajace/motorcycle3.svg",
+  "/pics/latajace/motorbike-moto.svg",
+  "/pics/latajace/helmet-moto2.svg",
 ];
 
-/* ===== KOMPONENT: floatery zachowujace sie jak pilki w przestrzeni kosmicznej =====
-   position: fixed -> zawsze widoczne w viewport, 150 elementow ciagle w ruchu,
-   odbijaja sie od krawedzi viewportu, kazdy z wlasna predkoscia/kierunkiem */
-function BackgroundFloaters({ count = 150 }: { count?: number }) {
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const elsRef = useRef<(HTMLImageElement | null)[]>([]);
-  const stateRef = useRef<Array<{ x: number; y: number; vx: number; vy: number; r: number; vr: number; size: number }>>([]);
-  const rafRef = useRef<number | null>(null);
+/* Szerokosc kolumny tresci (.container) - floatery lataja tylko POZA nia */
+const CONTENT_W = 1200;
 
-  // Stabilna permutacja ikon - sasiednie != ta sama ikona
+/* ===== KOMPONENT: floatery odbijajace sie TYLKO w bocznych marginesach =====
+   position: fixed; kazdy element przypisany do lewego albo prawego pustego pasa
+   (poza kolumna tresci CONTENT_W), odbija sie w granicach tego pasa.
+   Caly kontener znika nad hero, zeby floatery nie najezdzaly na wideo. */
+function BackgroundFloaters({ count = 20 }: { count?: number }) {
+  const wrapRef = useRef<HTMLDivElement | null>(null);
+  const elsRef = useRef<(HTMLImageElement | null)[]>([]);
+  const stateRef = useRef<Array<{ x: number; y: number; vx: number; vy: number; r: number; vr: number; size: number; side: number }>>([]);
+  const rafRef = useRef<number | null>(null);
+  const [hasSpace, setHasSpace] = useState(false);
+
   const L = MOTO_DOODLES.length;
-  const srcs = Array.from({ length: count }, (_, i) => MOTO_DOODLES[((i * 7) + ((i * 13) % 5)) % L]);
+  const srcs = Array.from({ length: count }, (_, i) => MOTO_DOODLES[(i * 5) % L]);
+
+  // Sa marginesy boczne? (szeroki ekran) - inaczej nie pokazujemy floaterow
+  useEffect(() => {
+    const check = () => setHasSpace((window.innerWidth - CONTENT_W) / 2 >= 70);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (!hasSpace) return;
     const W = () => window.innerWidth;
     const H = () => window.innerHeight;
+    const margin = () => Math.max(0, (W() - CONTENT_W) / 2);
+    const heroH = () => {
+      const el = document.querySelector(".kids-hero") as HTMLElement | null;
+      return el ? el.offsetHeight : H() * 0.8;
+    };
+    // Granice poziome pasa: side 0 = lewy, side 1 = prawy
+    const bounds = (side: number, size: number) => {
+      const m = margin();
+      if (side === 0) return { minX: 4, maxX: Math.max(4, m - size - 4) };
+      const minX = W() - m + 4;
+      return { minX, maxX: Math.max(minX, W() - size - 4) };
+    };
 
-    // Inicjalizacja losowych pozycji i predkosci
-    stateRef.current = Array.from({ length: count }, () => {
-      const size = 28 + Math.random() * 44; // 28..72 px
+    stateRef.current = Array.from({ length: count }, (_, i) => {
+      const side = i % 2;
+      const size = 22 + Math.random() * 26; // 22..48 px
+      const b = bounds(side, size);
       const angle = Math.random() * Math.PI * 2;
-      const speed = 30 + Math.random() * 80; // px/s
+      const speed = 22 + Math.random() * 50; // px/s
       return {
-        x: Math.random() * (W() - size),
+        x: b.minX + Math.random() * Math.max(1, b.maxX - b.minX),
         y: Math.random() * (H() - size),
         vx: Math.cos(angle) * speed,
         vy: Math.sin(angle) * speed,
         r: Math.random() * 360,
-        vr: (Math.random() - 0.5) * 60, // deg/s
+        vr: (Math.random() - 0.5) * 50, // deg/s
         size,
+        side,
       };
     });
 
@@ -112,17 +135,16 @@ function BackgroundFloaters({ count = 150 }: { count?: number }) {
     const tick = (now: number) => {
       const dt = Math.min(0.05, (now - last) / 1000);
       last = now;
-      const w = W();
       const h = H();
       const st = stateRef.current;
       for (let i = 0; i < st.length; i++) {
         const p = st[i];
+        const b = bounds(p.side, p.size);
         p.x += p.vx * dt;
         p.y += p.vy * dt;
         p.r += p.vr * dt;
-        // odbicie od krawedzi viewportu
-        if (p.x <= 0) { p.x = 0; p.vx = Math.abs(p.vx); }
-        else if (p.x + p.size >= w) { p.x = w - p.size; p.vx = -Math.abs(p.vx); }
+        if (p.x <= b.minX) { p.x = b.minX; p.vx = Math.abs(p.vx); }
+        else if (p.x >= b.maxX) { p.x = b.maxX; p.vx = -Math.abs(p.vx); }
         if (p.y <= 0) { p.y = 0; p.vy = Math.abs(p.vy); }
         else if (p.y + p.size >= h) { p.y = h - p.size; p.vy = -Math.abs(p.vy); }
         const el = elsRef.current[i];
@@ -132,11 +154,21 @@ function BackgroundFloaters({ count = 150 }: { count?: number }) {
     };
     rafRef.current = requestAnimationFrame(tick);
 
+    // Fade: floatery widoczne dopiero po zjechaniu ponizej hero
+    const onScroll = () => {
+      if (wrapRef.current) {
+        wrapRef.current.style.opacity = window.scrollY > heroH() * 0.6 ? "1" : "0";
+      }
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+
     const onResize = () => {
-      const w = W();
       const h = H();
       for (const p of stateRef.current) {
-        if (p.x + p.size > w) p.x = Math.max(0, w - p.size);
+        const b = bounds(p.side, p.size);
+        if (p.x < b.minX) p.x = b.minX;
+        if (p.x > b.maxX) p.x = b.maxX;
         if (p.y + p.size > h) p.y = Math.max(0, h - p.size);
       }
     };
@@ -144,12 +176,15 @@ function BackgroundFloaters({ count = 150 }: { count?: number }) {
 
     return () => {
       if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
+      window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onResize);
     };
-  }, [count]);
+  }, [hasSpace, count]);
+
+  if (!hasSpace) return null;
 
   return (
-    <div className="bg-floaters" aria-hidden ref={containerRef}>
+    <div className="bg-floaters" aria-hidden ref={wrapRef}>
       {srcs.map((src, i) => (
         <img
           key={i}
@@ -158,8 +193,8 @@ function BackgroundFloaters({ count = 150 }: { count?: number }) {
           alt=""
           className="bg-floater"
           style={{
-            width: stateRef.current[i]?.size ?? 48,
-            height: stateRef.current[i]?.size ?? 48,
+            width: stateRef.current[i]?.size ?? 40,
+            height: stateRef.current[i]?.size ?? 40,
           }}
         />
       ))}
@@ -238,19 +273,21 @@ export default function DlaDzieci() {
         }
         :global([data-theme="dark"]) .kids-page-bg { background: #0e1322; }
 
-        /* ===== FLOATERY - pilki w przestrzeni kosmicznej (JS-rAF) ===== */
+        /* ===== FLOATERY - odbijaja sie w bocznych marginesach (JS-rAF) ===== */
         .bg-floaters {
           position: fixed;
           inset: 0;
           pointer-events: none;
           overflow: hidden;
           z-index: 60;
+          opacity: 0;
+          transition: opacity .8s ease;
         }
         .bg-floater {
           position: absolute;
           top: 0;
           left: 0;
-          opacity: 0.45;
+          opacity: 0.65;
           filter: drop-shadow(1px 2px 0 rgba(13,27,61,.25));
           will-change: transform;
         }
@@ -262,17 +299,29 @@ export default function DlaDzieci() {
         .kids-hero {
           position: relative;
           overflow: hidden;
-          max-height: clamp(500px, 72vw, 880px);
+          height: clamp(300px, 46vw, 640px);
           background: linear-gradient(180deg, #6cc9ff 0%, #bfe7ff 100%);
           z-index: 2;
         }
+        /* Wygaszenie dolu wideo w tlo strony - bez ostrej niebieskiej linii */
+        .kids-hero::after {
+          content: "";
+          position: absolute;
+          left: 0; right: 0; bottom: 0;
+          height: 90px;
+          background: linear-gradient(to bottom, rgba(191,231,255,0) 0%, #bfe7ff 100%);
+          z-index: 1;
+          pointer-events: none;
+        }
         .hero-video {
           display: block;
+          position: absolute;
+          inset: 0;
           width: 100%;
-          height: auto;
-          margin-top: clamp(-370px, -26vw, -105px);
+          height: 100%;
+          object-fit: cover;
+          object-position: 25% 18%;
           pointer-events: none;
-          position: relative;
           z-index: 0;
         }
         .hero-overlay {
@@ -364,9 +413,6 @@ export default function DlaDzieci() {
           .wheel { width: 55px; height: 55px; }
           .wheel-back  { left: 39px;  bottom: 18px; }
           .wheel-front { left: 186px; bottom: 18px; }
-        }
-        @media (max-width: 900px) {
-          .kids-hero { padding: 70px 0 180px; min-height: 480px; }
         }
         .kids-title {
           font-family: 'Outfit',sans-serif;
@@ -641,7 +687,6 @@ export default function DlaDzieci() {
           .kids-quicknav { grid-template-columns: repeat(2, 1fr); margin-bottom: -40px; }
         }
         @media (max-width: 560px) {
-          .kids-hero { padding: 60px 0 140px; }
           .kids-section { padding: 80px 0 60px; }
           .kids-grid { grid-template-columns: 1fr; }
           .rxf-grid  { grid-template-columns: 1fr; }
@@ -650,8 +695,8 @@ export default function DlaDzieci() {
       `}</style>
 
       <div className="kids-page-bg">
-        {/* Ledwo widoczne motocyklowe ikony unoszace sie na calej stronie */}
-        <BackgroundFloaters count={30} />
+        {/* Motocyklowe SVG odbijajace sie tylko w bocznych marginesach */}
+        <BackgroundFloaters count={20} />
 
         {/* ===== HERO ===== */}
         <section className="kids-hero">
