@@ -112,7 +112,7 @@ section{padding:96px 0}
 .btn-full{width:100%;justify-content:center}
 
 /* ===== NAVBAR ===== */
-.navbar{position:fixed;top:0;left:0;right:0;z-index:1000;height:var(--nav-h);background:var(--nav-bg);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:var(--tr)}
+.navbar{position:fixed;top:0;left:0;right:0;z-index:1000;height:var(--nav-h);background:var(--nav-bg);backdrop-filter:blur(20px);transition:var(--tr)}
 .navbar.scrolled{box-shadow:0 4px 24px rgba(0,0,0,.08)}
 .nav-container{max-width:1400px;margin:0 auto;padding:0 32px;height:100%;display:flex;align-items:center;gap:24px}
 
@@ -136,8 +136,8 @@ section{padding:96px 0}
 .hero{position:relative;height:100vh;min-height:600px;display:flex;align-items:center;overflow:hidden}
 .hero-video-wrap{position:absolute;inset:0;z-index:0;overflow:hidden}
 
-/* Clip bottom to hide watermark */
-.hero-video{width:100%;height:112%;object-fit:cover;object-position:center top}
+/* Clip bottom aggressively to hide watermark */
+.hero-video{width:100%;height:130%;object-fit:cover;object-position:center top}
 .hero-overlay{position:absolute;inset:0;background:linear-gradient(to right,rgba(10,10,20,.82) 0%,rgba(10,10,20,.55) 55%,rgba(10,10,20,.2) 100%)}
 
 .hero-content{position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:0 24px;width:100%}

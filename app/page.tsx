@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import HomeFooter from "@/components/HomeFooter";
 import CookieBanner from "@/components/CookieBanner";
 import ScrollEffects from "@/components/ScrollEffects";
+import FloatingElements from "@/components/FloatingElements";
 import ContactForm from "@/components/ContactForm";
 import FacebookSection from "@/components/FacebookSection";
 import { Editable, EditableHTML, EditableImage } from "@/components/Editable";
@@ -15,6 +16,7 @@ export default function Home() {
     <>
       <Navbar isHome activeSection="Start" />
       <ScrollEffects />
+      <FloatingElements />
 
       {/* ===== HERO ===== */}
       <section className="hero" id="home">
