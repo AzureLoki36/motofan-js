@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, type CSSProperties } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import SubpageFooter from "@/components/SubpageFooter";
@@ -9,8 +9,7 @@ import { useLocale } from "@/components/LocaleProvider";
 
 /* =========================================================================
    STRONA DLA DZIECI - rewrite od zera, dziala niezawodnie
-   - Hero: droga (hero-biker.svg) + animowany motocyklista (inline SVG)
-   - Floatery: position: fixed, ledwo widoczne motocykle/kaski w tle calej strony
+   - Hero: wideo banner.mp4 + tytul
    - Sekcje: produkty / RXF / quiz / marki / CTA - identyczna kolorystyka i czcionki
 ========================================================================= */
 
@@ -53,92 +52,6 @@ const BRAND_LOGOS = [
   { name: "Five", color: "#9bf6ff" },
   { name: "RXF", color: "#ff8fab" },
 ];
-
-/* Latajace elementy - lokalne motocyklowe SVG z folderu /pics/latajace */
-const MOTO_DOODLES = [
-  "/pics/latajace/biker.svg",
-  "/pics/latajace/motorcycle.svg",
-  "/pics/latajace/helmet.svg",
-  "/pics/latajace/cogwheel.svg",
-  "/pics/latajace/motorcyclist.svg",
-  "/pics/latajace/goggles.svg",
-  "/pics/latajace/motorbike.svg",
-  "/pics/latajace/helmet-moto.svg",
-  "/pics/latajace/motorcycle2.svg",
-  "/pics/latajace/mechanic.svg",
-  "/pics/latajace/motorcycle3.svg",
-  "/pics/latajace/motorbike-moto.svg",
-  "/pics/latajace/helmet-moto2.svg",
-];
-
-/* ===== KOMPONENT: ikony rozsiane po sekcji - schowane za trescia =====
-   Renderowane wewnatrz danej sekcji jako position:absolute, z-index 1 -
-   czyli NAD tlem sekcji, ale POD trescia (.container z kartami/tekstem),
-   dzieki czemu chowaja sie za elementami zamiast wybuchac. Przewijaja sie
-   razem ze strona: gdy zjezdzasz, te u gory znikaja, a od dolu pojawiaja sie
-   kolejne. Delikatne unoszenie w miejscu - bez lotu do gory. */
-function mulberry32(seed: number) {
-  let a = seed >>> 0;
-  return function () {
-    a = (a + 0x6d2b79f5) | 0;
-    let t = Math.imul(a ^ (a >>> 15), 1 | a);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-
-const FLOAT_COLS = 5;
-const FLOAT_ROWS = 3;
-
-function SectionFloaters({ count = 8, seed = 1 }: { count?: number; seed?: number }) {
-  const items = useMemo(() => {
-    const rnd = mulberry32(seed * 9973 + 17);
-    // Losowo wymieszane, UNIKALNE komorki siatki -> dwa floatery nigdy nie trafia
-    // do tej samej komorki, a kazdy miesci sie w swojej z marginesem => brak nachodzenia.
-    const cells = Array.from({ length: FLOAT_COLS * FLOAT_ROWS }, (_, i) => i);
-    for (let i = cells.length - 1; i > 0; i--) {
-      const j = Math.floor(rnd() * (i + 1));
-      [cells[i], cells[j]] = [cells[j], cells[i]];
-    }
-    const n = Math.min(count, cells.length);
-    return cells.slice(0, n).map((cell) => ({
-      src: MOTO_DOODLES[Math.floor(rnd() * MOTO_DOODLES.length)],
-      col: (cell % FLOAT_COLS) + 1,
-      row: Math.floor(cell / FLOAT_COLS) + 1,
-      sizePct: 48 + Math.round(rnd() * 12), // 48..60 % komorki (zapas na obrot + wieksze unoszenie)
-      dur: 6.4 + rnd() * 6.4,               // s (~10% szybciej niz 7..14)
-      delay: -(rnd() * 8),                  // s
-      rot: Math.round(-10 + rnd() * 20),    // -10..10 deg
-      amp: 11 + Math.round(rnd() * 9),      // 11..20 px (dalej niz wczesniej 5..10)
-    }));
-  }, [count, seed]);
-
-  return (
-    <div
-      className="sec-floaters"
-      aria-hidden
-      style={{ ["--cols" as string]: FLOAT_COLS, ["--rows" as string]: FLOAT_ROWS } as CSSProperties}
-    >
-      {items.map((it, i) => (
-        <span key={i} className="sec-cell" style={{ gridColumn: it.col, gridRow: it.row }}>
-          <img
-            src={it.src}
-            alt=""
-            className="sec-floater"
-            style={{
-              width: `${it.sizePct}%`,
-              height: `${it.sizePct}%`,
-              animationDuration: `${it.dur}s`,
-              animationDelay: `${it.delay}s`,
-              ["--rot" as string]: `${it.rot}deg`,
-              ["--amp" as string]: `${it.amp}px`,
-            } as CSSProperties}
-          />
-        </span>
-      ))}
-    </div>
-  );
-}
 
 /* ===== KOMPONENT: motocyklista (PNG/JPG) + animowane kola =====
    Obrazek-zrodlo jest skierowany w LEWO; scaleX(-1) odwraca w prawo.
@@ -210,45 +123,6 @@ export default function DlaDzieci() {
           background: linear-gradient(180deg, #bfe7ff 0%, #eaf4ff 18%, #fff3b0 32%, #ffe1e1 52%, #dcffe4 72%, #e9defc 90%, #0d1b3d 100%);
         }
         :global([data-theme="dark"]) .kids-page-bg { background: #0e1322; }
-
-        /* ===== IKONY ROZSIANE PO SEKCJI - siatka komorek (brak nachodzenia) =====
-           Kazda ikona ma wlasna komorke siatki i miesci sie w niej z marginesem
-           (uwzgl. obrot i unoszenie), wiec dwie ikony nigdy na siebie nie nachodza.
-           z-index 1: nad tlem sekcji, pod trescia (.container) -> chowaja sie za nia. */
-        .sec-floaters {
-          position: absolute;
-          inset: 0;
-          z-index: 1;
-          pointer-events: none;
-          overflow: hidden;
-          display: grid;
-          grid-template-columns: repeat(var(--cols), 1fr);
-          grid-template-rows: repeat(var(--rows), 1fr);
-        }
-        .sec-cell {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          min-width: 0;
-          min-height: 0;
-        }
-        .sec-floater {
-          opacity: 0.34;
-          object-fit: contain;
-          transform-origin: center center;
-          filter: drop-shadow(1px 2px 0 rgba(13,27,61,.18));
-          will-change: transform;
-          animation-name: secFloat;
-          animation-timing-function: ease-in-out;
-          animation-iteration-count: infinite;
-        }
-        @keyframes secFloat {
-          0%, 100% { transform: translateY(0) rotate(var(--rot)); }
-          50%      { transform: translateY(calc(var(--amp) * -1)) rotate(calc(var(--rot) + 5deg)); }
-        }
-        :global([data-theme="dark"]) .sec-floater {
-          filter: invert(.85) brightness(1.1);
-        }
 
         /* ===== HERO ===== */
         .kids-hero {
@@ -700,7 +574,6 @@ export default function DlaDzieci() {
         <section id="strefa-produkty" className="kids-section kids-section--products">
           <span className="blob tr" style={{ background: "#ff8b8b" }} aria-hidden />
           <span className="blob bl" style={{ background: "#6be5b0" }} aria-hidden />
-          <SectionFloaters count={7} seed={1} />
           <div className="container">
             <EditableHTML id="kids.gear.h2" as="h2" className="kids-h2" defaultHtml='🪖 Kaski, zbroje i <span class="rainbow">kurtki dla dzieci</span>' />
             <Editable id="kids.gear.lead" as="p" className="kids-lead" multiline>
@@ -727,7 +600,6 @@ export default function DlaDzieci() {
         <section id="strefa-rxf" className="kids-section kids-section--rxf">
           <span className="blob tr" style={{ background: "#ffd23f" }} aria-hidden />
           <span className="blob bl" style={{ background: "#c7a8f7" }} aria-hidden />
-          <SectionFloaters count={7} seed={2} />
           <div className="container">
             <EditableHTML id="kids.rxf.h2" as="h2" className="kids-h2" defaultHtml='🏍️ Motocykle <span class="rainbow">RXF dla dzieci</span>' />
             <Editable id="kids.rxf.lead" as="p" className="kids-lead" multiline>
@@ -756,7 +628,6 @@ export default function DlaDzieci() {
         <section id="strefa-gra" className="kids-section kids-section--game">
           <span className="blob tr" style={{ background: "#6be5b0" }} aria-hidden />
           <span className="blob bl" style={{ background: "#ffd23f" }} aria-hidden />
-          <SectionFloaters count={7} seed={3} />
           <div className="container">
             <EditableHTML id="kids.quiz.h2" as="h2" className="kids-h2" defaultHtml='🎮 Mini-gra: <span class="rainbow">Bezpieczna jazda</span>' />
             <Editable id="kids.quiz.lead" as="p" className="kids-lead" multiline>
@@ -824,7 +695,6 @@ export default function DlaDzieci() {
         <section id="strefa-marki" className="kids-section kids-section--alt">
           <span className="blob tr" style={{ background: "#ff8b8b" }} aria-hidden />
           <span className="blob bl" style={{ background: "#4ec3ff" }} aria-hidden />
-          <SectionFloaters count={7} seed={4} />
           <div className="container">
             <EditableHTML id="kids.brands.h2" as="h2" className="kids-h2" defaultHtml='⭐ Współpracujemy <span class="rainbow">z najlepszymi</span>' />
             <Editable id="kids.brands.lead" as="p" className="kids-lead" multiline>
