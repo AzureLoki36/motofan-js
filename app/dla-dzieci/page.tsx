@@ -317,7 +317,8 @@ export default function DlaDzieci() {
         /* ===== SEKCJE ===== */
         .kids-section { position: relative; padding: 110px 0 90px; overflow: hidden; z-index: 2; }
         .kids-section .container { position: relative; z-index: 2; }
-        .kids-section--products { background: #ffe3c7; }
+        /* Gora pierwszej sekcji wygaszana, by krem wtapial sie w jasnoniebieskie tlo (brak ostrej linii) */
+        .kids-section--products { background: linear-gradient(180deg, rgba(255,227,199,0) 0%, #ffe3c7 140px); }
         .kids-section--rxf      { background: #ffdbe0; }
         .kids-section--game     { background: #d2f3df; }
         .kids-section--alt      { background: #e6dbfb; }
