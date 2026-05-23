@@ -67,18 +67,41 @@ function HeroRider() {
 }
 
 /* ===== MIEKKIE FALOWE PRZEJSCIE MIEDZY SEKCJAMI =====
-   Tlo paska = kolor sekcji ponizej (to). Na gorze miekka fala w kolorze sekcji
-   powyzej (from), plynnie wygaszana do przezroczystosci -> faliste, gradientowe
-   przejscie bez ostrej linii. */
+   Pasek to gladki, wygladzony (smoothstep) gradient od koloru sekcji powyzej (from)
+   do koloru sekcji ponizej (to). Smoothstep ma zerowe nachylenie na obu koncach,
+   wiec laczy sie z jednolitymi sekcjami bez zalamania (brak pasma Macha / ostrej
+   linii). Na wierzchu zostaje delikatna, mocno rozmyta fala dla charakteru. */
+function hexToRgb(h: string): [number, number, number] {
+  const x = h.replace("#", "");
+  return [parseInt(x.slice(0, 2), 16), parseInt(x.slice(2, 4), 16), parseInt(x.slice(4, 6), 16)];
+}
+function rgbToHex(r: number, g: number, b: number): string {
+  const c = (n: number) => Math.round(Math.max(0, Math.min(255, n))).toString(16).padStart(2, "0");
+  return `#${c(r)}${c(g)}${c(b)}`;
+}
+/* Wielopunktowy gradient z wygladzaniem smoothstep – plynne przejscie koloru bez
+   widocznej linii ani schodkowania (banding). */
+function easedGradient(from: string, to: string, steps = 10): string {
+  const a = hexToRgb(from);
+  const b = hexToRgb(to);
+  const stops: string[] = [];
+  for (let i = 0; i <= steps; i++) {
+    const p = i / steps;
+    const e = p * p * (3 - 2 * p); // smoothstep
+    const col = rgbToHex(a[0] + (b[0] - a[0]) * e, a[1] + (b[1] - a[1]) * e, a[2] + (b[2] - a[2]) * e);
+    stops.push(`${col} ${(p * 100).toFixed(1)}%`);
+  }
+  return `linear-gradient(180deg, ${stops.join(", ")})`;
+}
 function ZoneSep({ from, to }: { from: string; to: string }) {
   const id = `zs-${from.replace("#", "")}-${to.replace("#", "")}`;
   return (
-    <div className="zone-sep" aria-hidden style={{ background: to }}>
+    <div className="zone-sep" aria-hidden style={{ background: easedGradient(from, to) }}>
       <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id={id} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor={from} stopOpacity="1" />
-            <stop offset="100%" stopColor={from} stopOpacity="0" />
+            <stop offset="0%" stopColor={from} stopOpacity="0.55" />
+            <stop offset="60%" stopColor={from} stopOpacity="0" />
           </linearGradient>
         </defs>
         <path d="M0,0 L1440,0 L1440,54 C1160,108 980,28 720,60 C460,92 280,26 0,62 Z" fill={`url(#${id})`} />
@@ -329,7 +352,7 @@ export default function DlaDzieci() {
         :global([data-theme="dark"]) .kids-section--alt      { background: #1f1a2f; }
 
         .zone-sep { display: block; width: 100%; height: 120px; position: relative; z-index: 3; margin-top: -2px; margin-bottom: -2px; line-height: 0; overflow: hidden; }
-        .zone-sep svg { display: block; width: 100%; height: 100%; filter: blur(2px); }
+        .zone-sep svg { display: block; width: 100%; height: 100%; filter: blur(7px); }
 
         .kids-h2 {
           font-family: 'Outfit',sans-serif;
