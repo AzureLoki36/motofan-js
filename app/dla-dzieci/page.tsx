@@ -27,30 +27,30 @@ const QUESTIONS: Q[] = [
 ];
 
 const PRODUCTS = [
-  { img: "/pics/dzieci/product-helmet1.svg", name: "Kask LS2 Storm Junior", brand: "LS2", cat: "Kask integralny", color: "linear-gradient(135deg,#ffd6e0 0%,#ffb3c6 100%)" },
-  { img: "/pics/dzieci/product-helmet2.svg", name: "Kask HJC C10 Kids", brand: "HJC", cat: "Kask sportowy", color: "linear-gradient(135deg,#caffbf 0%,#a0e7e5 100%)" },
-  { img: "/pics/dzieci/product-armor.svg", name: "Zbroja Pro Junior", brand: "SECA", cat: "Ochraniacze pleców i klatki", color: "linear-gradient(135deg,#ffd3b6 0%,#ffaaa5 100%)" },
-  { img: "/pics/dzieci/product-jacket.svg", name: "Kurtka MX Mini", brand: "Acerbis", cat: "Kurtka enduro/cross", color: "linear-gradient(135deg,#fff5e1 0%,#fbc4ab 100%)" },
-  { img: "/pics/dzieci/product-boots.svg", name: "Buty MX Junior", brand: "Alpinestars", cat: "Buty crossowe", color: "linear-gradient(135deg,#b4f8c8 0%,#a8e6cf 100%)" },
-  { img: "/pics/dzieci/product-gloves.svg", name: "Rękawice Kids Touch", brand: "Five", cat: "Rękawice motocyklowe", color: "linear-gradient(135deg,#ffeaa7 0%,#ffd166 100%)" },
+  { img: "/pics/dzieci/product-helmet1.svg", name: "Kask LS2 Storm Junior", brand: "LS2", cat: "Kask integralny", color: "linear-gradient(135deg,#ffdbe0 0%,#ffbcc8 100%)" },
+  { img: "/pics/dzieci/product-helmet2.svg", name: "Kask HJC C10 Kids", brand: "HJC", cat: "Kask sportowy", color: "linear-gradient(135deg,#d2f3df 0%,#a9e6c6 100%)" },
+  { img: "/pics/dzieci/product-armor.svg", name: "Zbroja Pro Junior", brand: "SECA", cat: "Ochraniacze pleców i klatki", color: "linear-gradient(135deg,#ffe3c7 0%,#ffc1a6 100%)" },
+  { img: "/pics/dzieci/product-jacket.svg", name: "Kurtka MX Mini", brand: "Acerbis", cat: "Kurtka enduro/cross", color: "linear-gradient(135deg,#fff0c7 0%,#ffdc87 100%)" },
+  { img: "/pics/dzieci/product-boots.svg", name: "Buty MX Junior", brand: "Alpinestars", cat: "Buty crossowe", color: "linear-gradient(135deg,#d8eaff 0%,#abcdf5 100%)" },
+  { img: "/pics/dzieci/product-gloves.svg", name: "Rękawice Kids Touch", brand: "Five", cat: "Rękawice motocyklowe", color: "linear-gradient(135deg,#ece0fc 0%,#c9b3f3 100%)" },
 ];
 
 const RXF_MOTOS = [
-  { img: "/pics/dzieci/rxf-mini.svg", name: "RXF Mini 60", cc: "60 cm³", age: "4–7 lat", color: "#ff6b6b" },
-  { img: "/pics/dzieci/rxf-open.svg", name: "RXF Open 90", cc: "90 cm³", age: "7–10 lat", color: "#4ecdc4" },
-  { img: "/pics/dzieci/rxf-freeride.svg", name: "RXF Freeride 125", cc: "125 cm³", age: "10–14 lat", color: "#f59e0b" },
-  { img: "/pics/dzieci/rxf-racing.svg", name: "RXF Racing 150", cc: "150 cm³", age: "14+ lat", color: "#10b981" },
+  { img: "/pics/dzieci/rxf-mini.svg", name: "RXF Mini 60", cc: "60 cm³", age: "4–7 lat", color: "#ff7a66" },
+  { img: "/pics/dzieci/rxf-open.svg", name: "RXF Open 90", cc: "90 cm³", age: "7–10 lat", color: "#5aa6f0" },
+  { img: "/pics/dzieci/rxf-freeride.svg", name: "RXF Freeride 125", cc: "125 cm³", age: "10–14 lat", color: "#ffc24d" },
+  { img: "/pics/dzieci/rxf-racing.svg", name: "RXF Racing 150", cc: "150 cm³", age: "14+ lat", color: "#3fcf97" },
 ];
 
 const BRAND_LOGOS = [
-  { name: "LS2", color: "#ff6b6b" },
-  { name: "HJC", color: "#4ecdc4" },
-  { name: "Givi", color: "#ffe66d" },
-  { name: "SECA", color: "#a8e6cf" },
-  { name: "Acerbis", color: "#c9b6ff" },
-  { name: "Alpinestars", color: "#ffaaa5" },
-  { name: "Five", color: "#9bf6ff" },
-  { name: "RXF", color: "#ff8fab" },
+  { name: "LS2", color: "#ff7a66" },
+  { name: "HJC", color: "#5aa6f0" },
+  { name: "Givi", color: "#ffc24d" },
+  { name: "SECA", color: "#3fcf97" },
+  { name: "Acerbis", color: "#9b78ec" },
+  { name: "Alpinestars", color: "#ff8e74" },
+  { name: "Five", color: "#62c3a3" },
+  { name: "RXF", color: "#b89cf0" },
 ];
 
 /* ===== KOMPONENT: motocyklista (PNG/JPG) + animowane kola =====
@@ -109,18 +109,19 @@ export default function DlaDzieci() {
 
       <style>{`
         :root {
-          --k-sky: #4ec3ff;
-          --k-sun: #ffd23f;
-          --k-tomato: #ff5d5d;
-          --k-mint: #3ddc97;
-          --k-plum: #9b5de5;
-          --k-ink: #0d1b3d;
+          /* Zharmonizowana paleta - ujednolicone nasycenie i jasnosc (rodzina kolorow) */
+          --k-sky: #5aa6f0;
+          --k-sun: #ffc24d;
+          --k-tomato: #ff7a66;
+          --k-mint: #3fcf97;
+          --k-plum: #9b78ec;
+          --k-ink: #1b2748;
         }
 
         .kids-page-bg {
           position: relative;
           isolation: isolate;
-          background: linear-gradient(180deg, #bfe7ff 0%, #eaf4ff 18%, #fff3b0 32%, #ffe1e1 52%, #dcffe4 72%, #e9defc 90%, #0d1b3d 100%);
+          background: linear-gradient(180deg, #d3e8ff 0%, #eaf4ff 14%, #ffe3c7 30%, #ffdbe0 48%, #d2f3df 66%, #e6dbfb 84%, #1b2748 100%);
         }
         :global([data-theme="dark"]) .kids-page-bg { background: #0e1322; }
 
@@ -129,7 +130,7 @@ export default function DlaDzieci() {
           position: relative;
           overflow: hidden;
           height: clamp(300px, 46vw, 640px);
-          background: linear-gradient(180deg, #6cc9ff 0%, #bfe7ff 100%);
+          background: linear-gradient(180deg, #8fc1f2 0%, #d3e8ff 100%);
           z-index: 2;
         }
         /* Wygaszenie dolu wideo w tlo strony - bez ostrej niebieskiej linii */
@@ -138,7 +139,7 @@ export default function DlaDzieci() {
           position: absolute;
           left: 0; right: 0; bottom: 0;
           height: 90px;
-          background: linear-gradient(to bottom, rgba(191,231,255,0) 0%, #bfe7ff 100%);
+          background: linear-gradient(to bottom, rgba(211,232,255,0) 0%, #d3e8ff 100%);
           z-index: 1;
           pointer-events: none;
         }
@@ -296,20 +297,21 @@ export default function DlaDzieci() {
         .qnav-tile:hover { transform: translate(-2px,-4px); box-shadow: 0 12px 0 var(--k-ink); }
         .qnav-tile:active { transform: translate(2px,4px); box-shadow: 0 2px 0 var(--k-ink); }
         .qnav-emoji { font-size: 2.6rem; display: block; line-height: 1; margin-bottom: 8px; }
+        .qnav-icon { display: block; width: 52px; height: 52px; margin: 0 auto 8px; object-fit: contain; }
         .qnav-label { font-family: 'Outfit',sans-serif; font-weight: 900; font-size: 1rem; }
-        .qnav-tile.t1 { background: #ffe27a; }
-        .qnav-tile.t2 { background: #ff8b8b; color: #fff; }
+        .qnav-tile.t1 { background: #ffd877; }
+        .qnav-tile.t2 { background: #ff8e74; color: #fff; }
         .qnav-tile.t2 .qnav-label { color: #fff; }
-        .qnav-tile.t3 { background: #6be5b0; }
-        .qnav-tile.t4 { background: #c7a8f7; }
+        .qnav-tile.t3 { background: #62d3a3; }
+        .qnav-tile.t4 { background: #b89cf0; }
 
         /* ===== SEKCJE ===== */
         .kids-section { position: relative; padding: 110px 0 90px; overflow: hidden; z-index: 2; }
         .kids-section .container { position: relative; z-index: 2; }
-        .kids-section--products { background: #fff3b0; }
-        .kids-section--rxf      { background: #ffe1e1; }
-        .kids-section--game     { background: #dcffe4; }
-        .kids-section--alt      { background: #e9defc; }
+        .kids-section--products { background: #ffe3c7; }
+        .kids-section--rxf      { background: #ffdbe0; }
+        .kids-section--game     { background: #d2f3df; }
+        .kids-section--alt      { background: #e6dbfb; }
         .kids-section--cta      { background: var(--k-ink); }
         :global([data-theme="dark"]) .kids-section--products { background: #2e2616; }
         :global([data-theme="dark"]) .kids-section--rxf      { background: #2e1a1a; }
@@ -553,7 +555,7 @@ export default function DlaDzieci() {
         {/* ===== QUICK NAV ===== */}
         <div className="kids-quicknav">
           <a href="#strefa-produkty" className="qnav-tile t1">
-            <span className="qnav-emoji">🪖</span>
+            <img className="qnav-icon" src="/pics/latajace/helmet-moto2.svg" alt="" aria-hidden />
             <span className="qnav-label">Kaski i zbroje</span>
           </a>
           <a href="#strefa-rxf" className="qnav-tile t2">
@@ -572,10 +574,10 @@ export default function DlaDzieci() {
 
         {/* ===== 1. PRODUKTY ===== */}
         <section id="strefa-produkty" className="kids-section kids-section--products">
-          <span className="blob tr" style={{ background: "#ff8b8b" }} aria-hidden />
-          <span className="blob bl" style={{ background: "#6be5b0" }} aria-hidden />
+          <span className="blob tr" style={{ background: "#ff7a66" }} aria-hidden />
+          <span className="blob bl" style={{ background: "#3fcf97" }} aria-hidden />
           <div className="container">
-            <EditableHTML id="kids.gear.h2" as="h2" className="kids-h2" defaultHtml='🪖 Kaski, zbroje i <span class="rainbow">kurtki dla dzieci</span>' />
+            <EditableHTML id="kids.gear.h2" as="h2" className="kids-h2" defaultHtml='<img src="/pics/latajace/helmet-moto2.svg" alt="" style="height:1.1em;width:auto;display:inline-block;vertical-align:-0.22em;margin-right:8px;" /> Kaski, zbroje i <span class="rainbow">kurtki dla dzieci</span>' />
             <Editable id="kids.gear.lead" as="p" className="kids-lead" multiline>
               Wszystko, co potrzebne małemu motocykliście – bezpiecznie, kolorowo i z najlepszych marek.
             </Editable>
@@ -594,12 +596,12 @@ export default function DlaDzieci() {
           </div>
         </section>
 
-        <ZoneSep from="#fff3b0" to="#ffe1e1" />
+        <ZoneSep from="#ffe3c7" to="#ffdbe0" />
 
         {/* ===== 2. RXF ===== */}
         <section id="strefa-rxf" className="kids-section kids-section--rxf">
-          <span className="blob tr" style={{ background: "#ffd23f" }} aria-hidden />
-          <span className="blob bl" style={{ background: "#c7a8f7" }} aria-hidden />
+          <span className="blob tr" style={{ background: "#ffc24d" }} aria-hidden />
+          <span className="blob bl" style={{ background: "#9b78ec" }} aria-hidden />
           <div className="container">
             <EditableHTML id="kids.rxf.h2" as="h2" className="kids-h2" defaultHtml='🏍️ Motocykle <span class="rainbow">RXF dla dzieci</span>' />
             <Editable id="kids.rxf.lead" as="p" className="kids-lead" multiline>
@@ -622,12 +624,12 @@ export default function DlaDzieci() {
           </div>
         </section>
 
-        <ZoneSep from="#ffe1e1" to="#dcffe4" />
+        <ZoneSep from="#ffdbe0" to="#d2f3df" />
 
         {/* ===== 3. QUIZ ===== */}
         <section id="strefa-gra" className="kids-section kids-section--game">
-          <span className="blob tr" style={{ background: "#6be5b0" }} aria-hidden />
-          <span className="blob bl" style={{ background: "#ffd23f" }} aria-hidden />
+          <span className="blob tr" style={{ background: "#3fcf97" }} aria-hidden />
+          <span className="blob bl" style={{ background: "#ffc24d" }} aria-hidden />
           <div className="container">
             <EditableHTML id="kids.quiz.h2" as="h2" className="kids-h2" defaultHtml='🎮 Mini-gra: <span class="rainbow">Bezpieczna jazda</span>' />
             <Editable id="kids.quiz.lead" as="p" className="kids-lead" multiline>
@@ -689,12 +691,12 @@ export default function DlaDzieci() {
           </div>
         </section>
 
-        <ZoneSep from="#dcffe4" to="#e9defc" />
+        <ZoneSep from="#d2f3df" to="#e6dbfb" />
 
         {/* ===== 4. MARKI ===== */}
         <section id="strefa-marki" className="kids-section kids-section--alt">
-          <span className="blob tr" style={{ background: "#ff8b8b" }} aria-hidden />
-          <span className="blob bl" style={{ background: "#4ec3ff" }} aria-hidden />
+          <span className="blob tr" style={{ background: "#ff7a66" }} aria-hidden />
+          <span className="blob bl" style={{ background: "#5aa6f0" }} aria-hidden />
           <div className="container">
             <EditableHTML id="kids.brands.h2" as="h2" className="kids-h2" defaultHtml='⭐ Współpracujemy <span class="rainbow">z najlepszymi</span>' />
             <Editable id="kids.brands.lead" as="p" className="kids-lead" multiline>
@@ -708,7 +710,7 @@ export default function DlaDzieci() {
           </div>
         </section>
 
-        <ZoneSep from="#e9defc" to="#0d1b3d" />
+        <ZoneSep from="#e6dbfb" to="#1b2748" />
 
         {/* ===== 5. CTA ===== */}
         <section className="kids-section kids-section--cta">
