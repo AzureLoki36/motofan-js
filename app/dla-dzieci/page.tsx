@@ -158,6 +158,16 @@ function BackgroundFloaters({ count = 20 }: { count?: number }) {
       };
     });
 
+    // Ustaw rzeczywisty rozmiar obrazkow w DOM - ref nie wywoluje re-renderu,
+    // wiec width/height z JSX (fallback) nie odzwierciedlalyby pola size.
+    for (let i = 0; i < count; i++) {
+      const el = elsRef.current[i];
+      if (el) {
+        el.style.width = `${stateRef.current[i].size}px`;
+        el.style.height = `${stateRef.current[i].size}px`;
+      }
+    }
+
     const POP_DUR = 0.34;   // czas trwania pekniecia
     const SPAWN_DUR = 0.3;  // czas pojawienia sie nowej banki
     const BASE_OP = 0.26;
