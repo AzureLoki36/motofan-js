@@ -66,13 +66,22 @@ function HeroRider() {
   );
 }
 
-/* ===== FALOWY SEPARATOR ===== */
-function ZoneSep({ from, to, flip = false }: { from: string; to: string; flip?: boolean }) {
+/* ===== MIEKKIE FALOWE PRZEJSCIE MIEDZY SEKCJAMI =====
+   Tlo paska = kolor sekcji ponizej (to). Na gorze miekka fala w kolorze sekcji
+   powyzej (from), plynnie wygaszana do przezroczystosci -> faliste, gradientowe
+   przejscie bez ostrej linii. */
+function ZoneSep({ from, to }: { from: string; to: string }) {
+  const id = `zs-${from.replace("#", "")}-${to.replace("#", "")}`;
   return (
-    <div className="zone-sep" aria-hidden style={{ transform: flip ? "scaleY(-1)" : undefined }}>
-      <svg viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0,0 L1440,0 L1440,18 C1200,55 960,5 720,30 C480,55 240,5 0,30 Z" fill={from} />
-        <path d="M0,60 L1440,60 L1440,42 C1200,5 960,55 720,30 C480,5 240,55 0,30 Z" fill={to} />
+    <div className="zone-sep" aria-hidden style={{ background: to }}>
+      <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id={id} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor={from} stopOpacity="1" />
+            <stop offset="100%" stopColor={from} stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        <path d="M0,0 L1440,0 L1440,54 C1160,108 980,28 720,60 C460,92 280,26 0,62 Z" fill={`url(#${id})`} />
       </svg>
     </div>
   );
@@ -299,11 +308,11 @@ export default function DlaDzieci() {
         .qnav-emoji { font-size: 2.6rem; display: block; line-height: 1; margin-bottom: 8px; }
         .qnav-icon { display: block; width: 52px; height: 52px; margin: 0 auto 8px; object-fit: contain; }
         .qnav-label { font-family: 'Outfit',sans-serif; font-weight: 900; font-size: 1rem; }
-        .qnav-tile.t1 { background: #ffd877; }
-        .qnav-tile.t2 { background: #ff8e74; color: #fff; }
-        .qnav-tile.t2 .qnav-label { color: #fff; }
-        .qnav-tile.t3 { background: #62d3a3; }
-        .qnav-tile.t4 { background: #b89cf0; }
+        /* Tla kafelkow odpowiadaja kolorom sekcji, do ktorych prowadza */
+        .qnav-tile.t1 { background: #ffdcad; } /* -> produkty (#ffe3c7) */
+        .qnav-tile.t2 { background: #ffc7d0; } /* -> RXF (#ffdbe0) */
+        .qnav-tile.t3 { background: #bcebd1; } /* -> mini-gra (#d2f3df) */
+        .qnav-tile.t4 { background: #d8c9f6; } /* -> marki (#e6dbfb) */
 
         /* ===== SEKCJE ===== */
         .kids-section { position: relative; padding: 110px 0 90px; overflow: hidden; z-index: 2; }
@@ -318,16 +327,8 @@ export default function DlaDzieci() {
         :global([data-theme="dark"]) .kids-section--game     { background: #122e1e; }
         :global([data-theme="dark"]) .kids-section--alt      { background: #1f1a2f; }
 
-        .blob {
-          position: absolute; pointer-events: none; z-index: 1;
-          width: 280px; height: 280px; border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%;
-          opacity: .55; filter: blur(2px);
-        }
-        .blob.tr { top: -90px; right: -90px; }
-        .blob.bl { bottom: -90px; left: -90px; }
-
-        .zone-sep { display: block; width: 100%; height: 70px; position: relative; z-index: 3; margin-top: -1px; margin-bottom: -1px; line-height: 0; }
-        .zone-sep svg { display: block; width: 100%; height: 100%; }
+        .zone-sep { display: block; width: 100%; height: 120px; position: relative; z-index: 3; margin-top: -2px; margin-bottom: -2px; line-height: 0; overflow: hidden; }
+        .zone-sep svg { display: block; width: 100%; height: 100%; filter: blur(2px); }
 
         .kids-h2 {
           font-family: 'Outfit',sans-serif;
@@ -574,8 +575,6 @@ export default function DlaDzieci() {
 
         {/* ===== 1. PRODUKTY ===== */}
         <section id="strefa-produkty" className="kids-section kids-section--products">
-          <span className="blob tr" style={{ background: "#ff7a66" }} aria-hidden />
-          <span className="blob bl" style={{ background: "#3fcf97" }} aria-hidden />
           <div className="container">
             <EditableHTML id="kids.gear.h2" as="h2" className="kids-h2" defaultHtml='<img src="/pics/latajace/helmet-moto2.svg" alt="" style="height:1.1em;width:auto;display:inline-block;vertical-align:-0.22em;margin-right:8px;" /> Kaski, zbroje i <span class="rainbow">kurtki dla dzieci</span>' />
             <Editable id="kids.gear.lead" as="p" className="kids-lead" multiline>
@@ -600,8 +599,6 @@ export default function DlaDzieci() {
 
         {/* ===== 2. RXF ===== */}
         <section id="strefa-rxf" className="kids-section kids-section--rxf">
-          <span className="blob tr" style={{ background: "#ffc24d" }} aria-hidden />
-          <span className="blob bl" style={{ background: "#9b78ec" }} aria-hidden />
           <div className="container">
             <EditableHTML id="kids.rxf.h2" as="h2" className="kids-h2" defaultHtml='🏍️ Motocykle <span class="rainbow">RXF dla dzieci</span>' />
             <Editable id="kids.rxf.lead" as="p" className="kids-lead" multiline>
@@ -628,8 +625,6 @@ export default function DlaDzieci() {
 
         {/* ===== 3. QUIZ ===== */}
         <section id="strefa-gra" className="kids-section kids-section--game">
-          <span className="blob tr" style={{ background: "#3fcf97" }} aria-hidden />
-          <span className="blob bl" style={{ background: "#ffc24d" }} aria-hidden />
           <div className="container">
             <EditableHTML id="kids.quiz.h2" as="h2" className="kids-h2" defaultHtml='🎮 Mini-gra: <span class="rainbow">Bezpieczna jazda</span>' />
             <Editable id="kids.quiz.lead" as="p" className="kids-lead" multiline>
@@ -695,8 +690,6 @@ export default function DlaDzieci() {
 
         {/* ===== 4. MARKI ===== */}
         <section id="strefa-marki" className="kids-section kids-section--alt">
-          <span className="blob tr" style={{ background: "#ff7a66" }} aria-hidden />
-          <span className="blob bl" style={{ background: "#5aa6f0" }} aria-hidden />
           <div className="container">
             <EditableHTML id="kids.brands.h2" as="h2" className="kids-h2" defaultHtml='⭐ Współpracujemy <span class="rainbow">z najlepszymi</span>' />
             <Editable id="kids.brands.lead" as="p" className="kids-lead" multiline>
