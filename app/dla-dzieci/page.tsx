@@ -87,40 +87,54 @@ function mulberry32(seed: number) {
   };
 }
 
-function SectionFloaters({ count = 6, seed = 1 }: { count?: number; seed?: number }) {
+const FLOAT_COLS = 5;
+const FLOAT_ROWS = 3;
+
+function SectionFloaters({ count = 8, seed = 1 }: { count?: number; seed?: number }) {
   const items = useMemo(() => {
     const rnd = mulberry32(seed * 9973 + 17);
-    return Array.from({ length: count }, () => ({
+    // Losowo wymieszane, UNIKALNE komorki siatki -> dwa floatery nigdy nie trafia
+    // do tej samej komorki, a kazdy miesci sie w swojej z marginesem => brak nachodzenia.
+    const cells = Array.from({ length: FLOAT_COLS * FLOAT_ROWS }, (_, i) => i);
+    for (let i = cells.length - 1; i > 0; i--) {
+      const j = Math.floor(rnd() * (i + 1));
+      [cells[i], cells[j]] = [cells[j], cells[i]];
+    }
+    const n = Math.min(count, cells.length);
+    return cells.slice(0, n).map((cell) => ({
       src: MOTO_DOODLES[Math.floor(rnd() * MOTO_DOODLES.length)],
-      left: 1 + rnd() * 90,                 // %
-      top: 4 + rnd() * 84,                  // %
-      size: 70 + Math.round(rnd() * 95),    // px
-      dur: 7 + rnd() * 7,                   // s
+      col: (cell % FLOAT_COLS) + 1,
+      row: Math.floor(cell / FLOAT_COLS) + 1,
+      sizePct: 48 + Math.round(rnd() * 12), // 48..60 % komorki (zapas na obrot + wieksze unoszenie)
+      dur: 6.4 + rnd() * 6.4,               // s (~10% szybciej niz 7..14)
       delay: -(rnd() * 8),                  // s
-      rot: Math.round(-18 + rnd() * 36),
-      amp: 8 + Math.round(rnd() * 14),
+      rot: Math.round(-10 + rnd() * 20),    // -10..10 deg
+      amp: 11 + Math.round(rnd() * 9),      // 11..20 px (dalej niz wczesniej 5..10)
     }));
   }, [count, seed]);
 
   return (
-    <div className="sec-floaters" aria-hidden>
+    <div
+      className="sec-floaters"
+      aria-hidden
+      style={{ ["--cols" as string]: FLOAT_COLS, ["--rows" as string]: FLOAT_ROWS } as CSSProperties}
+    >
       {items.map((it, i) => (
-        <img
-          key={i}
-          src={it.src}
-          alt=""
-          className="sec-floater"
-          style={{
-            left: `${it.left}%`,
-            top: `${it.top}%`,
-            width: it.size,
-            height: it.size,
-            animationDuration: `${it.dur}s`,
-            animationDelay: `${it.delay}s`,
-            ["--rot" as string]: `${it.rot}deg`,
-            ["--amp" as string]: `${it.amp}px`,
-          } as CSSProperties}
-        />
+        <span key={i} className="sec-cell" style={{ gridColumn: it.col, gridRow: it.row }}>
+          <img
+            src={it.src}
+            alt=""
+            className="sec-floater"
+            style={{
+              width: `${it.sizePct}%`,
+              height: `${it.sizePct}%`,
+              animationDuration: `${it.dur}s`,
+              animationDelay: `${it.delay}s`,
+              ["--rot" as string]: `${it.rot}deg`,
+              ["--amp" as string]: `${it.amp}px`,
+            } as CSSProperties}
+          />
+        </span>
       ))}
     </div>
   );
@@ -197,17 +211,30 @@ export default function DlaDzieci() {
         }
         :global([data-theme="dark"]) .kids-page-bg { background: #0e1322; }
 
-        /* ===== IKONY ROZSIANE PO SEKCJI - nad tlem, pod trescia (.container) ===== */
+        /* ===== IKONY ROZSIANE PO SEKCJI - siatka komorek (brak nachodzenia) =====
+           Kazda ikona ma wlasna komorke siatki i miesci sie w niej z marginesem
+           (uwzgl. obrot i unoszenie), wiec dwie ikony nigdy na siebie nie nachodza.
+           z-index 1: nad tlem sekcji, pod trescia (.container) -> chowaja sie za nia. */
         .sec-floaters {
           position: absolute;
           inset: 0;
           z-index: 1;
           pointer-events: none;
           overflow: hidden;
+          display: grid;
+          grid-template-columns: repeat(var(--cols), 1fr);
+          grid-template-rows: repeat(var(--rows), 1fr);
+        }
+        .sec-cell {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          min-width: 0;
+          min-height: 0;
         }
         .sec-floater {
-          position: absolute;
           opacity: 0.34;
+          object-fit: contain;
           transform-origin: center center;
           filter: drop-shadow(1px 2px 0 rgba(13,27,61,.18));
           will-change: transform;
