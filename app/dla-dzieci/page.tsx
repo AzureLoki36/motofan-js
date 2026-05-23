@@ -141,10 +141,10 @@ function BackgroundFloaters({ count = 20 }: { count?: number }) {
     };
 
     stateRef.current = Array.from({ length: count }, () => {
-      const size = 42 + Math.random() * 48; // 42..90 px (+40%)
+      const size = 67 + Math.random() * 77; // 67..144 px (+60%)
       const pos = place(size);
       const angle = Math.random() * Math.PI * 2;
-      const speed = 20 + Math.random() * 45; // px/s (-10%)
+      const speed = 12 + Math.random() * 27; // px/s (-40%)
       return {
         x: pos.x,
         y: pos.y,
@@ -160,7 +160,7 @@ function BackgroundFloaters({ count = 20 }: { count?: number }) {
 
     const POP_DUR = 0.34;   // czas trwania pekniecia
     const SPAWN_DUR = 0.3;  // czas pojawienia sie nowej banki
-    const BASE_OP = 0.52;
+    const BASE_OP = 0.26;
 
     let last = performance.now();
     let frame = 0;
@@ -189,7 +189,7 @@ function BackgroundFloaters({ count = 20 }: { count?: number }) {
             const pos = place(p.size);
             p.x = pos.x; p.y = pos.y;
             const a = Math.random() * Math.PI * 2;
-            const sp = 20 + Math.random() * 45;
+            const sp = 12 + Math.random() * 27;
             p.vx = Math.cos(a) * sp; p.vy = Math.sin(a) * sp;
             p.r = Math.random() * 360;
             p.phase = "spawn"; p.pt = 0;
@@ -375,7 +375,7 @@ export default function DlaDzieci() {
           position: absolute;
           top: 0;
           left: 0;
-          opacity: 0.52;
+          opacity: 0.26;
           transform-origin: center center;
           filter: drop-shadow(1px 2px 0 rgba(13,27,61,.25));
           will-change: transform, opacity;
