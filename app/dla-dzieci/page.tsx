@@ -141,10 +141,10 @@ function BackgroundFloaters({ count = 20 }: { count?: number }) {
     };
 
     stateRef.current = Array.from({ length: count }, () => {
-      const size = 67 + Math.random() * 77; // 67..144 px (+60%)
+      const size = 154 + Math.random() * 177; // 154..331 px (+130%)
       const pos = place(size);
       const angle = Math.random() * Math.PI * 2;
-      const speed = 12 + Math.random() * 27; // px/s (-40%)
+      const speed = 2.4 + Math.random() * 5.4; // px/s (-80%)
       return {
         x: pos.x,
         y: pos.y,
@@ -189,7 +189,7 @@ function BackgroundFloaters({ count = 20 }: { count?: number }) {
             const pos = place(p.size);
             p.x = pos.x; p.y = pos.y;
             const a = Math.random() * Math.PI * 2;
-            const sp = 12 + Math.random() * 27;
+            const sp = 2.4 + Math.random() * 5.4;
             p.vx = Math.cos(a) * sp; p.vy = Math.sin(a) * sp;
             p.r = Math.random() * 360;
             p.phase = "spawn"; p.pt = 0;
@@ -785,7 +785,7 @@ export default function DlaDzieci() {
 
       <div className="kids-page-bg">
         {/* Motocyklowe SVG latajace po stronie - odbijaja sie od siebie, pekaja przy tekscie */}
-        <BackgroundFloaters count={24} />
+        <BackgroundFloaters count={10} />
 
         {/* ===== HERO ===== */}
         <section className="kids-hero">
