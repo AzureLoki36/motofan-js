@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useMemo, type CSSProperties } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import SubpageFooter from "@/components/SubpageFooter";
@@ -71,229 +71,55 @@ const MOTO_DOODLES = [
   "/pics/latajace/helmet-moto2.svg",
 ];
 
-/* ===== KOMPONENT: floatery latajace po calej stronie =====
-   position: fixed; odbijaja sie od krawedzi viewportu ORAZ od siebie nawzajem
-   (sprezyscie), a gdy dotkna bloku tekstu/tresci (naglowki, akapity, karty,
-   kafle) - PEKAJA jak banka wodna (skala+zanik) i odradzaja sie w pustym
-   miejscu. Caly kontener znika nad hero, zeby nie najezdzaly na wideo. */
-function BackgroundFloaters({ count = 20 }: { count?: number }) {
-  const wrapRef = useRef<HTMLDivElement | null>(null);
-  const elsRef = useRef<(HTMLImageElement | null)[]>([]);
-  const stateRef = useRef<Array<{ x: number; y: number; vx: number; vy: number; r: number; vr: number; size: number; phase: "alive" | "pop" | "spawn"; pt: number }>>([]);
-  const rectsRef = useRef<Array<{ left: number; top: number; right: number; bottom: number }>>([]);
-  const rafRef = useRef<number | null>(null);
-  const [enabled, setEnabled] = useState(false);
+/* ===== KOMPONENT: ikony rozsiane po sekcji - schowane za trescia =====
+   Renderowane wewnatrz danej sekcji jako position:absolute, z-index 1 -
+   czyli NAD tlem sekcji, ale POD trescia (.container z kartami/tekstem),
+   dzieki czemu chowaja sie za elementami zamiast wybuchac. Przewijaja sie
+   razem ze strona: gdy zjezdzasz, te u gory znikaja, a od dolu pojawiaja sie
+   kolejne. Delikatne unoszenie w miejscu - bez lotu do gory. */
+function mulberry32(seed: number) {
+  let a = seed >>> 0;
+  return function () {
+    a = (a + 0x6d2b79f5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
 
-  const L = MOTO_DOODLES.length;
-  const srcs = Array.from({ length: count }, (_, i) => MOTO_DOODLES[(i * 5) % L]);
-
-  // Na waskich ekranach (telefon/tablet) brak miejsca poza tekstem - nie pokazujemy
-  useEffect(() => {
-    const check = () => setEnabled(window.innerWidth >= 1000);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, []);
-
-  useEffect(() => {
-    if (!enabled) return;
-    const NAV_H = 84;
-    const W = () => window.innerWidth;
-    const H = () => window.innerHeight;
-    const heroH = () => {
-      const el = document.querySelector(".kids-hero") as HTMLElement | null;
-      return el ? el.offsetHeight : H() * 0.8;
-    };
-
-    // Bloki tresci/tekstu, ktore floatery maja omijac (wsp. viewportu)
-    const TEXT_SEL =
-      ".breadcrumb, .kids-sub, .kids-h2, .kids-lead, .qnav-tile, .kids-card, .rxf-card, .quiz-wrap, .brand-bubble, .kids-cta-card";
-    const refreshRects = () => {
-      const pad = 12;
-      const out: Array<{ left: number; top: number; right: number; bottom: number }> = [];
-      document.querySelectorAll(TEXT_SEL).forEach((el) => {
-        const r = (el as HTMLElement).getBoundingClientRect();
-        if (r.width === 0 || r.bottom < -40 || r.top > H() + 40) return;
-        out.push({ left: r.left - pad, top: r.top - pad, right: r.right + pad, bottom: r.bottom + pad });
-      });
-      rectsRef.current = out;
-    };
-
-    type Rect = { left: number; top: number; right: number; bottom: number };
-    const blocking = (x: number, y: number, s: number): Rect | null => {
-      const rects = rectsRef.current;
-      for (let k = 0; k < rects.length; k++) {
-        const r = rects[k];
-        if (x < r.right && x + s > r.left && y < r.bottom && y + s > r.top) return r;
-      }
-      return null;
-    };
-
-    refreshRects();
-
-    const place = (s: number) => {
-      for (let t = 0; t < 25; t++) {
-        const x = 4 + Math.random() * Math.max(1, W() - s - 8);
-        const y = NAV_H + Math.random() * Math.max(1, H() - s - NAV_H - 6);
-        if (!blocking(x, y, s)) return { x, y };
-      }
-      return { x: 6, y: NAV_H + Math.random() * Math.max(1, H() - s - NAV_H - 6) };
-    };
-
-    stateRef.current = Array.from({ length: count }, () => {
-      const size = 92 + Math.random() * 106; // 92..198 px (-40%)
-      const pos = place(size);
-      const angle = Math.random() * Math.PI * 2;
-      const speed = 2.4 + Math.random() * 5.4; // px/s
-      return {
-        x: pos.x,
-        y: pos.y,
-        vx: Math.cos(angle) * speed,
-        vy: Math.sin(angle) * speed,
-        r: Math.random() * 360,
-        vr: (Math.random() - 0.5) * 50, // deg/s
-        size,
-        phase: "alive" as const,
-        pt: 0,
-      };
-    });
-
-    // Ustaw rzeczywisty rozmiar obrazkow w DOM - ref nie wywoluje re-renderu,
-    // wiec width/height z JSX (fallback) nie odzwierciedlalyby pola size.
-    for (let i = 0; i < count; i++) {
-      const el = elsRef.current[i];
-      if (el) {
-        el.style.width = `${stateRef.current[i].size}px`;
-        el.style.height = `${stateRef.current[i].size}px`;
-      }
-    }
-
-    const POP_DUR = 0.34;   // czas trwania pekniecia
-    const SPAWN_DUR = 0.3;  // czas pojawienia sie nowej banki
-    const BASE_OP = 0.34;
-
-    let last = performance.now();
-    let frame = 0;
-    const tick = (now: number) => {
-      const dt = Math.min(0.05, (now - last) / 1000);
-      last = now;
-      if (frame % 6 === 0) refreshRects();
-      frame++;
-      const w = W();
-      const h = H();
-      const st = stateRef.current;
-
-      // 1) ruch, odbicie od krawedzi viewportu, pekniecie przy dotknieciu tekstu
-      for (let i = 0; i < st.length; i++) {
-        const p = st[i];
-        if (p.phase === "alive") {
-          const nx = p.x + p.vx * dt;
-          if (nx <= 2 || nx + p.size >= w - 2) p.vx = -p.vx; else p.x = nx;
-          const ny = p.y + p.vy * dt;
-          if (ny <= NAV_H || ny + p.size >= h - 2) p.vy = -p.vy; else p.y = ny;
-          p.r += p.vr * dt;
-          if (blocking(p.x, p.y, p.size)) { p.phase = "pop"; p.pt = 0; }
-        } else if (p.phase === "pop") {
-          p.pt += dt;
-          if (p.pt >= POP_DUR) {
-            const pos = place(p.size);
-            p.x = pos.x; p.y = pos.y;
-            const a = Math.random() * Math.PI * 2;
-            const sp = 2.4 + Math.random() * 5.4;
-            p.vx = Math.cos(a) * sp; p.vy = Math.sin(a) * sp;
-            p.r = Math.random() * 360;
-            p.phase = "spawn"; p.pt = 0;
-          }
-        } else {
-          p.pt += dt;
-          if (p.pt >= SPAWN_DUR) { p.phase = "alive"; p.pt = 0; }
-        }
-      }
-
-      // 2) odbicia floater-floater (sprezyste, rowne masy) - tylko zywe banki
-      for (let i = 0; i < st.length; i++) {
-        const a = st[i];
-        if (a.phase !== "alive") continue;
-        for (let j = i + 1; j < st.length; j++) {
-          const b = st[j];
-          if (b.phase !== "alive") continue;
-          const dx = (b.x + b.size / 2) - (a.x + a.size / 2);
-          const dy = (b.y + b.size / 2) - (a.y + a.size / 2);
-          const min = (a.size + b.size) / 2;
-          const dist = Math.hypot(dx, dy);
-          if (dist > 0 && dist < min) {
-            const nx = dx / dist, ny = dy / dist;
-            const push = (min - dist) / 2;
-            a.x -= nx * push; a.y -= ny * push;
-            b.x += nx * push; b.y += ny * push;
-            const avn = a.vx * nx + a.vy * ny;
-            const bvn = b.vx * nx + b.vy * ny;
-            const diff = bvn - avn;
-            a.vx += diff * nx; a.vy += diff * ny;
-            b.vx -= diff * nx; b.vy -= diff * ny;
-          } else if (dist === 0) {
-            a.vx = -a.vx; b.vy = -b.vy;
-          }
-        }
-      }
-
-      // 3) wizualizacja: skala + krycie wg fazy
-      for (let i = 0; i < st.length; i++) {
-        const p = st[i];
-        let sc = 1, opf = 1;
-        if (p.phase === "pop") { const pr = p.pt / POP_DUR; sc = 1 + pr * 0.8; opf = 1 - pr; }
-        else if (p.phase === "spawn") { const pr = p.pt / SPAWN_DUR; sc = 0.3 + pr * 0.7; opf = pr; }
-        const el = elsRef.current[i];
-        if (el) {
-          el.style.transform = `translate3d(${p.x}px, ${p.y}px, 0) rotate(${p.r}deg) scale(${sc.toFixed(3)})`;
-          el.style.opacity = (BASE_OP * opf).toFixed(3);
-        }
-      }
-      rafRef.current = requestAnimationFrame(tick);
-    };
-    rafRef.current = requestAnimationFrame(tick);
-
-    // Fade: floatery widoczne dopiero po zjechaniu ponizej hero (nie na wideo)
-    const onScroll = () => {
-      if (wrapRef.current) {
-        wrapRef.current.style.opacity = window.scrollY > heroH() * 0.6 ? "1" : "0";
-      }
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-
-    const onResize = () => {
-      const w = W();
-      const h = H();
-      for (const p of stateRef.current) {
-        if (p.x + p.size > w) p.x = Math.max(2, w - p.size - 2);
-        if (p.y + p.size > h) p.y = Math.max(NAV_H, h - p.size - 2);
-      }
-    };
-    window.addEventListener("resize", onResize);
-
-    return () => {
-      if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onResize);
-    };
-  }, [enabled, count]);
-
-  if (!enabled) return null;
+function SectionFloaters({ count = 6, seed = 1 }: { count?: number; seed?: number }) {
+  const items = useMemo(() => {
+    const rnd = mulberry32(seed * 9973 + 17);
+    return Array.from({ length: count }, () => ({
+      src: MOTO_DOODLES[Math.floor(rnd() * MOTO_DOODLES.length)],
+      left: 1 + rnd() * 90,                 // %
+      top: 4 + rnd() * 84,                  // %
+      size: 70 + Math.round(rnd() * 95),    // px
+      dur: 7 + rnd() * 7,                   // s
+      delay: -(rnd() * 8),                  // s
+      rot: Math.round(-18 + rnd() * 36),
+      amp: 8 + Math.round(rnd() * 14),
+    }));
+  }, [count, seed]);
 
   return (
-    <div className="bg-floaters" aria-hidden ref={wrapRef}>
-      {srcs.map((src, i) => (
+    <div className="sec-floaters" aria-hidden>
+      {items.map((it, i) => (
         <img
           key={i}
-          ref={(el) => { elsRef.current[i] = el; }}
-          src={src}
+          src={it.src}
           alt=""
-          className="bg-floater"
+          className="sec-floater"
           style={{
-            width: stateRef.current[i]?.size ?? 44,
-            height: stateRef.current[i]?.size ?? 44,
-          }}
+            left: `${it.left}%`,
+            top: `${it.top}%`,
+            width: it.size,
+            height: it.size,
+            animationDuration: `${it.dur}s`,
+            animationDelay: `${it.delay}s`,
+            ["--rot" as string]: `${it.rot}deg`,
+            ["--amp" as string]: `${it.amp}px`,
+          } as CSSProperties}
         />
       ))}
     </div>
@@ -371,26 +197,29 @@ export default function DlaDzieci() {
         }
         :global([data-theme="dark"]) .kids-page-bg { background: #0e1322; }
 
-        /* ===== FLOATERY - odbijaja sie w bocznych marginesach (JS-rAF) ===== */
-        .bg-floaters {
-          position: fixed;
+        /* ===== IKONY ROZSIANE PO SEKCJI - nad tlem, pod trescia (.container) ===== */
+        .sec-floaters {
+          position: absolute;
           inset: 0;
+          z-index: 1;
           pointer-events: none;
           overflow: hidden;
-          z-index: 60;
-          opacity: 0;
-          transition: opacity .8s ease;
         }
-        .bg-floater {
+        .sec-floater {
           position: absolute;
-          top: 0;
-          left: 0;
           opacity: 0.34;
           transform-origin: center center;
-          filter: drop-shadow(1px 2px 0 rgba(13,27,61,.25));
-          will-change: transform, opacity;
+          filter: drop-shadow(1px 2px 0 rgba(13,27,61,.18));
+          will-change: transform;
+          animation-name: secFloat;
+          animation-timing-function: ease-in-out;
+          animation-iteration-count: infinite;
         }
-        :global([data-theme="dark"]) .bg-floater {
+        @keyframes secFloat {
+          0%, 100% { transform: translateY(0) rotate(var(--rot)); }
+          50%      { transform: translateY(calc(var(--amp) * -1)) rotate(calc(var(--rot) + 5deg)); }
+        }
+        :global([data-theme="dark"]) .sec-floater {
           filter: invert(.85) brightness(1.1);
         }
 
@@ -794,9 +623,6 @@ export default function DlaDzieci() {
       `}</style>
 
       <div className="kids-page-bg">
-        {/* Motocyklowe SVG latajace po stronie - odbijaja sie od siebie, pekaja przy tekscie */}
-        <BackgroundFloaters count={10} />
-
         {/* ===== HERO ===== */}
         <section className="kids-hero">
           <video
@@ -847,6 +673,7 @@ export default function DlaDzieci() {
         <section id="strefa-produkty" className="kids-section kids-section--products">
           <span className="blob tr" style={{ background: "#ff8b8b" }} aria-hidden />
           <span className="blob bl" style={{ background: "#6be5b0" }} aria-hidden />
+          <SectionFloaters count={7} seed={1} />
           <div className="container">
             <EditableHTML id="kids.gear.h2" as="h2" className="kids-h2" defaultHtml='🪖 Kaski, zbroje i <span class="rainbow">kurtki dla dzieci</span>' />
             <Editable id="kids.gear.lead" as="p" className="kids-lead" multiline>
@@ -873,6 +700,7 @@ export default function DlaDzieci() {
         <section id="strefa-rxf" className="kids-section kids-section--rxf">
           <span className="blob tr" style={{ background: "#ffd23f" }} aria-hidden />
           <span className="blob bl" style={{ background: "#c7a8f7" }} aria-hidden />
+          <SectionFloaters count={7} seed={2} />
           <div className="container">
             <EditableHTML id="kids.rxf.h2" as="h2" className="kids-h2" defaultHtml='🏍️ Motocykle <span class="rainbow">RXF dla dzieci</span>' />
             <Editable id="kids.rxf.lead" as="p" className="kids-lead" multiline>
@@ -901,6 +729,7 @@ export default function DlaDzieci() {
         <section id="strefa-gra" className="kids-section kids-section--game">
           <span className="blob tr" style={{ background: "#6be5b0" }} aria-hidden />
           <span className="blob bl" style={{ background: "#ffd23f" }} aria-hidden />
+          <SectionFloaters count={7} seed={3} />
           <div className="container">
             <EditableHTML id="kids.quiz.h2" as="h2" className="kids-h2" defaultHtml='🎮 Mini-gra: <span class="rainbow">Bezpieczna jazda</span>' />
             <Editable id="kids.quiz.lead" as="p" className="kids-lead" multiline>
@@ -968,6 +797,7 @@ export default function DlaDzieci() {
         <section id="strefa-marki" className="kids-section kids-section--alt">
           <span className="blob tr" style={{ background: "#ff8b8b" }} aria-hidden />
           <span className="blob bl" style={{ background: "#4ec3ff" }} aria-hidden />
+          <SectionFloaters count={7} seed={4} />
           <div className="container">
             <EditableHTML id="kids.brands.h2" as="h2" className="kids-h2" defaultHtml='⭐ Współpracujemy <span class="rainbow">z najlepszymi</span>' />
             <Editable id="kids.brands.lead" as="p" className="kids-lead" multiline>
