@@ -9,10 +9,11 @@ import { useLocale } from "@/components/LocaleProvider";
 
 /* =========================================================================
    STRONA DLA DZIECI - "Komiksowa plansza"
-   - Hero: wideo banner.mp4 + tytul + jadacy motocyklista
+   - Hero: wideo banner.mp4 + tytul (bez jadacego motocyklisty, bez niebieskiego paska)
    - Panele: produkty / RXF / quiz / strefa rodzica / marki / CTA
-   - Styl: pastelowo-komiksowy, grube obwodki, twarde cienie, BEZ efektow hover
-   - Przejscia miedzy panelami: gladki gradient koloru (bez SVG, bez doodli)
+   - Paleta wg teorii barw (kolo barw): pastelowe tla + nasycone akcenty tego
+     samego odcienia. Dwie pary dopelniajace: pomarancz<->niebieski,
+     roz<->zielen, plus fiolet; CTA domyka kolo akcentem koralowym.
 ========================================================================= */
 
 /* ===== DANE ===== */
@@ -23,7 +24,7 @@ const QUESTIONS: Q[] = [
   { q: "Co oznacza zielone światło na sygnalizatorze?", emoji: "🚦", answers: ["Stój!", "Możesz jechać", "Uważaj, zaraz zmieni"], correct: 1, tip: "Zielone = jedź, ale zawsze rozejrzyj się najpierw!" },
   { q: "Jakiego koloru jest znak ostrzegawczy?", emoji: "⚠️", answers: ["Niebieski", "Żółty trójkąt", "Zielony okrąg"], correct: 1, tip: "Żółty trójkąt ostrzega przed niebezpieczeństwem na drodze." },
   { q: "Co robisz przed wjazdem na skrzyżowanie?", emoji: "🚸", answers: ["Przyspieszam", "Patrzę w lewo i prawo", "Zamykam oczy"], correct: 1, tip: "Zawsze rozglądaj się na boki – bezpieczeństwo jest najważniejsze!" },
-  { q: "Czy dziecko może jeździć motocyklem RXF samo po drodze publicznej?", emoji: "🏍️", answers: ["Tak, zawsze", "Tylko z dorosłym, na specjalnych torach", "Nigdy"], correct: 1, tip: "Pitbike RXF dla dzieci jeździ tylko na zamkniętych torach i pod okiem rodzica." },
+  { q: "Czy dziecko może jeździć motocyklem RXF samo po drodze publicznej?", emoji: "🏍️", answers: ["Tak, zawsze", "Tylko z dorosłym, na specjalnych torach", "Nigdy"], correct: 1, tip: "Pitbike RXF jeździ tylko na zamkniętych torach i pod okiem rodzica." },
   { q: "Co to jest zbroja motocyklowa?", emoji: "🦺", answers: ["Ozdoba", "Ochrona pleców i klatki", "Plecak"], correct: 1, tip: "Zbroja chroni najważniejsze części ciała w razie upadku." },
   { q: "Po jakiej stronie drogi jeździmy w Polsce?", emoji: "🛣️", answers: ["Po prawej", "Po lewej", "Po środku"], correct: 0, tip: "W Polsce zawsze jeździmy prawą stroną jezdni." },
 ];
@@ -37,45 +38,32 @@ const PRODUCTS = [
   { img: "/pics/dzieci/product-gloves.svg", name: "Rękawice Kids Touch", brand: "Five", cat: "Rękawice motocyklowe", color: "linear-gradient(135deg,#ece0fc 0%,#c9b3f3 100%)" },
 ];
 
+/* Cztery rownomiernie rozlozone odcienie kola barw */
 const RXF_MOTOS = [
-  { img: "/pics/dzieci/rxf-mini.svg", name: "RXF Mini 60", cc: "60 cm³", age: "4–7 lat", color: "#ff7a66" },
-  { img: "/pics/dzieci/rxf-open.svg", name: "RXF Open 90", cc: "90 cm³", age: "7–10 lat", color: "#5aa6f0" },
-  { img: "/pics/dzieci/rxf-freeride.svg", name: "RXF Freeride 125", cc: "125 cm³", age: "10–14 lat", color: "#ffc24d" },
-  { img: "/pics/dzieci/rxf-racing.svg", name: "RXF Racing 150", cc: "150 cm³", age: "14+ lat", color: "#3fcf97" },
+  { img: "/pics/dzieci/rxf-mini.svg", name: "RXF Mini 60", cc: "60 cm³", age: "4–7 lat", color: "#ff6f91" },
+  { img: "/pics/dzieci/rxf-open.svg", name: "RXF Open 90", cc: "90 cm³", age: "7–10 lat", color: "#ffb02e" },
+  { img: "/pics/dzieci/rxf-freeride.svg", name: "RXF Freeride 125", cc: "125 cm³", age: "10–14 lat", color: "#2bbf6f" },
+  { img: "/pics/dzieci/rxf-racing.svg", name: "RXF Racing 150", cc: "150 cm³", age: "14+ lat", color: "#4d9bf0" },
 ];
 
 const PARENT_TIPS = [
   { icon: "🛡️", title: "Bezpieczeństwo przede wszystkim", text: "Kask i zbroja to absolutna podstawa – także podczas jazdy na podwórku. Dobrze dopasowany sprzęt chroni najważniejsze części ciała." },
-  { icon: "📏", title: "Jak dobrać kask", text: "Zmierz obwód główki dziecka tuż nad brwiami. Kask powinien dobrze przylegać i nie przesuwać się. W salonie chętnie pomożemy w doborze rozmiaru." },
-  { icon: "🎂", title: "Od jakiego wieku?", text: "Modele RXF dobieramy do wieku i wzrostu dziecka. Maluchy jeżdżą wyłącznie na zamkniętych torach, zawsze pod okiem dorosłego." },
-  { icon: "🏪", title: "Doradzimy w salonie", text: "Zapraszamy do salonu w Opolu – pomożemy dobrać kask, zbroję i motocykl idealny dla Twojego dziecka." },
+  { icon: "📏", title: "Jak dobrać kask", text: "Zmierz obwód główki tuż nad brwiami. Kask powinien dobrze przylegać i nie przesuwać się. W salonie chętnie pomożemy w doborze rozmiaru." },
+  { icon: "🎂", title: "Od jakiego wieku?", text: "Modele RXF dobieramy do wieku i wzrostu. Maluchy jeżdżą wyłącznie na zamkniętych torach, zawsze pod okiem dorosłego." },
+  { icon: "🏪", title: "Doradzimy w salonie", text: "Zapraszamy do salonu w Opolu – pomożemy dobrać kask, zbroję i motocykl idealny dla Twojej pociechy." },
 ];
 
+/* Marki rozlozone rownomiernie wokol kola barw (8 odcieni co 45 stopni) */
 const BRAND_LOGOS = [
-  { name: "LS2", color: "#ff7a66" },
-  { name: "HJC", color: "#5aa6f0" },
-  { name: "Givi", color: "#ffc24d" },
-  { name: "SECA", color: "#3fcf97" },
-  { name: "Acerbis", color: "#9b78ec" },
-  { name: "Alpinestars", color: "#ff8e74" },
-  { name: "Five", color: "#62c3a3" },
-  { name: "RXF", color: "#b89cf0" },
+  { name: "LS2", color: "#ff6b6b" },        /* czerwony 0 */
+  { name: "HJC", color: "#ffa53d" },        /* pomaranczowy 45 */
+  { name: "Givi", color: "#e7c93a" },       /* zolto-zielony 90 */
+  { name: "SECA", color: "#4ecb71" },       /* zielony 135 */
+  { name: "Acerbis", color: "#3fc9c2" },    /* turkus 180 */
+  { name: "Alpinestars", color: "#4d9bf0" },/* niebieski 225 */
+  { name: "Five", color: "#9b7af0" },       /* fioletowy 270 */
+  { name: "RXF", color: "#f072c4" },        /* magenta 315 */
 ];
-
-/* ===== KOMPONENT: jadacy motocyklista (rider.svg) + animowane kola =====
-   rider.svg jedzie od lewej do prawej w dolnej czesci banera.
-   Dwie nakladki .wheel z conic-gradient symuluja krecace sie szprychy. */
-function HeroRider() {
-  return (
-    <div className="hero-rider-track" aria-hidden>
-      <div className="hero-rider">
-        <img src="/pics/dzieci/rider.svg" alt="" className="hero-rider-img" />
-        <span className="wheel wheel-back" />
-        <span className="wheel wheel-front" />
-      </div>
-    </div>
-  );
-}
 
 /* ===== Gladkie przejscie koloru miedzy panelami (bez SVG/doodli) ===== */
 function Sep({ from, to }: { from: string; to: string }) {
@@ -119,17 +107,28 @@ export default function DlaDzieci() {
 
       <style>{`
         :root {
-          --k-sky: #5aa6f0;
-          --k-sun: #ffc24d;
-          --k-tomato: #ff7a66;
-          --k-mint: #3fcf97;
-          --k-plum: #9b78ec;
-          --k-slate: #7e8db0;
           --k-ink: #1b2748;
+          --cream: #fff3e3;        /* cieply neutralny pod hero/quicknav */
+          --k-sun: #ffd166;        /* poprawiony, lagodniejszy zolty */
+
+          /* Pastelowe tla paneli (kolo barw) */
+          --bg-gear:   #ffe8cc;    /* pomarancz */
+          --bg-rxf:    #ffd9e6;    /* roz / magenta */
+          --bg-quiz:   #d3f2dd;    /* zielen */
+          --bg-parent: #dbe9fc;    /* niebieski */
+          --bg-marki:  #e9defb;    /* fiolet */
+
+          /* Akcenty: ten sam odcien co tlo, ciemniejszy i nasycony */
+          --ac-gear:   #ef6c1a;
+          --ac-rxf:    #e83e74;
+          --ac-quiz:   #1f9d5c;
+          --ac-parent: #2f6fb0;
+          --ac-marki:  #7c4ddb;
+          --ac-coral:  #ff6f91;    /* domyka kolo barw na CTA */
         }
 
-        .kids-page-bg { position: relative; isolation: isolate; background: #ffe3c7; }
-        :global([data-theme="dark"]) .kids-page-bg { background: #0e1322; }
+        .kids-page-bg { position: relative; isolation: isolate; background: var(--bg-gear); --hero-fade: var(--cream); }
+        :global([data-theme="dark"]) .kids-page-bg { background: #0e1322; --hero-fade: #0e1322; }
 
         /* ===== HERO ===== */
         .kids-hero {
@@ -139,12 +138,13 @@ export default function DlaDzieci() {
           background: linear-gradient(180deg, #8fc1f2 0%, #d3e8ff 100%);
           z-index: 2;
         }
+        /* Wygaszenie dolu wideo w neutralny krem - brak niebieskiego paska */
         .kids-hero::after {
           content: "";
           position: absolute;
           left: 0; right: 0; bottom: 0;
           height: 90px;
-          background: linear-gradient(to bottom, rgba(211,232,255,0) 0%, #d3e8ff 100%);
+          background: linear-gradient(to bottom, rgba(255,243,227,0) 0%, var(--hero-fade) 100%);
           z-index: 3;
           pointer-events: none;
         }
@@ -165,7 +165,7 @@ export default function DlaDzieci() {
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          padding: 40px 16px 90px;
+          padding: 40px 16px;
           z-index: 4;
         }
         .kids-title {
@@ -189,73 +189,15 @@ export default function DlaDzieci() {
           font-weight: 700;
           margin: 18px auto 0;
           max-width: 720px;
-          background: rgba(255,255,255,.85);
+          background: rgba(255,255,255,.88);
           padding: 14px 22px;
           border-radius: 100px;
           border: 3px solid var(--k-ink);
           box-shadow: 0 6px 0 var(--k-ink);
         }
 
-        /* ===== JADACY MOTOCYKLISTA ===== */
-        .hero-rider-track {
-          position: absolute;
-          left: 0; right: 0;
-          bottom: 40px;
-          height: 200px;
-          pointer-events: none;
-          z-index: 3;
-        }
-        .hero-rider {
-          position: absolute;
-          left: 0; bottom: 0;
-          width: 360px; height: 200px;
-          transform: translateX(-100%);
-          animation: heroRide 11s linear infinite;
-          filter: drop-shadow(6px 8px 8px rgba(13,27,61,.3));
-          will-change: transform;
-        }
-        .hero-rider-img { width: 100%; height: 100%; display: block; object-fit: contain; }
-        .wheel {
-          position: absolute;
-          width: 66px; height: 66px;
-          border-radius: 50%;
-          pointer-events: none;
-          background:
-            conic-gradient(
-              from 0deg,
-              transparent 0deg, rgba(255,255,255,0.65) 4deg, transparent 12deg,
-              transparent 86deg, rgba(255,255,255,0.65) 94deg, transparent 102deg,
-              transparent 176deg, rgba(255,255,255,0.65) 184deg, transparent 192deg,
-              transparent 266deg, rgba(255,255,255,0.65) 274deg, transparent 282deg,
-              transparent 360deg
-            );
-          mask: radial-gradient(circle, transparent 12%, #000 14%, #000 86%, transparent 88%);
-          -webkit-mask: radial-gradient(circle, transparent 12%, #000 14%, #000 86%, transparent 88%);
-          animation: wheelSpin .25s linear infinite;
-          will-change: transform;
-        }
-        .wheel-back  { left: 50px;  bottom: 22px; }
-        .wheel-front { left: 240px; bottom: 22px; }
-        @keyframes wheelSpin { to { transform: rotate(360deg); } }
-        @keyframes heroRide {
-          0%   { transform: translateX(-380px); }
-          50%  { transform: translateX(50vw) translateY(-6px); }
-          100% { transform: translateX(105vw); }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .hero-rider { animation: none; transform: translateX(8vw); }
-          .wheel { animation: none; }
-        }
-        @media (max-width: 700px) {
-          .hero-rider { width: 250px; height: 140px; }
-          .hero-rider-track { bottom: 28px; height: 140px; }
-          .wheel { width: 46px; height: 46px; }
-          .wheel-back  { left: 35px;  bottom: 15px; }
-          .wheel-front { left: 167px; bottom: 15px; }
-        }
-
         /* ===== QUICK NAV (5 kafelkow) ===== */
-        .kids-quicknav-band { background: #d3e8ff; padding: 40px 0 44px; position: relative; z-index: 2; }
+        .kids-quicknav-band { background: var(--cream); padding: 40px 0 44px; position: relative; z-index: 2; }
         :global([data-theme="dark"]) .kids-quicknav-band { background: #15233b; }
         .kids-quicknav {
           display: grid;
@@ -275,14 +217,15 @@ export default function DlaDzieci() {
           color: var(--k-ink);
           box-shadow: 0 8px 0 var(--k-ink);
         }
-        .qnav-tile:focus-visible { outline: 3px solid var(--k-sky); outline-offset: 3px; }
+        .qnav-tile:focus-visible { outline: 3px solid var(--ac-parent); outline-offset: 3px; }
         .qnav-emoji { font-size: 2.4rem; display: block; line-height: 1; margin-bottom: 8px; }
+        .qnav-icon { display: block; width: 50px; height: 50px; margin: 0 auto 8px; object-fit: contain; }
         .qnav-label { font-family: 'Outfit',sans-serif; font-weight: 900; font-size: .95rem; }
-        .qnav-tile.t1 { background: #ffdcad; } /* -> produkty */
-        .qnav-tile.t2 { background: #ffc7d0; } /* -> RXF */
-        .qnav-tile.t3 { background: #bcebd1; } /* -> quiz */
-        .qnav-tile.t4 { background: #dbe6f5; } /* -> strefa rodzica */
-        .qnav-tile.t5 { background: #d8c9f6; } /* -> marki */
+        .qnav-tile.t1 { background: #ffd9b0; } /* -> produkty */
+        .qnav-tile.t2 { background: #ffc2d6; } /* -> RXF */
+        .qnav-tile.t3 { background: #b9ead0; } /* -> quiz */
+        .qnav-tile.t4 { background: #c4dbf7; } /* -> strefa rodzica */
+        .qnav-tile.t5 { background: #d8c7f6; } /* -> marki */
 
         /* ===== PRZEJSCIE KOLORU ===== */
         .kids-sep { display: block; width: 100%; height: 80px; position: relative; z-index: 1; }
@@ -291,17 +234,18 @@ export default function DlaDzieci() {
         /* ===== SEKCJE ===== */
         .kids-section { position: relative; padding: 76px 0 80px; overflow: hidden; z-index: 2; }
         .kids-section .container { position: relative; z-index: 2; }
-        .kids-section--products { background: #ffe3c7; }
-        .kids-section--rxf      { background: #ffdbe0; }
-        .kids-section--game     { background: #d2f3df; }
-        .kids-section--parent   { background: #eef2f8; }
-        .kids-section--alt      { background: #e6dbfb; }
-        .kids-section--cta      { background: var(--k-ink); }
+        .kids-section--products { background: var(--bg-gear); }
+        .kids-section--rxf      { background: var(--bg-rxf); }
+        .kids-section--game     { background: var(--bg-quiz); }
+        .kids-section--parent   { background: var(--bg-parent); }
+        .kids-section--alt      { background: var(--bg-marki); }
+        .kids-section--cta      { background: linear-gradient(135deg, #ff9eb3 0%, #ff6f91 100%); }
         :global([data-theme="dark"]) .kids-section--products { background: #2e2616; }
         :global([data-theme="dark"]) .kids-section--rxf      { background: #2e1a1a; }
         :global([data-theme="dark"]) .kids-section--game     { background: #122e1e; }
         :global([data-theme="dark"]) .kids-section--parent   { background: #161d2c; }
         :global([data-theme="dark"]) .kids-section--alt      { background: #1f1a2f; }
+        :global([data-theme="dark"]) .kids-section--cta      { background: #3a2030; }
 
         .kids-h2 {
           font-family: 'Outfit',sans-serif;
@@ -313,10 +257,11 @@ export default function DlaDzieci() {
           letter-spacing: -.01em;
         }
         :global([data-theme="dark"]) .kids-h2 { color: #fff; }
+        .kids-h2 .h2-helmet { height: 1.15em; width: auto; display: inline-block; vertical-align: -.24em; margin-right: 8px; }
         /* Sygnatura: napis w przekrzywionym prostokacie */
         .rainbow {
           display: inline-block;
-          background: var(--k-tomato);
+          background: var(--ac-rxf);
           color: #fff;
           padding: 2px 14px;
           border-radius: 14px;
@@ -324,11 +269,12 @@ export default function DlaDzieci() {
           box-shadow: 4px 4px 0 var(--k-ink);
           transform: rotate(-2deg);
         }
-        .rainbow.alt   { transform: rotate(2deg); }
-        .rainbow.sky   { background: var(--k-sky); }
-        .rainbow.mint  { background: var(--k-mint); }
-        .rainbow.plum  { background: var(--k-plum); }
-        .rainbow.slate { background: var(--k-slate); }
+        .rainbow.alt      { transform: rotate(2deg); }
+        .rainbow.c-gear   { background: var(--ac-gear); }
+        .rainbow.c-rxf    { background: var(--ac-rxf); }
+        .rainbow.c-quiz   { background: var(--ac-quiz); }
+        .rainbow.c-parent { background: var(--ac-parent); }
+        .rainbow.c-marki  { background: var(--ac-marki); }
         .kids-lead {
           text-align: center; color: var(--k-ink); font-size: 1.05rem;
           max-width: 720px; margin: 0 auto 44px; line-height: 1.6; font-weight: 600;
@@ -396,7 +342,7 @@ export default function DlaDzieci() {
         }
         .parent-card {
           background: #fff;
-          border: 2px solid #d4dcea;
+          border: 2px solid #c7d6ee;
           border-radius: 18px;
           padding: 26px 24px;
           box-shadow: 0 6px 18px rgba(27,39,72,.08);
@@ -406,7 +352,7 @@ export default function DlaDzieci() {
         .parent-card-icon {
           font-size: 1.9rem; line-height: 1; flex-shrink: 0;
           width: 52px; height: 52px; border-radius: 14px;
-          background: #eef2f8; display: flex; align-items: center; justify-content: center;
+          background: var(--bg-parent); display: flex; align-items: center; justify-content: center;
         }
         :global([data-theme="dark"]) .parent-card-icon { background: #161d2c; }
         .parent-card-title { font-family: 'Outfit',sans-serif; font-weight: 800; font-size: 1.1rem; color: var(--k-ink); margin: 0 0 6px; }
@@ -441,7 +387,7 @@ export default function DlaDzieci() {
           margin: 12px auto 26px; max-width: 320px; overflow: hidden;
           border: 3px solid var(--k-ink);
         }
-        .quiz-progress-fill { height: 100%; background: var(--k-mint); transition: width .4s; }
+        .quiz-progress-fill { height: 100%; background: var(--ac-quiz); transition: width .4s; }
         .quiz-emoji { font-size: 5rem; text-align: center; display: block; }
         .quiz-q { text-align: center; font-family: 'Outfit',sans-serif; font-weight: 900;
           font-size: 1.4rem; color: var(--k-ink); margin: 16px 0 24px; line-height: 1.3;
@@ -454,20 +400,20 @@ export default function DlaDzieci() {
           box-shadow: 0 5px 0 var(--k-ink);
           text-align: left;
         }
-        .quiz-ans:focus-visible { outline: 3px solid var(--k-sky); outline-offset: 2px; }
+        .quiz-ans:focus-visible { outline: 3px solid var(--ac-parent); outline-offset: 2px; }
         .quiz-ans:disabled { cursor: default; }
-        .quiz-ans--correct { background: var(--k-mint); color: var(--k-ink); }
-        .quiz-ans--wrong { background: var(--k-tomato); color: #fff; }
+        .quiz-ans--correct { background: var(--ac-quiz); color: #fff; }
+        .quiz-ans--wrong { background: var(--ac-rxf); color: #fff; }
         .quiz-tip {
           margin-top: 22px; padding: 16px 18px; border-radius: 14px;
           background: var(--k-sun);
           border: 3px solid var(--k-ink);
           color: var(--k-ink); font-size: .95rem; line-height: 1.5; font-weight: 600;
         }
-        .quiz-tip strong { color: var(--k-tomato); font-weight: 900; }
+        .quiz-tip strong { color: var(--ac-rxf); font-weight: 900; }
         .quiz-next-btn {
           margin-top: 20px; width: 100%; padding: 16px;
-          background: var(--k-tomato);
+          background: var(--ac-rxf);
           color: #fff; border: 3px solid var(--k-ink); border-radius: 16px;
           font-family: 'Outfit',sans-serif; font-weight: 900; font-size: 1.1rem;
           cursor: pointer; box-shadow: 0 6px 0 var(--k-ink);
@@ -477,26 +423,45 @@ export default function DlaDzieci() {
         .quiz-final-emoji { font-size: 6rem; }
         .quiz-final-score {
           font-family: 'Outfit',sans-serif; font-weight: 900;
-          font-size: 2.4rem; color: var(--k-tomato); margin: 12px 0;
+          font-size: 2.4rem; color: var(--ac-rxf); margin: 12px 0;
           -webkit-text-stroke: 2px var(--k-ink);
         }
         .quiz-final-msg { color: var(--k-ink); font-size: 1.05rem; max-width: 480px; margin: 0 auto 24px; font-weight: 600; }
 
-        /* ===== CTA ===== */
+        /* ===== CTA (komiksowa chmurka) ===== */
         .kids-cta-card {
-          max-width: 720px; margin: 0 auto;
-          background: var(--k-sun);
-          border: 4px solid #fff;
+          max-width: 660px; margin: 0 auto;
+          background: #fffdf6;
+          border: 4px solid var(--k-ink);
           border-radius: 32px;
-          padding: 50px 36px;
+          padding: 46px 36px;
           text-align: center;
-          box-shadow: 0 14px 0 rgba(255,255,255,.18);
+          box-shadow: 0 12px 0 rgba(27,39,72,.22);
+          position: relative;
+        }
+        /* Ogonek dymka komiksowego (obrys + wypelnienie) */
+        .kids-cta-card::before {
+          content: ""; position: absolute; left: 56px; bottom: -32px;
+          width: 0; height: 0; border: 20px solid transparent;
+          border-top-color: var(--k-ink); border-bottom: 0;
+        }
+        .kids-cta-card::after {
+          content: ""; position: absolute; left: 61px; bottom: -23px;
+          width: 0; height: 0; border: 15px solid transparent;
+          border-top-color: #fffdf6; border-bottom: 0;
+        }
+        .cta-emoji-badge {
+          display: inline-flex; align-items: center; justify-content: center;
+          width: 76px; height: 76px; border-radius: 50%;
+          background: var(--k-sun); border: 4px solid var(--k-ink);
+          font-size: 2.4rem; margin-bottom: 8px;
+          box-shadow: 0 6px 0 var(--k-ink);
         }
         .kids-cta-card .kids-h2 { color: var(--k-ink); }
-        .kids-cta-card .kids-lead { color: var(--k-ink); }
+        .kids-cta-card .kids-lead { color: var(--k-ink); margin-bottom: 24px; }
         .cta-phone-btn {
           display: inline-block;
-          background: var(--k-tomato);
+          background: var(--ac-quiz);
           color: #fff;
           border: 3px solid var(--k-ink);
           border-radius: 100px;
@@ -504,7 +469,6 @@ export default function DlaDzieci() {
           font-family: 'Outfit',sans-serif; font-weight: 900; font-size: 1.15rem;
           text-decoration: none;
           box-shadow: 0 7px 0 var(--k-ink);
-          margin-top: 12px;
         }
         .cta-phone-btn:active { transform: translateY(3px); box-shadow: 0 4px 0 var(--k-ink); }
 
@@ -535,7 +499,6 @@ export default function DlaDzieci() {
             playsInline
             aria-hidden
           />
-          <HeroRider />
           <div className="hero-overlay">
             <div className="container" style={{ position: "relative", zIndex: 4 }}>
               <div className="breadcrumb" style={{ display: "flex", gap: 8, color: "#fff", justifyContent: "center", marginBottom: 30, fontWeight: 700 }}>
@@ -555,7 +518,7 @@ export default function DlaDzieci() {
         <div className="kids-quicknav-band">
           <div className="kids-quicknav">
             <a href="#strefa-produkty" className="qnav-tile t1">
-              <span className="qnav-emoji">🪖</span>
+              <img className="qnav-icon" src="/pics/dzieci/helmet-motorcycle.svg" alt="" aria-hidden />
               <span className="qnav-label">Kaski i zbroje</span>
             </a>
             <a href="#strefa-rxf" className="qnav-tile t2">
@@ -577,12 +540,12 @@ export default function DlaDzieci() {
           </div>
         </div>
 
-        <Sep from="#d3e8ff" to="#ffe3c7" />
+        <Sep from="#fff3e3" to="#ffe8cc" />
 
         {/* ===== 1. PRODUKTY ===== */}
         <section id="strefa-produkty" className="kids-section kids-section--products">
           <div className="container">
-            <EditableHTML id="kids.gear.h2" as="h2" className="kids-h2" defaultHtml='🪖 Kaski, zbroje i <span class="rainbow">kurtki dla dzieci</span>' />
+            <EditableHTML id="kids.gear.h2" as="h2" className="kids-h2" defaultHtml='<img src="/pics/dzieci/helmet-motorcycle.svg" alt="" class="h2-helmet" /> Kaski, zbroje i <span class="rainbow c-gear">kurtki</span>' />
             <Editable id="kids.gear.lead" as="p" className="kids-lead" multiline>
               Wszystko, co potrzebne małemu motocykliście – bezpiecznie, kolorowo i z najlepszych marek.
             </Editable>
@@ -601,12 +564,12 @@ export default function DlaDzieci() {
           </div>
         </section>
 
-        <Sep from="#ffe3c7" to="#ffdbe0" />
+        <Sep from="#ffe8cc" to="#ffd9e6" />
 
         {/* ===== 2. RXF ===== */}
         <section id="strefa-rxf" className="kids-section kids-section--rxf">
           <div className="container">
-            <EditableHTML id="kids.rxf.h2" as="h2" className="kids-h2" defaultHtml='🏍️ Motocykle <span class="rainbow sky alt">RXF dla dzieci</span>' />
+            <EditableHTML id="kids.rxf.h2" as="h2" className="kids-h2" defaultHtml='🏍️ Motocykle <span class="rainbow c-rxf alt">RXF</span>' />
             <Editable id="kids.rxf.lead" as="p" className="kids-lead" multiline>
               Cztery modele dla różnych grup wiekowych – od juniora aż do nastolatka. Bezpieczne, niezawodne i sprawdzone na torach!
             </Editable>
@@ -627,12 +590,12 @@ export default function DlaDzieci() {
           </div>
         </section>
 
-        <Sep from="#ffdbe0" to="#d2f3df" />
+        <Sep from="#ffd9e6" to="#d3f2dd" />
 
         {/* ===== 3. QUIZ ===== */}
         <section id="strefa-gra" className="kids-section kids-section--game">
           <div className="container">
-            <EditableHTML id="kids.quiz.h2" as="h2" className="kids-h2" defaultHtml='🎮 Mini-gra: <span class="rainbow mint">Bezpieczna jazda</span>' />
+            <EditableHTML id="kids.quiz.h2" as="h2" className="kids-h2" defaultHtml='🎮 Mini-gra: <span class="rainbow c-quiz">Bezpieczna jazda</span>' />
             <Editable id="kids.quiz.lead" as="p" className="kids-lead" multiline>
               Sprawdź swoją wiedzę o przepisach i bezpieczeństwie. Każda dobra odpowiedź to punkt!
             </Editable>
@@ -692,14 +655,14 @@ export default function DlaDzieci() {
           </div>
         </section>
 
-        <Sep from="#d2f3df" to="#eef2f8" />
+        <Sep from="#d3f2dd" to="#dbe9fc" />
 
         {/* ===== 4. STREFA RODZICA ===== */}
         <section id="strefa-rodzica" className="kids-section kids-section--parent">
           <div className="container">
-            <EditableHTML id="kids.parent.h2" as="h2" className="kids-h2" defaultHtml='👨‍👩‍👧 Strefa <span class="rainbow slate alt">rodzica</span>' />
+            <EditableHTML id="kids.parent.h2" as="h2" className="kids-h2" defaultHtml='👨‍👩‍👧 Strefa <span class="rainbow c-parent alt">rodzica</span>' />
             <Editable id="kids.parent.lead" as="p" className="kids-lead" multiline>
-              Kilka praktycznych wskazówek dla rodziców – jak bezpiecznie wprowadzić dziecko w świat dwóch kółek.
+              Kilka praktycznych wskazówek dla rodziców – jak bezpiecznie wprowadzić pociechę w świat dwóch kółek.
             </Editable>
             <div className="parent-grid">
               {PARENT_TIPS.map((p, i) => (
@@ -715,14 +678,14 @@ export default function DlaDzieci() {
           </div>
         </section>
 
-        <Sep from="#eef2f8" to="#e6dbfb" />
+        <Sep from="#dbe9fc" to="#e9defb" />
 
         {/* ===== 5. MARKI ===== */}
         <section id="strefa-marki" className="kids-section kids-section--alt">
           <div className="container">
-            <EditableHTML id="kids.brands.h2" as="h2" className="kids-h2" defaultHtml='⭐ Współpracujemy <span class="rainbow plum">z najlepszymi</span>' />
+            <EditableHTML id="kids.brands.h2" as="h2" className="kids-h2" defaultHtml='⭐ Współpracujemy <span class="rainbow c-marki">z najlepszymi</span>' />
             <Editable id="kids.brands.lead" as="p" className="kids-lead" multiline>
-              Wszystkie produkty pochodzą od sprawdzonych światowych producentów odzieży i motocykli dla dzieci.
+              Wszystkie produkty pochodzą od sprawdzonych, światowych producentów odzieży i motocykli.
             </Editable>
             <div className="brand-bubbles">
               {BRAND_LOGOS.map((b, i) => (
@@ -732,14 +695,14 @@ export default function DlaDzieci() {
           </div>
         </section>
 
-        <Sep from="#e6dbfb" to="#1b2748" />
+        <Sep from="#e9defb" to="#ff9eb3" />
 
         {/* ===== 6. CTA ===== */}
         <section className="kids-section kids-section--cta">
           <div className="container">
             <div className="kids-cta-card">
-              <span style={{ fontSize: "4rem", display: "block" }}>📞</span>
-              <Editable id="kids.cta.title" as="h3" className="kids-h2">Chcesz zobaczyć ofertę dla dzieci?</Editable>
+              <span className="cta-emoji-badge" aria-hidden>📞</span>
+              <Editable id="kids.cta.title" as="h3" className="kids-h2">Chcesz zobaczyć całą ofertę?</Editable>
               <Editable id="kids.cta.desc" as="p" className="kids-lead" multiline>
                 Zapraszamy do naszego salonu w Opolu! Mamy dla Was wszystko: kaski, zbroje, motocykle RXF i sporo dobrej zabawy.
               </Editable>
