@@ -234,6 +234,18 @@ export default function DlaDzieci() {
         /* ===== SEKCJE ===== */
         .kids-section { position: relative; padding: 76px 0 80px; overflow: hidden; z-index: 2; }
         .kids-section .container { position: relative; z-index: 2; }
+        /* Komiksowy rastr kropek (Ben-Day) - subtelnie lamie monotonie paneli */
+        .kids-section::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          z-index: 1;
+          pointer-events: none;
+          background-image: radial-gradient(circle, rgba(27,39,72,.06) 2px, transparent 2.4px);
+          background-size: 22px 22px;
+        }
+        .kids-section--cta::before { background-image: radial-gradient(circle, rgba(255,255,255,.18) 2px, transparent 2.4px); }
+        :global([data-theme="dark"]) .kids-section::before { background-image: radial-gradient(circle, rgba(255,255,255,.05) 2px, transparent 2.4px); }
         .kids-section--products { background: var(--bg-gear); }
         .kids-section--rxf      { background: var(--bg-rxf); }
         .kids-section--game     { background: var(--bg-quiz); }
