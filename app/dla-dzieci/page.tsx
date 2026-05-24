@@ -249,32 +249,35 @@ export default function DlaDzieci() {
 
         .kids-h2 {
           font-family: 'Outfit',sans-serif;
-          font-size: clamp(1.9rem, 4.5vw, 2.8rem);
+          font-size: clamp(1.6rem, 3.8vw, 2.4rem);
           font-weight: 900;
           text-align: center;
-          margin: 0 0 14px;
+          margin: 0 0 28px;
           color: var(--k-ink);
           letter-spacing: -.01em;
         }
         :global([data-theme="dark"]) .kids-h2 { color: #fff; }
-        .kids-h2 .h2-helmet { height: 1.15em; width: auto; display: inline-block; vertical-align: -.24em; margin-right: 8px; }
-        /* Sygnatura: napis w przekrzywionym prostokacie */
-        .rainbow {
+        .kids-h2 .h2-helmet { height: 1.1em; width: auto; display: inline-block; vertical-align: -.22em; margin-right: 8px; }
+        /* Sygnatura: CALY naglowek w przekrzywionym prostokacie (komiksowy baner) */
+        .h2-banner {
           display: inline-block;
           background: var(--ac-rxf);
           color: #fff;
-          padding: 2px 14px;
-          border-radius: 14px;
-          border: 3px solid var(--k-ink);
-          box-shadow: 4px 4px 0 var(--k-ink);
+          padding: 10px 26px;
+          border-radius: 18px;
+          border: 4px solid var(--k-ink);
+          box-shadow: 6px 6px 0 var(--k-ink);
           transform: rotate(-2deg);
+          max-width: 94%;
+          text-align: center;
+          line-height: 1.18;
         }
-        .rainbow.alt      { transform: rotate(2deg); }
-        .rainbow.c-gear   { background: var(--ac-gear); }
-        .rainbow.c-rxf    { background: var(--ac-rxf); }
-        .rainbow.c-quiz   { background: var(--ac-quiz); }
-        .rainbow.c-parent { background: var(--ac-parent); }
-        .rainbow.c-marki  { background: var(--ac-marki); }
+        .h2-banner.alt      { transform: rotate(2deg); }
+        .h2-banner.c-gear   { background: var(--ac-gear); }
+        .h2-banner.c-rxf    { background: var(--ac-rxf); }
+        .h2-banner.c-quiz   { background: var(--ac-quiz); }
+        .h2-banner.c-parent { background: var(--ac-parent); }
+        .h2-banner.c-marki  { background: var(--ac-marki); }
         .kids-lead {
           text-align: center; color: var(--k-ink); font-size: 1.05rem;
           max-width: 720px; margin: 0 auto 44px; line-height: 1.6; font-weight: 600;
@@ -545,7 +548,7 @@ export default function DlaDzieci() {
         {/* ===== 1. PRODUKTY ===== */}
         <section id="strefa-produkty" className="kids-section kids-section--products">
           <div className="container">
-            <EditableHTML id="kids.gear.h2" as="h2" className="kids-h2" defaultHtml='<img src="/pics/dzieci/helmet-motorcycle.svg" alt="" class="h2-helmet" /> Kaski, zbroje i <span class="rainbow c-gear">kurtki</span>' />
+            <EditableHTML id="kids.gear.h2" as="h2" className="kids-h2" defaultHtml='<span class="h2-banner c-gear"><img src="/pics/dzieci/helmet-motorcycle.svg" alt="" class="h2-helmet" /> Kaski, zbroje i kurtki</span>' />
             <Editable id="kids.gear.lead" as="p" className="kids-lead" multiline>
               Wszystko, co potrzebne małemu motocykliście – bezpiecznie, kolorowo i z najlepszych marek.
             </Editable>
@@ -569,7 +572,7 @@ export default function DlaDzieci() {
         {/* ===== 2. RXF ===== */}
         <section id="strefa-rxf" className="kids-section kids-section--rxf">
           <div className="container">
-            <EditableHTML id="kids.rxf.h2" as="h2" className="kids-h2" defaultHtml='🏍️ Motocykle <span class="rainbow c-rxf alt">RXF</span>' />
+            <EditableHTML id="kids.rxf.h2" as="h2" className="kids-h2" defaultHtml='<span class="h2-banner c-rxf alt">🏍️ Motocykle RXF</span>' />
             <Editable id="kids.rxf.lead" as="p" className="kids-lead" multiline>
               Cztery modele dla różnych grup wiekowych – od juniora aż do nastolatka. Bezpieczne, niezawodne i sprawdzone na torach!
             </Editable>
@@ -595,7 +598,7 @@ export default function DlaDzieci() {
         {/* ===== 3. QUIZ ===== */}
         <section id="strefa-gra" className="kids-section kids-section--game">
           <div className="container">
-            <EditableHTML id="kids.quiz.h2" as="h2" className="kids-h2" defaultHtml='🎮 Mini-gra: <span class="rainbow c-quiz">Bezpieczna jazda</span>' />
+            <EditableHTML id="kids.quiz.h2" as="h2" className="kids-h2" defaultHtml='<span class="h2-banner c-quiz">🎮 Mini-gra: Bezpieczna jazda</span>' />
             <Editable id="kids.quiz.lead" as="p" className="kids-lead" multiline>
               Sprawdź swoją wiedzę o przepisach i bezpieczeństwie. Każda dobra odpowiedź to punkt!
             </Editable>
@@ -660,7 +663,7 @@ export default function DlaDzieci() {
         {/* ===== 4. STREFA RODZICA ===== */}
         <section id="strefa-rodzica" className="kids-section kids-section--parent">
           <div className="container">
-            <EditableHTML id="kids.parent.h2" as="h2" className="kids-h2" defaultHtml='👨‍👩‍👧 Strefa <span class="rainbow c-parent alt">rodzica</span>' />
+            <EditableHTML id="kids.parent.h2" as="h2" className="kids-h2" defaultHtml='<span class="h2-banner c-parent alt">👨‍👩‍👧 Strefa rodzica</span>' />
             <Editable id="kids.parent.lead" as="p" className="kids-lead" multiline>
               Kilka praktycznych wskazówek dla rodziców – jak bezpiecznie wprowadzić pociechę w świat dwóch kółek.
             </Editable>
@@ -683,7 +686,7 @@ export default function DlaDzieci() {
         {/* ===== 5. MARKI ===== */}
         <section id="strefa-marki" className="kids-section kids-section--alt">
           <div className="container">
-            <EditableHTML id="kids.brands.h2" as="h2" className="kids-h2" defaultHtml='⭐ Współpracujemy <span class="rainbow c-marki">z najlepszymi</span>' />
+            <EditableHTML id="kids.brands.h2" as="h2" className="kids-h2" defaultHtml='<span class="h2-banner c-marki">⭐ Współpracujemy z najlepszymi</span>' />
             <Editable id="kids.brands.lead" as="p" className="kids-lead" multiline>
               Wszystkie produkty pochodzą od sprawdzonych, światowych producentów odzieży i motocykli.
             </Editable>
