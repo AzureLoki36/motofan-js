@@ -234,24 +234,26 @@ export default function DlaDzieci() {
         /* ===== SEKCJE ===== */
         .kids-section { position: relative; padding: 76px 0 80px; overflow: hidden; z-index: 2; }
         .kids-section .container { position: relative; z-index: 2; }
-        /* Komiksowy rastr kropek (Ben-Day) - subtelnie lamie monotonie paneli */
-        .kids-section::before {
+        /* Miekkie plamy koloru - lamia monotonie paneli (CSS-only, rozmyte kola akcentu) */
+        .kids-section::before,
+        .kids-section::after {
           content: "";
           position: absolute;
-          inset: 0;
           z-index: 1;
           pointer-events: none;
-          background-image: radial-gradient(circle, rgba(27,39,72,.06) 2px, transparent 2.4px);
-          background-size: 22px 22px;
+          width: clamp(280px, 38vw, 520px);
+          height: clamp(280px, 38vw, 520px);
+          border-radius: 50%;
+          background: radial-gradient(circle, var(--blob, rgba(27,39,72,.08)) 0%, transparent 68%);
         }
-        .kids-section--cta::before { background-image: radial-gradient(circle, rgba(255,255,255,.18) 2px, transparent 2.4px); }
-        :global([data-theme="dark"]) .kids-section::before { background-image: radial-gradient(circle, rgba(255,255,255,.05) 2px, transparent 2.4px); }
-        .kids-section--products { background: var(--bg-gear); }
-        .kids-section--rxf      { background: var(--bg-rxf); }
-        .kids-section--game     { background: var(--bg-quiz); }
-        .kids-section--parent   { background: var(--bg-parent); }
-        .kids-section--alt      { background: var(--bg-marki); }
-        .kids-section--cta      { background: linear-gradient(135deg, #ff9eb3 0%, #ff6f91 100%); }
+        .kids-section::before { top: -150px; left: -130px; }
+        .kids-section::after  { bottom: -170px; right: -130px; }
+        .kids-section--products { background: var(--bg-gear);   --blob: rgba(239,108,26,.20); }
+        .kids-section--rxf      { background: var(--bg-rxf);    --blob: rgba(232,62,116,.18); }
+        .kids-section--game     { background: var(--bg-quiz);   --blob: rgba(31,157,92,.18); }
+        .kids-section--parent   { background: var(--bg-parent); --blob: rgba(47,111,176,.14); }
+        .kids-section--alt      { background: var(--bg-marki);  --blob: rgba(124,77,219,.18); }
+        .kids-section--cta      { background: linear-gradient(135deg, #ff9eb3 0%, #ff6f91 100%); --blob: rgba(255,255,255,.20); }
         :global([data-theme="dark"]) .kids-section--products { background: #2e2616; }
         :global([data-theme="dark"]) .kids-section--rxf      { background: #2e1a1a; }
         :global([data-theme="dark"]) .kids-section--game     { background: #122e1e; }
