@@ -8,9 +8,11 @@ import { Editable, EditableHTML } from "@/components/Editable";
 import { useLocale } from "@/components/LocaleProvider";
 
 /* =========================================================================
-   STRONA DLA DZIECI - rewrite od zera, dziala niezawodnie
-   - Hero: wideo banner.mp4 + tytul
-   - Sekcje: produkty / RXF / quiz / marki / CTA - identyczna kolorystyka i czcionki
+   STRONA DLA DZIECI - "Komiksowa plansza"
+   - Hero: wideo banner.mp4 + tytul + jadacy motocyklista
+   - Panele: produkty / RXF / quiz / strefa rodzica / marki / CTA
+   - Styl: pastelowo-komiksowy, grube obwodki, twarde cienie, BEZ efektow hover
+   - Przejscia miedzy panelami: gladki gradient koloru (bez SVG, bez doodli)
 ========================================================================= */
 
 /* ===== DANE ===== */
@@ -42,6 +44,13 @@ const RXF_MOTOS = [
   { img: "/pics/dzieci/rxf-racing.svg", name: "RXF Racing 150", cc: "150 cm³", age: "14+ lat", color: "#3fcf97" },
 ];
 
+const PARENT_TIPS = [
+  { icon: "🛡️", title: "Bezpieczeństwo przede wszystkim", text: "Kask i zbroja to absolutna podstawa – także podczas jazdy na podwórku. Dobrze dopasowany sprzęt chroni najważniejsze części ciała." },
+  { icon: "📏", title: "Jak dobrać kask", text: "Zmierz obwód główki dziecka tuż nad brwiami. Kask powinien dobrze przylegać i nie przesuwać się. W salonie chętnie pomożemy w doborze rozmiaru." },
+  { icon: "🎂", title: "Od jakiego wieku?", text: "Modele RXF dobieramy do wieku i wzrostu dziecka. Maluchy jeżdżą wyłącznie na zamkniętych torach, zawsze pod okiem dorosłego." },
+  { icon: "🏪", title: "Doradzimy w salonie", text: "Zapraszamy do salonu w Opolu – pomożemy dobrać kask, zbroję i motocykl idealny dla Twojego dziecka." },
+];
+
 const BRAND_LOGOS = [
   { name: "LS2", color: "#ff7a66" },
   { name: "HJC", color: "#5aa6f0" },
@@ -53,60 +62,29 @@ const BRAND_LOGOS = [
   { name: "RXF", color: "#b89cf0" },
 ];
 
-/* ===== KOMPONENT: motocyklista (PNG/JPG) + animowane kola =====
-   Obrazek-zrodlo jest skierowany w LEWO; scaleX(-1) odwraca w prawo.
+/* ===== KOMPONENT: jadacy motocyklista (rider.svg) + animowane kola =====
+   rider.svg jedzie od lewej do prawej w dolnej czesci banera.
    Dwie nakladki .wheel z conic-gradient symuluja krecace sie szprychy. */
 function HeroRider() {
   return (
-    <div className="hero-rider" aria-hidden>
-      <img src="/pics/dzieci/rider.svg" alt="" className="hero-rider-img" />
-      <span className="wheel wheel-back" />
-      <span className="wheel wheel-front" />
+    <div className="hero-rider-track" aria-hidden>
+      <div className="hero-rider">
+        <img src="/pics/dzieci/rider.svg" alt="" className="hero-rider-img" />
+        <span className="wheel wheel-back" />
+        <span className="wheel wheel-front" />
+      </div>
     </div>
   );
 }
 
-/* ===== MIEKKIE FALOWE PRZEJSCIE MIEDZY SEKCJAMI =====
-   Pasek to gladki, wygladzony (smoothstep) gradient od koloru sekcji powyzej (from)
-   do koloru sekcji ponizej (to). Smoothstep ma zerowe nachylenie na obu koncach,
-   wiec laczy sie z jednolitymi sekcjami bez zalamania (brak pasma Macha / ostrej
-   linii). Na wierzchu zostaje delikatna, mocno rozmyta fala dla charakteru. */
-function hexToRgb(h: string): [number, number, number] {
-  const x = h.replace("#", "");
-  return [parseInt(x.slice(0, 2), 16), parseInt(x.slice(2, 4), 16), parseInt(x.slice(4, 6), 16)];
-}
-function rgbToHex(r: number, g: number, b: number): string {
-  const c = (n: number) => Math.round(Math.max(0, Math.min(255, n))).toString(16).padStart(2, "0");
-  return `#${c(r)}${c(g)}${c(b)}`;
-}
-/* Wielopunktowy gradient z wygladzaniem smoothstep – plynne przejscie koloru bez
-   widocznej linii ani schodkowania (banding). */
-function easedGradient(from: string, to: string, steps = 10): string {
-  const a = hexToRgb(from);
-  const b = hexToRgb(to);
-  const stops: string[] = [];
-  for (let i = 0; i <= steps; i++) {
-    const p = i / steps;
-    const e = p * p * (3 - 2 * p); // smoothstep
-    const col = rgbToHex(a[0] + (b[0] - a[0]) * e, a[1] + (b[1] - a[1]) * e, a[2] + (b[2] - a[2]) * e);
-    stops.push(`${col} ${(p * 100).toFixed(1)}%`);
-  }
-  return `linear-gradient(180deg, ${stops.join(", ")})`;
-}
-function ZoneSep({ from, to }: { from: string; to: string }) {
-  const id = `zs-${from.replace("#", "")}-${to.replace("#", "")}`;
+/* ===== Gladkie przejscie koloru miedzy panelami (bez SVG/doodli) ===== */
+function Sep({ from, to }: { from: string; to: string }) {
   return (
-    <div className="zone-sep" aria-hidden style={{ background: easedGradient(from, to) }}>
-      <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id={id} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor={from} stopOpacity="0.55" />
-            <stop offset="60%" stopColor={from} stopOpacity="0" />
-          </linearGradient>
-        </defs>
-        <path d="M0,0 L1440,0 L1440,54 C1160,108 980,28 720,60 C460,92 280,26 0,62 Z" fill={`url(#${id})`} />
-      </svg>
-    </div>
+    <div
+      className="kids-sep"
+      aria-hidden
+      style={{ background: `linear-gradient(180deg, ${from} 0%, ${to} 100%)` }}
+    />
   );
 }
 
@@ -141,46 +119,40 @@ export default function DlaDzieci() {
 
       <style>{`
         :root {
-          /* Zharmonizowana paleta - ujednolicone nasycenie i jasnosc (rodzina kolorow) */
           --k-sky: #5aa6f0;
           --k-sun: #ffc24d;
           --k-tomato: #ff7a66;
           --k-mint: #3fcf97;
           --k-plum: #9b78ec;
+          --k-slate: #7e8db0;
           --k-ink: #1b2748;
         }
 
-        .kids-page-bg {
-          position: relative;
-          isolation: isolate;
-          background: linear-gradient(180deg, #d3e8ff 0%, #eaf4ff 14%, #ffe3c7 30%, #ffdbe0 48%, #d2f3df 66%, #e6dbfb 84%, #1b2748 100%);
-        }
+        .kids-page-bg { position: relative; isolation: isolate; background: #ffe3c7; }
         :global([data-theme="dark"]) .kids-page-bg { background: #0e1322; }
 
         /* ===== HERO ===== */
         .kids-hero {
           position: relative;
           overflow: hidden;
-          height: clamp(300px, 46vw, 640px);
+          height: clamp(320px, 46vw, 640px);
           background: linear-gradient(180deg, #8fc1f2 0%, #d3e8ff 100%);
           z-index: 2;
         }
-        /* Wygaszenie dolu wideo w tlo strony - bez ostrej niebieskiej linii */
         .kids-hero::after {
           content: "";
           position: absolute;
           left: 0; right: 0; bottom: 0;
           height: 90px;
           background: linear-gradient(to bottom, rgba(211,232,255,0) 0%, #d3e8ff 100%);
-          z-index: 1;
+          z-index: 3;
           pointer-events: none;
         }
         .hero-video {
           display: block;
           position: absolute;
           inset: 0;
-          width: 100%;
-          height: 100%;
+          width: 100%; height: 100%;
           object-fit: cover;
           object-position: 25% 18%;
           pointer-events: none;
@@ -193,88 +165,8 @@ export default function DlaDzieci() {
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          padding: 40px 16px;
+          padding: 40px 16px 90px;
           z-index: 4;
-        }
-        .hero-biker {
-          position: absolute;
-          inset: 0;
-          width: 100%; height: 100%;
-          object-fit: cover;
-          object-position: center bottom;
-          pointer-events: none;
-          z-index: 0;
-        }
-        .hero-rider-track {
-          position: absolute;
-          left: 0; right: 0;
-          bottom: 50px; /* nad droga z hero-biker.svg */
-          height: 260px;
-          pointer-events: none;
-          z-index: 3;
-        }
-        .hero-rider {
-          position: absolute;
-          left: 0;
-          bottom: 0;
-          width: 400px;
-          height: 260px;
-          transform: translateX(-100%);
-          animation: heroRide 11s linear infinite;
-          filter: drop-shadow(6px 8px 8px rgba(13,27,61,.3));
-          will-change: transform;
-        }
-        .hero-rider-img {
-          width: 100%;
-          height: 100%;
-          display: block;
-          object-fit: contain;
-        }
-        /* Krecace sie kola - nakladki z gradientem szprych */
-        .wheel {
-          position: absolute;
-          width: 78px;
-          height: 78px;
-          border-radius: 50%;
-          pointer-events: none;
-          background:
-            conic-gradient(
-              from 0deg,
-              transparent 0deg,
-              rgba(255,255,255,0.65) 4deg,
-              transparent 12deg,
-              transparent 86deg,
-              rgba(255,255,255,0.65) 94deg,
-              transparent 102deg,
-              transparent 176deg,
-              rgba(255,255,255,0.65) 184deg,
-              transparent 192deg,
-              transparent 266deg,
-              rgba(255,255,255,0.65) 274deg,
-              transparent 282deg,
-              transparent 360deg
-            );
-          mask: radial-gradient(circle, transparent 12%, #000 14%, #000 86%, transparent 88%);
-          -webkit-mask: radial-gradient(circle, transparent 12%, #000 14%, #000 86%, transparent 88%);
-          animation: wheelSpin .25s linear infinite;
-          will-change: transform;
-        }
-        .wheel-back  { left: 56px;  bottom: 26px; }
-        .wheel-front { left: 266px; bottom: 26px; }
-        @keyframes wheelSpin {
-          to { transform: rotate(360deg); }
-        }
-        @keyframes heroRide {
-          0%   { transform: translateX(-400px); }
-          50%  { transform: translateX(50vw) translateY(-6px); }
-          100% { transform: translateX(105vw); }
-        }
-        @media (max-width: 700px) {
-          .hero-rider { width: 280px; height: 182px; }
-          .hero-rider-track { bottom: 35px; height: 182px; }
-          .wheel { width: 55px; height: 55px; }
-          .wheel-back  { left: 39px;  bottom: 18px; }
-          .wheel-front { left: 186px; bottom: 18px; }
         }
         .kids-title {
           font-family: 'Outfit',sans-serif;
@@ -304,55 +196,112 @@ export default function DlaDzieci() {
           box-shadow: 0 6px 0 var(--k-ink);
         }
 
-        /* ===== QUICK NAV ===== */
+        /* ===== JADACY MOTOCYKLISTA ===== */
+        .hero-rider-track {
+          position: absolute;
+          left: 0; right: 0;
+          bottom: 40px;
+          height: 200px;
+          pointer-events: none;
+          z-index: 3;
+        }
+        .hero-rider {
+          position: absolute;
+          left: 0; bottom: 0;
+          width: 360px; height: 200px;
+          transform: translateX(-100%);
+          animation: heroRide 11s linear infinite;
+          filter: drop-shadow(6px 8px 8px rgba(13,27,61,.3));
+          will-change: transform;
+        }
+        .hero-rider-img { width: 100%; height: 100%; display: block; object-fit: contain; }
+        .wheel {
+          position: absolute;
+          width: 66px; height: 66px;
+          border-radius: 50%;
+          pointer-events: none;
+          background:
+            conic-gradient(
+              from 0deg,
+              transparent 0deg, rgba(255,255,255,0.65) 4deg, transparent 12deg,
+              transparent 86deg, rgba(255,255,255,0.65) 94deg, transparent 102deg,
+              transparent 176deg, rgba(255,255,255,0.65) 184deg, transparent 192deg,
+              transparent 266deg, rgba(255,255,255,0.65) 274deg, transparent 282deg,
+              transparent 360deg
+            );
+          mask: radial-gradient(circle, transparent 12%, #000 14%, #000 86%, transparent 88%);
+          -webkit-mask: radial-gradient(circle, transparent 12%, #000 14%, #000 86%, transparent 88%);
+          animation: wheelSpin .25s linear infinite;
+          will-change: transform;
+        }
+        .wheel-back  { left: 50px;  bottom: 22px; }
+        .wheel-front { left: 240px; bottom: 22px; }
+        @keyframes wheelSpin { to { transform: rotate(360deg); } }
+        @keyframes heroRide {
+          0%   { transform: translateX(-380px); }
+          50%  { transform: translateX(50vw) translateY(-6px); }
+          100% { transform: translateX(105vw); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .hero-rider { animation: none; transform: translateX(8vw); }
+          .wheel { animation: none; }
+        }
+        @media (max-width: 700px) {
+          .hero-rider { width: 250px; height: 140px; }
+          .hero-rider-track { bottom: 28px; height: 140px; }
+          .wheel { width: 46px; height: 46px; }
+          .wheel-back  { left: 35px;  bottom: 15px; }
+          .wheel-front { left: 167px; bottom: 15px; }
+        }
+
+        /* ===== QUICK NAV (5 kafelkow) ===== */
+        .kids-quicknav-band { background: #d3e8ff; padding: 40px 0 44px; position: relative; z-index: 2; }
+        :global([data-theme="dark"]) .kids-quicknav-band { background: #15233b; }
         .kids-quicknav {
           display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 18px;
+          grid-template-columns: repeat(5, 1fr);
+          gap: 16px;
           max-width: 1100px;
-          margin: 50px auto -60px;
+          margin: 0 auto;
           padding: 0 16px;
-          position: relative; z-index: 5;
         }
         .qnav-tile {
           background: #fff;
           border: 4px solid var(--k-ink);
-          border-radius: 24px;
-          padding: 22px 16px 18px;
+          border-radius: 22px;
+          padding: 20px 12px 16px;
           text-align: center;
           text-decoration: none;
           color: var(--k-ink);
           box-shadow: 0 8px 0 var(--k-ink);
-          transition: transform .2s, box-shadow .2s;
-          cursor: pointer;
         }
-        .qnav-tile:hover { transform: translate(-2px,-4px); box-shadow: 0 12px 0 var(--k-ink); }
-        .qnav-tile:active { transform: translate(2px,4px); box-shadow: 0 2px 0 var(--k-ink); }
-        .qnav-emoji { font-size: 2.6rem; display: block; line-height: 1; margin-bottom: 8px; }
-        .qnav-icon { display: block; width: 52px; height: 52px; margin: 0 auto 8px; object-fit: contain; }
-        .qnav-label { font-family: 'Outfit',sans-serif; font-weight: 900; font-size: 1rem; }
-        /* Tla kafelkow odpowiadaja kolorom sekcji, do ktorych prowadza */
-        .qnav-tile.t1 { background: #ffdcad; } /* -> produkty (#ffe3c7) */
-        .qnav-tile.t2 { background: #ffc7d0; } /* -> RXF (#ffdbe0) */
-        .qnav-tile.t3 { background: #bcebd1; } /* -> mini-gra (#d2f3df) */
-        .qnav-tile.t4 { background: #d8c9f6; } /* -> marki (#e6dbfb) */
+        .qnav-tile:focus-visible { outline: 3px solid var(--k-sky); outline-offset: 3px; }
+        .qnav-emoji { font-size: 2.4rem; display: block; line-height: 1; margin-bottom: 8px; }
+        .qnav-label { font-family: 'Outfit',sans-serif; font-weight: 900; font-size: .95rem; }
+        .qnav-tile.t1 { background: #ffdcad; } /* -> produkty */
+        .qnav-tile.t2 { background: #ffc7d0; } /* -> RXF */
+        .qnav-tile.t3 { background: #bcebd1; } /* -> quiz */
+        .qnav-tile.t4 { background: #dbe6f5; } /* -> strefa rodzica */
+        .qnav-tile.t5 { background: #d8c9f6; } /* -> marki */
+
+        /* ===== PRZEJSCIE KOLORU ===== */
+        .kids-sep { display: block; width: 100%; height: 80px; position: relative; z-index: 1; }
+        :global([data-theme="dark"]) .kids-sep { display: none; }
 
         /* ===== SEKCJE ===== */
-        .kids-section { position: relative; padding: 110px 0 90px; overflow: hidden; z-index: 2; }
+        .kids-section { position: relative; padding: 76px 0 80px; overflow: hidden; z-index: 2; }
         .kids-section .container { position: relative; z-index: 2; }
-        /* Gora pierwszej sekcji wygaszana, by krem wtapial sie w jasnoniebieskie tlo (brak ostrej linii) */
-        .kids-section--products { background: linear-gradient(180deg, rgba(255,227,199,0) 0%, #ffe3c7 140px); }
+        .kids-section--products { background: #ffe3c7; }
         .kids-section--rxf      { background: #ffdbe0; }
         .kids-section--game     { background: #d2f3df; }
+        .kids-section--parent   { background: #eef2f8; }
         .kids-section--alt      { background: #e6dbfb; }
         .kids-section--cta      { background: var(--k-ink); }
         :global([data-theme="dark"]) .kids-section--products { background: #2e2616; }
         :global([data-theme="dark"]) .kids-section--rxf      { background: #2e1a1a; }
         :global([data-theme="dark"]) .kids-section--game     { background: #122e1e; }
+        :global([data-theme="dark"]) .kids-section--parent   { background: #161d2c; }
         :global([data-theme="dark"]) .kids-section--alt      { background: #1f1a2f; }
-
-        .zone-sep { display: block; width: 100%; height: 120px; position: relative; z-index: 3; margin-top: -2px; margin-bottom: -2px; line-height: 0; overflow: hidden; }
-        .zone-sep svg { display: block; width: 100%; height: 100%; filter: blur(7px); }
 
         .kids-h2 {
           font-family: 'Outfit',sans-serif;
@@ -364,7 +313,8 @@ export default function DlaDzieci() {
           letter-spacing: -.01em;
         }
         :global([data-theme="dark"]) .kids-h2 { color: #fff; }
-        .kids-h2 .rainbow {
+        /* Sygnatura: napis w przekrzywionym prostokacie */
+        .rainbow {
           display: inline-block;
           background: var(--k-tomato);
           color: #fff;
@@ -374,6 +324,11 @@ export default function DlaDzieci() {
           box-shadow: 4px 4px 0 var(--k-ink);
           transform: rotate(-2deg);
         }
+        .rainbow.alt   { transform: rotate(2deg); }
+        .rainbow.sky   { background: var(--k-sky); }
+        .rainbow.mint  { background: var(--k-mint); }
+        .rainbow.plum  { background: var(--k-plum); }
+        .rainbow.slate { background: var(--k-slate); }
         .kids-lead {
           text-align: center; color: var(--k-ink); font-size: 1.05rem;
           max-width: 720px; margin: 0 auto 44px; line-height: 1.6; font-weight: 600;
@@ -392,10 +347,8 @@ export default function DlaDzieci() {
           padding: 28px 20px 22px;
           text-align: center;
           box-shadow: 0 8px 0 var(--k-ink);
-          transition: transform .2s, box-shadow .2s;
           position: relative;
         }
-        .kids-card:hover { transform: translate(-2px,-6px) rotate(-1deg); box-shadow: 0 14px 0 var(--k-ink); }
         .kids-card-img-wrap {
           width: 120px; height: 120px; margin: 0 auto 14px;
           border-radius: 24px;
@@ -422,10 +375,8 @@ export default function DlaDzieci() {
           padding: 26px 18px 22px;
           text-align: center;
           box-shadow: 0 8px 0 var(--k-ink);
-          transition: transform .2s, box-shadow .2s;
           position: relative;
         }
-        .rxf-card:hover { transform: translate(-2px,-6px); box-shadow: 0 14px 0 var(--k-ink); }
         .rxf-card-img-wrap {
           width: 130px; height: 130px; margin: 0 auto 12px; border-radius: 50%;
           display: flex; align-items: center; justify-content: center;
@@ -438,6 +389,31 @@ export default function DlaDzieci() {
           font-weight: 800; color: #fff; border: 2px solid var(--k-ink);
         }
 
+        /* ===== STREFA RODZICA (spokojniejszy panel) ===== */
+        .parent-grid {
+          display: grid; grid-template-columns: repeat(2, minmax(260px, 1fr));
+          gap: 20px; max-width: 920px; margin: 0 auto;
+        }
+        .parent-card {
+          background: #fff;
+          border: 2px solid #d4dcea;
+          border-radius: 18px;
+          padding: 26px 24px;
+          box-shadow: 0 6px 18px rgba(27,39,72,.08);
+          display: flex; gap: 16px; align-items: flex-start;
+        }
+        :global([data-theme="dark"]) .parent-card { background: #1f283c; border-color: #2c3a55; }
+        .parent-card-icon {
+          font-size: 1.9rem; line-height: 1; flex-shrink: 0;
+          width: 52px; height: 52px; border-radius: 14px;
+          background: #eef2f8; display: flex; align-items: center; justify-content: center;
+        }
+        :global([data-theme="dark"]) .parent-card-icon { background: #161d2c; }
+        .parent-card-title { font-family: 'Outfit',sans-serif; font-weight: 800; font-size: 1.1rem; color: var(--k-ink); margin: 0 0 6px; }
+        :global([data-theme="dark"]) .parent-card-title { color: #fff; }
+        .parent-card-text { font-size: .92rem; color: #4a5575; line-height: 1.6; margin: 0; }
+        :global([data-theme="dark"]) .parent-card-text { color: #b6bfd6; }
+
         /* ===== MARKI ===== */
         .brand-bubbles { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; margin-top: 10px; }
         .brand-bubble {
@@ -445,10 +421,8 @@ export default function DlaDzieci() {
           font-family: 'Outfit',sans-serif; font-weight: 900; font-size: 1rem;
           border: 3px solid var(--k-ink);
           box-shadow: 4px 4px 0 var(--k-ink);
-          transition: transform .15s, box-shadow .15s;
           letter-spacing: .03em;
         }
-        .brand-bubble:hover { transform: translate(-2px,-3px); box-shadow: 6px 7px 0 var(--k-ink); }
 
         /* ===== QUIZ ===== */
         .quiz-wrap {
@@ -478,10 +452,9 @@ export default function DlaDzieci() {
           padding: 16px 20px; font-family: 'Outfit',sans-serif; font-weight: 800;
           font-size: 1.05rem; color: var(--k-ink); cursor: pointer;
           box-shadow: 0 5px 0 var(--k-ink);
-          transition: transform .15s, box-shadow .15s;
           text-align: left;
         }
-        .quiz-ans:hover:not(:disabled) { transform: translate(-1px,-2px); box-shadow: 0 7px 0 var(--k-ink); }
+        .quiz-ans:focus-visible { outline: 3px solid var(--k-sky); outline-offset: 2px; }
         .quiz-ans:disabled { cursor: default; }
         .quiz-ans--correct { background: var(--k-mint); color: var(--k-ink); }
         .quiz-ans--wrong { background: var(--k-tomato); color: #fff; }
@@ -498,9 +471,8 @@ export default function DlaDzieci() {
           color: #fff; border: 3px solid var(--k-ink); border-radius: 16px;
           font-family: 'Outfit',sans-serif; font-weight: 900; font-size: 1.1rem;
           cursor: pointer; box-shadow: 0 6px 0 var(--k-ink);
-          transition: transform .15s, box-shadow .15s;
         }
-        .quiz-next-btn:hover { transform: translate(-1px,-3px); box-shadow: 0 9px 0 var(--k-ink); }
+        .quiz-next-btn:active { transform: translateY(3px); box-shadow: 0 3px 0 var(--k-ink); }
         .quiz-final { text-align: center; }
         .quiz-final-emoji { font-size: 6rem; }
         .quiz-final-score {
@@ -532,20 +504,21 @@ export default function DlaDzieci() {
           font-family: 'Outfit',sans-serif; font-weight: 900; font-size: 1.15rem;
           text-decoration: none;
           box-shadow: 0 7px 0 var(--k-ink);
-          transition: transform .15s, box-shadow .15s;
           margin-top: 12px;
         }
-        .cta-phone-btn:hover { transform: translate(-2px,-4px); box-shadow: 0 11px 0 var(--k-ink); }
+        .cta-phone-btn:active { transform: translateY(3px); box-shadow: 0 4px 0 var(--k-ink); }
 
         @media (max-width: 900px) {
           .kids-grid { grid-template-columns: repeat(2, 1fr); }
           .rxf-grid  { grid-template-columns: repeat(2, 1fr); }
-          .kids-quicknav { grid-template-columns: repeat(2, 1fr); margin-bottom: -40px; }
+          .kids-quicknav { grid-template-columns: repeat(3, 1fr); }
         }
         @media (max-width: 560px) {
-          .kids-section { padding: 80px 0 60px; }
+          .kids-section { padding: 60px 0 56px; }
           .kids-grid { grid-template-columns: 1fr; }
           .rxf-grid  { grid-template-columns: 1fr; }
+          .parent-grid { grid-template-columns: 1fr; }
+          .kids-quicknav { grid-template-columns: repeat(2, 1fr); }
           .quiz-wrap { padding: 30px 20px; }
         }
       `}</style>
@@ -562,45 +535,54 @@ export default function DlaDzieci() {
             playsInline
             aria-hidden
           />
+          <HeroRider />
           <div className="hero-overlay">
-          <div className="container" style={{ position: "relative", zIndex: 4 }}>
-            <div className="breadcrumb" style={{ color: "#fff", justifyContent: "center", marginBottom: 30, fontWeight: 700 }}>
-              <Link href="/" style={{ color: "#fff" }}>{t("bc.home")}</Link>
-              <span>/</span>
-              <span style={{ color: "#fff" }}>{t("bc.kids")}</span>
+            <div className="container" style={{ position: "relative", zIndex: 4 }}>
+              <div className="breadcrumb" style={{ display: "flex", gap: 8, color: "#fff", justifyContent: "center", marginBottom: 30, fontWeight: 700 }}>
+                <Link href="/" style={{ color: "#fff" }}>{t("bc.home")}</Link>
+                <span>/</span>
+                <span style={{ color: "#fff" }}>{t("bc.kids")}</span>
+              </div>
+              <EditableHTML id="kids.title" as="h1" className="kids-title" defaultHtml='Strefa Małego<br/>Motocyklisty! 🏍️' />
+              <Editable id="kids.sub" as="p" className="kids-sub" multiline>
+                Wszystko dla najmłodszych motocyklistów: kaski, zbroje, motocykle RXF i kolorowa gra o przepisach drogowych!
+              </Editable>
             </div>
-            <EditableHTML id="kids.title" as="h1" className="kids-title" defaultHtml='Strefa Małego<br/>Motocyklisty! 🏍️' />
-            <Editable id="kids.sub" as="p" className="kids-sub" multiline>
-              Wszystko dla najmłodszych motocyklistów: kaski, zbroje, motocykle RXF i kolorowa gra o przepisach drogowych!
-            </Editable>
-          </div>
           </div>
         </section>
 
         {/* ===== QUICK NAV ===== */}
-        <div className="kids-quicknav">
-          <a href="#strefa-produkty" className="qnav-tile t1">
-            <img className="qnav-icon" src="/pics/latajace/helmet-moto2.svg" alt="" aria-hidden />
-            <span className="qnav-label">Kaski i zbroje</span>
-          </a>
-          <a href="#strefa-rxf" className="qnav-tile t2">
-            <span className="qnav-emoji">🏍️</span>
-            <span className="qnav-label">Motocykle RXF</span>
-          </a>
-          <a href="#strefa-gra" className="qnav-tile t3">
-            <span className="qnav-emoji">🎮</span>
-            <span className="qnav-label">Mini-gra</span>
-          </a>
-          <a href="#strefa-marki" className="qnav-tile t4">
-            <span className="qnav-emoji">⭐</span>
-            <span className="qnav-label">Marki</span>
-          </a>
+        <div className="kids-quicknav-band">
+          <div className="kids-quicknav">
+            <a href="#strefa-produkty" className="qnav-tile t1">
+              <span className="qnav-emoji">🪖</span>
+              <span className="qnav-label">Kaski i zbroje</span>
+            </a>
+            <a href="#strefa-rxf" className="qnav-tile t2">
+              <span className="qnav-emoji">🏍️</span>
+              <span className="qnav-label">Motocykle RXF</span>
+            </a>
+            <a href="#strefa-gra" className="qnav-tile t3">
+              <span className="qnav-emoji">🎮</span>
+              <span className="qnav-label">Mini-gra</span>
+            </a>
+            <a href="#strefa-rodzica" className="qnav-tile t4">
+              <span className="qnav-emoji">👨‍👩‍👧</span>
+              <span className="qnav-label">Strefa rodzica</span>
+            </a>
+            <a href="#strefa-marki" className="qnav-tile t5">
+              <span className="qnav-emoji">⭐</span>
+              <span className="qnav-label">Marki</span>
+            </a>
+          </div>
         </div>
+
+        <Sep from="#d3e8ff" to="#ffe3c7" />
 
         {/* ===== 1. PRODUKTY ===== */}
         <section id="strefa-produkty" className="kids-section kids-section--products">
           <div className="container">
-            <EditableHTML id="kids.gear.h2" as="h2" className="kids-h2" defaultHtml='<img src="/pics/latajace/helmet-moto2.svg" alt="" style="height:1.1em;width:auto;display:inline-block;vertical-align:-0.22em;margin-right:8px;" /> Kaski, zbroje i <span class="rainbow">kurtki dla dzieci</span>' />
+            <EditableHTML id="kids.gear.h2" as="h2" className="kids-h2" defaultHtml='🪖 Kaski, zbroje i <span class="rainbow">kurtki dla dzieci</span>' />
             <Editable id="kids.gear.lead" as="p" className="kids-lead" multiline>
               Wszystko, co potrzebne małemu motocykliście – bezpiecznie, kolorowo i z najlepszych marek.
             </Editable>
@@ -619,12 +601,12 @@ export default function DlaDzieci() {
           </div>
         </section>
 
-        <ZoneSep from="#ffe3c7" to="#ffdbe0" />
+        <Sep from="#ffe3c7" to="#ffdbe0" />
 
         {/* ===== 2. RXF ===== */}
         <section id="strefa-rxf" className="kids-section kids-section--rxf">
           <div className="container">
-            <EditableHTML id="kids.rxf.h2" as="h2" className="kids-h2" defaultHtml='🏍️ Motocykle <span class="rainbow">RXF dla dzieci</span>' />
+            <EditableHTML id="kids.rxf.h2" as="h2" className="kids-h2" defaultHtml='🏍️ Motocykle <span class="rainbow sky alt">RXF dla dzieci</span>' />
             <Editable id="kids.rxf.lead" as="p" className="kids-lead" multiline>
               Cztery modele dla różnych grup wiekowych – od juniora aż do nastolatka. Bezpieczne, niezawodne i sprawdzone na torach!
             </Editable>
@@ -645,12 +627,12 @@ export default function DlaDzieci() {
           </div>
         </section>
 
-        <ZoneSep from="#ffdbe0" to="#d2f3df" />
+        <Sep from="#ffdbe0" to="#d2f3df" />
 
         {/* ===== 3. QUIZ ===== */}
         <section id="strefa-gra" className="kids-section kids-section--game">
           <div className="container">
-            <EditableHTML id="kids.quiz.h2" as="h2" className="kids-h2" defaultHtml='🎮 Mini-gra: <span class="rainbow">Bezpieczna jazda</span>' />
+            <EditableHTML id="kids.quiz.h2" as="h2" className="kids-h2" defaultHtml='🎮 Mini-gra: <span class="rainbow mint">Bezpieczna jazda</span>' />
             <Editable id="kids.quiz.lead" as="p" className="kids-lead" multiline>
               Sprawdź swoją wiedzę o przepisach i bezpieczeństwie. Każda dobra odpowiedź to punkt!
             </Editable>
@@ -710,12 +692,35 @@ export default function DlaDzieci() {
           </div>
         </section>
 
-        <ZoneSep from="#d2f3df" to="#e6dbfb" />
+        <Sep from="#d2f3df" to="#eef2f8" />
 
-        {/* ===== 4. MARKI ===== */}
+        {/* ===== 4. STREFA RODZICA ===== */}
+        <section id="strefa-rodzica" className="kids-section kids-section--parent">
+          <div className="container">
+            <EditableHTML id="kids.parent.h2" as="h2" className="kids-h2" defaultHtml='👨‍👩‍👧 Strefa <span class="rainbow slate alt">rodzica</span>' />
+            <Editable id="kids.parent.lead" as="p" className="kids-lead" multiline>
+              Kilka praktycznych wskazówek dla rodziców – jak bezpiecznie wprowadzić dziecko w świat dwóch kółek.
+            </Editable>
+            <div className="parent-grid">
+              {PARENT_TIPS.map((p, i) => (
+                <div className="parent-card" key={i}>
+                  <span className="parent-card-icon" aria-hidden>{p.icon}</span>
+                  <div>
+                    <h3 className="parent-card-title">{p.title}</h3>
+                    <p className="parent-card-text">{p.text}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <Sep from="#eef2f8" to="#e6dbfb" />
+
+        {/* ===== 5. MARKI ===== */}
         <section id="strefa-marki" className="kids-section kids-section--alt">
           <div className="container">
-            <EditableHTML id="kids.brands.h2" as="h2" className="kids-h2" defaultHtml='⭐ Współpracujemy <span class="rainbow">z najlepszymi</span>' />
+            <EditableHTML id="kids.brands.h2" as="h2" className="kids-h2" defaultHtml='⭐ Współpracujemy <span class="rainbow plum">z najlepszymi</span>' />
             <Editable id="kids.brands.lead" as="p" className="kids-lead" multiline>
               Wszystkie produkty pochodzą od sprawdzonych światowych producentów odzieży i motocykli dla dzieci.
             </Editable>
@@ -727,9 +732,9 @@ export default function DlaDzieci() {
           </div>
         </section>
 
-        <ZoneSep from="#e6dbfb" to="#1b2748" />
+        <Sep from="#e6dbfb" to="#1b2748" />
 
-        {/* ===== 5. CTA ===== */}
+        {/* ===== 6. CTA ===== */}
         <section className="kids-section kids-section--cta">
           <div className="container">
             <div className="kids-cta-card">
