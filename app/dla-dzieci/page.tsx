@@ -596,6 +596,25 @@ export default function DlaDzieci() {
         .cta-map iframe { display: block; width: 100%; height: 100%; }
         .cta-address { margin-top: 18px; font-family: 'Outfit',sans-serif; font-weight: 800; color: var(--k-ink); font-size: .95rem; }
 
+        /* ===== EFEKTY HOVER NA KAFELKACH ===== */
+        .qnav-tile, .kids-card, .rxf-card, .brand-bubble, .parent-card, .quiz-ans {
+          transition: transform .16s ease, box-shadow .16s ease;
+        }
+        .kids-card-img-wrap img, .rxf-card-img-wrap img { transition: transform .3s ease; }
+        .qnav-tile:hover { transform: translate(-2px, -6px); box-shadow: 0 14px 0 var(--k-ink); }
+        .kids-card:hover { transform: translate(-2px, -6px) rotate(-.6deg); box-shadow: 0 16px 0 var(--k-ink); }
+        .kids-card:hover .kids-card-img-wrap img { transform: scale(1.06); }
+        .rxf-card:hover { transform: translate(-2px, -6px) rotate(.6deg); box-shadow: 0 16px 0 var(--k-ink); }
+        .rxf-card:hover .rxf-card-img-wrap img { transform: scale(1.06); }
+        .brand-bubble:hover { transform: translate(-2px, -5px) rotate(-1.5deg); box-shadow: 0 12px 0 var(--k-ink); }
+        .parent-card:hover { transform: translateY(-4px); box-shadow: 0 12px 26px rgba(27,39,72,.16); }
+        .quiz-ans:hover:not(:disabled) { transform: translate(-1px, -2px); box-shadow: 0 7px 0 var(--k-ink); }
+        @media (hover: none) {
+          .qnav-tile:hover, .kids-card:hover, .rxf-card:hover, .brand-bubble:hover, .parent-card:hover,
+          .quiz-ans:hover:not(:disabled) { transform: none; }
+          .kids-card:hover .kids-card-img-wrap img, .rxf-card:hover .rxf-card-img-wrap img { transform: none; }
+        }
+
         @media (max-width: 900px) {
           .kids-grid { grid-template-columns: repeat(2, 1fr); }
           .rxf-grid  { grid-template-columns: repeat(2, 1fr); }
