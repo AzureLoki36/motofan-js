@@ -260,13 +260,8 @@ export default function DlaDzieci() {
         .qnav-tile.t4 { background: #c4dbf7; } /* -> strefa rodzica */
         .qnav-tile.t5 { background: #d8c7f6; } /* -> marki */
 
-        /* ===== GRADIENT + LEKKA LINIA GRANICZNA ===== */
+        /* ===== GRADIENT MIEDZY PANELAMI ===== */
         .kids-sep { display: block; width: 100%; height: 70px; position: relative; z-index: 1; }
-        .kids-sep::after {
-          content: ""; position: absolute; left: 0; right: 0; top: 50%;
-          transform: translateY(-50%); height: 2px;
-          background: rgba(27,39,72,.16);
-        }
         :global([data-theme="dark"]) .kids-sep { display: none; }
 
         /* ===== KSZTALTY MOTO W TLE (dopasowane kolorem do sekcji) ===== */
