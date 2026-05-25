@@ -280,7 +280,7 @@ export default function DlaDzieci() {
         .kids-section--game     { background: var(--bg-quiz); }
         .kids-section--parent   { background: var(--bg-parent); }
         .kids-section--alt      { background: var(--bg-marki); }
-        .kids-section--cta      { background: linear-gradient(135deg, #ff9eb3 0%, #ff6f91 100%); }
+        .kids-section--cta      { background: linear-gradient(180deg, #ff9eb3 0%, #ff6f91 100%); }
         :global([data-theme="dark"]) .kids-section--products { background: #2e2616; }
         :global([data-theme="dark"]) .kids-section--rxf      { background: #2e1a1a; }
         :global([data-theme="dark"]) .kids-section--game     { background: #122e1e; }
@@ -475,7 +475,7 @@ export default function DlaDzieci() {
         /* ===== CTA (komiksowa chmurka) ===== */
         .kids-cta-card {
           max-width: 660px; margin: 0 auto;
-          background: #fffdf6;
+          background: #d8ecff;
           border: 4px solid var(--k-ink);
           border-radius: 32px;
           padding: 46px 36px;
@@ -492,7 +492,7 @@ export default function DlaDzieci() {
         .kids-cta-card::after {
           content: ""; position: absolute; left: 61px; bottom: -23px;
           width: 0; height: 0; border: 15px solid transparent;
-          border-top-color: #fffdf6; border-bottom: 0;
+          border-top-color: #d8ecff; border-bottom: 0;
         }
         .cta-emoji-badge {
           display: inline-flex; align-items: center; justify-content: center;
@@ -515,6 +515,14 @@ export default function DlaDzieci() {
           box-shadow: 0 7px 0 var(--k-ink);
         }
         .cta-phone-btn:active { transform: translateY(3px); box-shadow: 0 4px 0 var(--k-ink); }
+        .cta-map {
+          margin-top: 24px; height: 240px;
+          border-radius: 18px; overflow: hidden;
+          border: 4px solid var(--k-ink);
+          box-shadow: 0 6px 0 var(--k-ink);
+        }
+        .cta-map iframe { display: block; width: 100%; height: 100%; }
+        .cta-address { margin-top: 18px; font-family: 'Outfit',sans-serif; font-weight: 800; color: var(--k-ink); font-size: .95rem; }
 
         @media (max-width: 900px) {
           .kids-grid { grid-template-columns: repeat(2, 1fr); }
@@ -759,6 +767,17 @@ export default function DlaDzieci() {
               <a href="tel:601484242" className="cta-phone-btn">
                 📞 Zadzwoń: 601 48 42 42
               </a>
+              <div className="cta-map">
+                <iframe
+                  title="MotoFun Opole na mapie"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2498.177604432097!2d17.932745076929643!3d50.64931777159756!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4711173f891d099b%3A0x9abbc4453888e0f0!2sPartyzancka%2085%2C%2045-801%20Opole!5e0!3m2!1spl!2spl!4v1712000000000!5m2!1spl!2spl"
+                  style={{ border: 0, width: "100%", height: "100%" }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                ></iframe>
+              </div>
+              <p className="cta-address">📍 ul. Partyzancka 85, 45-801 Opole</p>
             </div>
           </div>
         </section>
