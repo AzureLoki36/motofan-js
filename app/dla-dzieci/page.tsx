@@ -54,16 +54,13 @@ const PARENT_TIPS = [
   { icon: "🏪", title: "Doradzimy w salonie", text: "Zapraszamy do salonu w Opolu – pomożemy dobrać kask, zbroję i motocykl idealny dla Twojej pociechy." },
 ];
 
-/* Marki w pastelowych odcieniach rozlozonych wokol kola barw */
+/* Marki faktycznie dodane na stronie (z kafelkow produktow i RXF), pastele */
 const BRAND_LOGOS = [
-  { name: "LS2", color: "#ffb3b3" },        /* pastelowy czerwony */
-  { name: "HJC", color: "#ffd2a6" },        /* pastelowy pomaranczowy */
-  { name: "Givi", color: "#fff0a6" },       /* pastelowy zolty */
-  { name: "SECA", color: "#b8e8c6" },       /* pastelowy zielony */
-  { name: "Acerbis", color: "#b3e7e2" },    /* pastelowy turkus */
-  { name: "Alpinestars", color: "#bcd8f7" },/* pastelowy niebieski */
-  { name: "Five", color: "#d6c6f5" },       /* pastelowy fiolet */
-  { name: "RXF", color: "#f6c3e4" },        /* pastelowy magenta */
+  { name: "Blexx", color: "#ffb3b3" },
+  { name: "Alpinestars", color: "#ffd2a6" },
+  { name: "Kenny", color: "#b8e8c6" },
+  { name: "City Bike", color: "#bcd8f7" },
+  { name: "RXF", color: "#d6c6f5" },
 ];
 
 /* ===== Gradient + lekka linia graniczna miedzy panelami ===== */
@@ -468,11 +465,12 @@ export default function DlaDzieci() {
 
         /* ===== MARKI ===== */
         .brand-bubbles {
-          display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
-          max-width: 900px; margin: 20px auto 0;
+          display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;
+          max-width: 1080px; margin: 20px auto 0;
         }
         .brand-bubble {
-          padding: 26px 16px; border-radius: 22px; color: var(--k-ink);
+          flex: 0 1 196px;
+          padding: 28px 16px; border-radius: 22px; color: var(--k-ink);
           font-family: 'Outfit',sans-serif; font-weight: 900; font-size: 1.35rem;
           border: 4px solid var(--k-ink);
           box-shadow: 0 7px 0 var(--k-ink);
