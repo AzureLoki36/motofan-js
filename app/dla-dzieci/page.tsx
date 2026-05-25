@@ -65,14 +65,48 @@ const BRAND_LOGOS = [
   { name: "RXF", color: "#f072c4" },        /* magenta 315 */
 ];
 
-/* ===== Faliste przejscie miedzy panelami =====
-   Pasek w kolorze sekcji powyzej (top); fala wypelniona kolorem sekcji
-   ponizej (bottom) tworzy falista granice. */
-function Wave({ top, bottom }: { top: string; bottom: string }) {
+/* ===== Gladkie przejscie koloru miedzy panelami ===== */
+function Sep({ from, to }: { from: string; to: string }) {
   return (
-    <div className="kids-wave" aria-hidden style={{ background: top }}>
-      <svg viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0,45 C180,90 360,8 540,38 C720,68 900,12 1080,44 C1260,76 1380,28 1440,46 L1440,90 L0,90 Z" fill={bottom} />
+    <div
+      className="kids-sep"
+      aria-hidden
+      style={{ background: `linear-gradient(180deg, ${from} 0%, ${to} 100%)` }}
+    />
+  );
+}
+
+/* ===== Ksztalty "dla dzieci" w stylu spot UV =====
+   Tono-w-ton ksztalty (gwiazdki, blyskawice, serca, kola) wypelnione
+   diagonalnym polyskiem (bialy gradient o niskim kryciu) - widoczne tylko
+   dzieki refleksowi, jak lakier spot UV na matowym druku. */
+function SpotShapes({ idx = 0, flip = false }: { idx?: number; flip?: boolean }) {
+  const gid = `spotGloss-${idx}`;
+  const star = "M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z";
+  const bolt = "M13 2L3 14h7l-1 8 10-12h-7l1-8z";
+  const heart = "M12 21s-7.5-4.6-10-9.2C.6 8.8 2 5 5.5 5c2 0 3.3 1.2 4.5 2.6C11.2 6.2 12.5 5 14.5 5 18 5 19.4 8.8 22 11.8 19.5 16.4 12 21 12 21z";
+  return (
+    <div className={`spot-uv${flip ? " flip" : ""}`} aria-hidden>
+      <svg viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id={gid} x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#fff" stopOpacity="0.02" />
+            <stop offset="48%" stopColor="#fff" stopOpacity="0.17" />
+            <stop offset="60%" stopColor="#fff" stopOpacity="0.17" />
+            <stop offset="100%" stopColor="#fff" stopOpacity="0.03" />
+          </linearGradient>
+        </defs>
+        <g fill={`url(#${gid})`}>
+          <path transform="translate(90,86) scale(3.5)" d={star} />
+          <path transform="translate(1006,66) scale(3.3)" d={bolt} />
+          <path transform="translate(150,520) scale(3.7)" d={heart} />
+          <path transform="translate(648,70) scale(2.2)" d={star} />
+          <path transform="translate(470,556) scale(2.5)" d={bolt} />
+        </g>
+        <g fill="none" stroke={`url(#${gid})`} strokeWidth="6">
+          <circle cx="1044" cy="556" r="66" />
+          <circle cx="338" cy="168" r="40" />
+        </g>
       </svg>
     </div>
   );
@@ -229,10 +263,14 @@ export default function DlaDzieci() {
         .qnav-tile.t4 { background: #c4dbf7; } /* -> strefa rodzica */
         .qnav-tile.t5 { background: #d8c7f6; } /* -> marki */
 
-        /* ===== FALISTE KRAWEDZIE SEKCJI ===== */
-        .kids-wave { display: block; width: 100%; height: clamp(40px, 6vw, 80px); line-height: 0; position: relative; z-index: 1; margin-bottom: -1px; }
-        .kids-wave svg { display: block; width: 100%; height: 100%; }
-        :global([data-theme="dark"]) .kids-wave { display: none; }
+        /* ===== PRZEJSCIE KOLORU (gradient) ===== */
+        .kids-sep { display: block; width: 100%; height: 80px; position: relative; z-index: 1; }
+        :global([data-theme="dark"]) .kids-sep { display: none; }
+
+        /* ===== SPOT UV: ksztalty z polyskiem w tle paneli ===== */
+        .spot-uv { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+        .spot-uv svg { width: 100%; height: 100%; display: block; }
+        .spot-uv.flip svg { transform: scaleX(-1); }
 
         /* ===== SEKCJE ===== */
         .kids-section { position: relative; padding: 76px 0 80px; overflow: hidden; z-index: 2; }
@@ -546,10 +584,11 @@ export default function DlaDzieci() {
           </div>
         </div>
 
-        <Wave top="#fff3e3" bottom="#ffe8cc" />
+        <Sep from="#fff3e3" to="#ffe8cc" />
 
         {/* ===== 1. PRODUKTY ===== */}
         <section id="strefa-produkty" className="kids-section kids-section--products">
+          <SpotShapes idx={1} />
           <div className="container">
             <EditableHTML id="kids.gear.h2" as="h2" className="kids-h2" defaultHtml='<span class="h2-banner c-gear"><img src="/pics/dzieci/helmet-motorcycle.svg" alt="" class="h2-helmet" /> Kaski, zbroje i kurtki</span>' />
             <Editable id="kids.gear.lead" as="p" className="kids-lead" multiline>
@@ -570,10 +609,11 @@ export default function DlaDzieci() {
           </div>
         </section>
 
-        <Wave top="#ffe8cc" bottom="#ffd9e6" />
+        <Sep from="#ffe8cc" to="#ffd9e6" />
 
         {/* ===== 2. RXF ===== */}
         <section id="strefa-rxf" className="kids-section kids-section--rxf">
+          <SpotShapes idx={2} flip />
           <div className="container">
             <EditableHTML id="kids.rxf.h2" as="h2" className="kids-h2" defaultHtml='<span class="h2-banner c-rxf alt">🏍️ Motocykle RXF</span>' />
             <Editable id="kids.rxf.lead" as="p" className="kids-lead" multiline>
@@ -596,10 +636,11 @@ export default function DlaDzieci() {
           </div>
         </section>
 
-        <Wave top="#ffd9e6" bottom="#d3f2dd" />
+        <Sep from="#ffd9e6" to="#d3f2dd" />
 
         {/* ===== 3. QUIZ ===== */}
         <section id="strefa-gra" className="kids-section kids-section--game">
+          <SpotShapes idx={3} />
           <div className="container">
             <EditableHTML id="kids.quiz.h2" as="h2" className="kids-h2" defaultHtml='<span class="h2-banner c-quiz">🎮 Mini-gra: Bezpieczna jazda</span>' />
             <Editable id="kids.quiz.lead" as="p" className="kids-lead" multiline>
@@ -661,10 +702,11 @@ export default function DlaDzieci() {
           </div>
         </section>
 
-        <Wave top="#d3f2dd" bottom="#dbe9fc" />
+        <Sep from="#d3f2dd" to="#dbe9fc" />
 
         {/* ===== 4. STREFA RODZICA ===== */}
         <section id="strefa-rodzica" className="kids-section kids-section--parent">
+          <SpotShapes idx={4} flip />
           <div className="container">
             <EditableHTML id="kids.parent.h2" as="h2" className="kids-h2" defaultHtml='<span class="h2-banner c-parent alt">👨‍👩‍👧 Strefa rodzica</span>' />
             <Editable id="kids.parent.lead" as="p" className="kids-lead" multiline>
@@ -684,10 +726,11 @@ export default function DlaDzieci() {
           </div>
         </section>
 
-        <Wave top="#dbe9fc" bottom="#e9defb" />
+        <Sep from="#dbe9fc" to="#e9defb" />
 
         {/* ===== 5. MARKI ===== */}
         <section id="strefa-marki" className="kids-section kids-section--alt">
+          <SpotShapes idx={5} />
           <div className="container">
             <EditableHTML id="kids.brands.h2" as="h2" className="kids-h2" defaultHtml='<span class="h2-banner c-marki">⭐ Współpracujemy z najlepszymi</span>' />
             <Editable id="kids.brands.lead" as="p" className="kids-lead" multiline>
@@ -701,10 +744,11 @@ export default function DlaDzieci() {
           </div>
         </section>
 
-        <Wave top="#e9defb" bottom="#ff9eb3" />
+        <Sep from="#e9defb" to="#ff9eb3" />
 
         {/* ===== 6. CTA ===== */}
         <section className="kids-section kids-section--cta">
+          <SpotShapes idx={6} flip />
           <div className="container">
             <div className="kids-cta-card">
               <span className="cta-emoji-badge" aria-hidden>📞</span>
