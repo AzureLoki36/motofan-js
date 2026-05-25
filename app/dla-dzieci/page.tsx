@@ -30,12 +30,12 @@ const QUESTIONS: Q[] = [
 ];
 
 const PRODUCTS = [
-  { img: "/pics/dzieci/product-helmet1.svg", name: "Kask LS2 Storm Junior", brand: "LS2", cat: "Kask integralny", color: "linear-gradient(135deg,#ffdbe0 0%,#ffbcc8 100%)" },
-  { img: "/pics/dzieci/product-helmet2.svg", name: "Kask HJC C10 Kids", brand: "HJC", cat: "Kask sportowy", color: "linear-gradient(135deg,#d2f3df 0%,#a9e6c6 100%)" },
-  { img: "/pics/dzieci/product-armor.svg", name: "Zbroja Pro Junior", brand: "SECA", cat: "Ochraniacze pleców i klatki", color: "linear-gradient(135deg,#ffe3c7 0%,#ffc1a6 100%)" },
-  { img: "/pics/dzieci/product-jacket.svg", name: "Kurtka MX Mini", brand: "Acerbis", cat: "Kurtka enduro/cross", color: "linear-gradient(135deg,#fff0c7 0%,#ffdc87 100%)" },
-  { img: "/pics/dzieci/product-boots.svg", name: "Buty MX Junior", brand: "Alpinestars", cat: "Buty crossowe", color: "linear-gradient(135deg,#d8eaff 0%,#abcdf5 100%)" },
-  { img: "/pics/dzieci/product-gloves.svg", name: "Rękawice Kids Touch", brand: "Five", cat: "Rękawice motocyklowe", color: "linear-gradient(135deg,#ece0fc 0%,#c9b3f3 100%)" },
+  { img: "/pics/dzieci/produkty/blexx-kask-crossowy.jpg", name: "Kask crossowy", brand: "Blexx", cat: "MD-911 Junior" },
+  { img: "/pics/dzieci/produkty/blexx-kask-zamkniety.jpg", name: "Kask zamknięty", brand: "Blexx", cat: "YA-201 Junior" },
+  { img: "/pics/dzieci/produkty/zbroja-ochraniacze.webp", name: "Zbroja / ochraniacze", brand: "Junior", cat: "Plecy i klatka" },
+  { img: "/pics/dzieci/produkty/alpinestars-spodnie.jpg", name: "Spodnie crossowe", brand: "Alpinestars", cat: "Rozmiar junior" },
+  { img: "/pics/dzieci/produkty/kenny-buty-track-t2.jpg", name: "Buty crossowe", brand: "Kenny", cat: "Track T2 Junior" },
+  { img: "/pics/dzieci/produkty/citybike-rekawice.webp", name: "Rękawice", brand: "City Bike", cat: "Motocyklowe" },
 ];
 
 /* Cztery rownomiernie rozlozone odcienie kola barw */
@@ -397,12 +397,14 @@ export default function DlaDzieci() {
           position: relative;
         }
         .kids-card-img-wrap {
-          width: 120px; height: 120px; margin: 0 auto 14px;
-          border-radius: 24px;
+          width: 100%; height: 175px; margin: 0 0 16px;
+          border-radius: 18px;
           display: flex; align-items: center; justify-content: center;
           border: 3px solid var(--k-ink);
+          overflow: hidden;
+          background: #fff;
         }
-        .kids-card-img-wrap img { width: 78px; height: 78px; }
+        .kids-card-img-wrap img { width: 100%; height: 100%; object-fit: contain; padding: 10px; }
         .kids-card-name { font-family: 'Outfit',sans-serif; font-weight: 900; font-size: 1.1rem; color: var(--k-ink); margin: 0 0 8px; }
         .kids-card-brand { display: inline-block; background: var(--k-ink); color: #fff;
           padding: 4px 12px; border-radius: 100px; font-size: .7rem; font-weight: 900;
@@ -675,7 +677,7 @@ export default function DlaDzieci() {
             <div className="kids-grid">
               {PRODUCTS.map((p, i) => (
                 <div className="kids-card" key={i}>
-                  <div className="kids-card-img-wrap" style={{ background: p.color }}>
+                  <div className="kids-card-img-wrap">
                     <img src={p.img} alt={p.name} />
                   </div>
                   <h3 className="kids-card-name">{p.name}</h3>
