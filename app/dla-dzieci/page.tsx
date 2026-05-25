@@ -83,29 +83,45 @@ function Sep({ from, to }: { from: string; to: string }) {
 type SpotShape = { src: string; size: number; rot: number; pos: React.CSSProperties };
 const SHAPE_LAYOUTS: SpotShape[][] = [
   [ /* 0 produkty */
-    { src: "/pics/latajace/helmet-moto.svg", size: 120, rot: -8, pos: { left: "4%", top: "10%" } },
-    { src: "/pics/latajace/motorcycle.svg",  size: 170, rot: 5,  pos: { right: "3%", bottom: "12%" } },
+    { src: "/pics/latajace/helmet-moto.svg",  size: 110, rot: -8, pos: { left: "3%", top: "8%" } },
+    { src: "/pics/latajace/motorcycle.svg",   size: 160, rot: 5,  pos: { right: "3%", bottom: "10%" } },
+    { src: "/pics/latajace/helmet.svg",       size: 88,  rot: 10, pos: { right: "8%", top: "10%" } },
+    { src: "/pics/latajace/motorbike.svg",    size: 128, rot: -6, pos: { left: "5%", bottom: "12%" } },
+    { src: "/pics/latajace/motorcycle2.svg",  size: 96,  rot: 8,  pos: { left: "43%", bottom: "5%" } },
   ],
   [ /* 1 rxf */
-    { src: "/pics/latajace/motorcycle2.svg", size: 150, rot: -6, pos: { right: "4%", top: "12%" } },
-    { src: "/pics/latajace/helmet.svg",      size: 108, rot: 8,  pos: { left: "4%", bottom: "14%" } },
+    { src: "/pics/latajace/motorcycle2.svg",  size: 150, rot: -6, pos: { right: "3%", top: "9%" } },
+    { src: "/pics/latajace/helmet.svg",       size: 96,  rot: 8,  pos: { left: "4%", bottom: "14%" } },
+    { src: "/pics/latajace/motorcycle3.svg",  size: 118, rot: 6,  pos: { left: "4%", top: "10%" } },
+    { src: "/pics/latajace/helmet-moto2.svg", size: 90,  rot: -8, pos: { right: "6%", bottom: "12%" } },
+    { src: "/pics/latajace/motorbike.svg",    size: 110, rot: 4,  pos: { left: "44%", top: "5%" } },
   ],
   [ /* 2 quiz */
-    { src: "/pics/latajace/helmet-moto2.svg", size: 116, rot: -10, pos: { left: "5%", top: "12%" } },
-    { src: "/pics/latajace/motorbike.svg",    size: 160, rot: 6,  pos: { right: "3%", bottom: "12%" } },
+    { src: "/pics/latajace/helmet-moto2.svg", size: 108, rot: -10, pos: { left: "4%", top: "10%" } },
+    { src: "/pics/latajace/motorbike.svg",    size: 150, rot: 6,  pos: { right: "3%", bottom: "10%" } },
+    { src: "/pics/latajace/motorcycle.svg",   size: 116, rot: -5, pos: { right: "6%", top: "8%" } },
+    { src: "/pics/latajace/helmet.svg",       size: 90,  rot: 9,  pos: { left: "5%", bottom: "12%" } },
+    { src: "/pics/latajace/motorcycle3.svg",  size: 96,  rot: 4,  pos: { left: "44%", bottom: "5%" } },
   ],
   [ /* 3 strefa rodzica */
-    { src: "/pics/latajace/motorcycle3.svg", size: 150, rot: 7,  pos: { right: "5%", top: "14%" } },
-    { src: "/pics/latajace/helmet-moto.svg", size: 106, rot: -8, pos: { left: "4%", bottom: "16%" } },
+    { src: "/pics/latajace/motorcycle3.svg",  size: 140, rot: 7,  pos: { right: "4%", top: "12%" } },
+    { src: "/pics/latajace/helmet-moto.svg",  size: 98,  rot: -8, pos: { left: "4%", bottom: "14%" } },
+    { src: "/pics/latajace/motorbike-moto.svg", size: 120, rot: 5, pos: { left: "5%", top: "10%" } },
+    { src: "/pics/latajace/helmet.svg",       size: 86,  rot: -6, pos: { right: "7%", bottom: "12%" } },
+    { src: "/pics/latajace/motorcycle.svg",   size: 104, rot: 4,  pos: { left: "44%", top: "5%" } },
   ],
   [ /* 4 marki */
-    { src: "/pics/latajace/motorbike-moto.svg", size: 150, rot: -6, pos: { left: "4%", top: "12%" } },
-    { src: "/pics/latajace/helmet-moto2.svg",   size: 112, rot: 9,  pos: { right: "5%", bottom: "14%" } },
-    { src: "/pics/latajace/motorcycle.svg",     size: 116, rot: 4,  pos: { right: "40%", top: "8%" } },
+    { src: "/pics/latajace/motorbike-moto.svg", size: 140, rot: -6, pos: { left: "3%", top: "10%" } },
+    { src: "/pics/latajace/helmet-moto2.svg",   size: 104, rot: 9,  pos: { right: "4%", bottom: "12%" } },
+    { src: "/pics/latajace/motorcycle2.svg",    size: 120, rot: -5, pos: { right: "4%", top: "10%" } },
+    { src: "/pics/latajace/helmet.svg",         size: 86,  rot: 8,  pos: { left: "6%", bottom: "12%" } },
+    { src: "/pics/latajace/motorcycle.svg",     size: 100, rot: 4,  pos: { left: "44%", bottom: "5%" } },
   ],
   [ /* 5 cta */
-    { src: "/pics/latajace/helmet-moto.svg",  size: 120, rot: -8, pos: { left: "4%", top: "12%" } },
-    { src: "/pics/latajace/motorcycle2.svg",  size: 150, rot: 6,  pos: { right: "3%", bottom: "16%" } },
+    { src: "/pics/latajace/helmet-moto.svg",  size: 108, rot: -8, pos: { left: "3%", top: "10%" } },
+    { src: "/pics/latajace/motorcycle2.svg",  size: 140, rot: 6,  pos: { right: "3%", bottom: "14%" } },
+    { src: "/pics/latajace/helmet.svg",       size: 86,  rot: 9,  pos: { right: "7%", top: "10%" } },
+    { src: "/pics/latajace/motorbike.svg",    size: 116, rot: -5, pos: { left: "5%", bottom: "14%" } },
   ],
 ];
 
@@ -202,17 +218,18 @@ export default function DlaDzieci() {
         .kids-hero {
           position: relative;
           overflow: hidden;
-          height: clamp(340px, 52vw, 880px);
+          height: clamp(360px, 54vw, 1000px);
           background: linear-gradient(180deg, #8fc1f2 0%, #d3e8ff 100%);
           z-index: 2;
         }
-        /* Wygaszenie dolu wideo w neutralny krem - skaluje sie z wysokoscia hero,
-           wiec przykrywa watermark takze na duzych monitorach */
+        /* Wygaszenie dolu wideo w neutralny krem - duze i plynne, wiec dol
+           wideo rozplywa sie w tlo (brak ostrego "uciecia") i kryje watermark,
+           takze na duzych monitorach (wysokosc proporcjonalna do hero) */
         .kids-hero::after {
           content: "";
           position: absolute;
           left: 0; right: 0; bottom: 0;
-          height: clamp(90px, 16%, 180px);
+          height: clamp(110px, 20%, 260px);
           background: linear-gradient(to bottom, rgba(255,243,227,0) 0%, var(--hero-fade) 100%);
           z-index: 3;
           pointer-events: none;
@@ -223,7 +240,7 @@ export default function DlaDzieci() {
           inset: 0;
           width: 100%; height: 100%;
           object-fit: cover;
-          object-position: 25% 18%;
+          object-position: center 28%;
           pointer-events: none;
           z-index: 0;
         }
