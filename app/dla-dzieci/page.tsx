@@ -229,8 +229,10 @@ export default function DlaDzieci() {
           content: "";
           position: absolute;
           left: 0; right: 0; bottom: 0;
-          height: clamp(110px, 20%, 260px);
-          background: linear-gradient(to bottom, rgba(255,243,227,0) 0%, var(--hero-fade) 100%);
+          height: clamp(150px, 24%, 300px);
+          /* osiaga pelna nieprzezroczystosc juz w ~55% wysokosci, wiec lity dol
+             zakrywa watermark w prawym dolnym rogu wideo */
+          background: linear-gradient(to bottom, rgba(255,243,227,0) 0%, var(--hero-fade) 55%, var(--hero-fade) 100%);
           z-index: 3;
           pointer-events: none;
         }
@@ -240,7 +242,7 @@ export default function DlaDzieci() {
           inset: 0;
           width: 100%; height: 100%;
           object-fit: cover;
-          object-position: center 28%;
+          object-position: center 20%;
           pointer-events: none;
           z-index: 0;
         }
