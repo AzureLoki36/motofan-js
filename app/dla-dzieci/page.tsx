@@ -65,14 +65,16 @@ const BRAND_LOGOS = [
   { name: "RXF", color: "#f072c4" },        /* magenta 315 */
 ];
 
-/* ===== Gladkie przejscie koloru miedzy panelami (bez SVG/doodli) ===== */
-function Sep({ from, to }: { from: string; to: string }) {
+/* ===== Faliste przejscie miedzy panelami =====
+   Pasek w kolorze sekcji powyzej (top); fala wypelniona kolorem sekcji
+   ponizej (bottom) tworzy falista granice. */
+function Wave({ top, bottom }: { top: string; bottom: string }) {
   return (
-    <div
-      className="kids-sep"
-      aria-hidden
-      style={{ background: `linear-gradient(180deg, ${from} 0%, ${to} 100%)` }}
-    />
+    <div className="kids-wave" aria-hidden style={{ background: top }}>
+      <svg viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,45 C180,90 360,8 540,38 C720,68 900,12 1080,44 C1260,76 1380,28 1440,46 L1440,90 L0,90 Z" fill={bottom} />
+      </svg>
+    </div>
   );
 }
 
@@ -227,33 +229,20 @@ export default function DlaDzieci() {
         .qnav-tile.t4 { background: #c4dbf7; } /* -> strefa rodzica */
         .qnav-tile.t5 { background: #d8c7f6; } /* -> marki */
 
-        /* ===== PRZEJSCIE KOLORU ===== */
-        .kids-sep { display: block; width: 100%; height: 80px; position: relative; z-index: 1; }
-        :global([data-theme="dark"]) .kids-sep { display: none; }
+        /* ===== FALISTE KRAWEDZIE SEKCJI ===== */
+        .kids-wave { display: block; width: 100%; height: clamp(40px, 6vw, 80px); line-height: 0; position: relative; z-index: 1; margin-bottom: -1px; }
+        .kids-wave svg { display: block; width: 100%; height: 100%; }
+        :global([data-theme="dark"]) .kids-wave { display: none; }
 
         /* ===== SEKCJE ===== */
         .kids-section { position: relative; padding: 76px 0 80px; overflow: hidden; z-index: 2; }
         .kids-section .container { position: relative; z-index: 2; }
-        /* Miekkie plamy koloru - lamia monotonie paneli (CSS-only, rozmyte kola akcentu) */
-        .kids-section::before,
-        .kids-section::after {
-          content: "";
-          position: absolute;
-          z-index: 1;
-          pointer-events: none;
-          width: clamp(280px, 38vw, 520px);
-          height: clamp(280px, 38vw, 520px);
-          border-radius: 50%;
-          background: radial-gradient(circle, var(--blob, rgba(27,39,72,.08)) 0%, transparent 68%);
-        }
-        .kids-section::before { top: -150px; left: -130px; }
-        .kids-section::after  { bottom: -170px; right: -130px; }
-        .kids-section--products { background: var(--bg-gear);   --blob: rgba(239,108,26,.20); }
-        .kids-section--rxf      { background: var(--bg-rxf);    --blob: rgba(232,62,116,.18); }
-        .kids-section--game     { background: var(--bg-quiz);   --blob: rgba(31,157,92,.18); }
-        .kids-section--parent   { background: var(--bg-parent); --blob: rgba(47,111,176,.14); }
-        .kids-section--alt      { background: var(--bg-marki);  --blob: rgba(124,77,219,.18); }
-        .kids-section--cta      { background: linear-gradient(135deg, #ff9eb3 0%, #ff6f91 100%); --blob: rgba(255,255,255,.20); }
+        .kids-section--products { background: var(--bg-gear); }
+        .kids-section--rxf      { background: var(--bg-rxf); }
+        .kids-section--game     { background: var(--bg-quiz); }
+        .kids-section--parent   { background: var(--bg-parent); }
+        .kids-section--alt      { background: var(--bg-marki); }
+        .kids-section--cta      { background: linear-gradient(135deg, #ff9eb3 0%, #ff6f91 100%); }
         :global([data-theme="dark"]) .kids-section--products { background: #2e2616; }
         :global([data-theme="dark"]) .kids-section--rxf      { background: #2e1a1a; }
         :global([data-theme="dark"]) .kids-section--game     { background: #122e1e; }
@@ -557,7 +546,7 @@ export default function DlaDzieci() {
           </div>
         </div>
 
-        <Sep from="#fff3e3" to="#ffe8cc" />
+        <Wave top="#fff3e3" bottom="#ffe8cc" />
 
         {/* ===== 1. PRODUKTY ===== */}
         <section id="strefa-produkty" className="kids-section kids-section--products">
@@ -581,7 +570,7 @@ export default function DlaDzieci() {
           </div>
         </section>
 
-        <Sep from="#ffe8cc" to="#ffd9e6" />
+        <Wave top="#ffe8cc" bottom="#ffd9e6" />
 
         {/* ===== 2. RXF ===== */}
         <section id="strefa-rxf" className="kids-section kids-section--rxf">
@@ -607,7 +596,7 @@ export default function DlaDzieci() {
           </div>
         </section>
 
-        <Sep from="#ffd9e6" to="#d3f2dd" />
+        <Wave top="#ffd9e6" bottom="#d3f2dd" />
 
         {/* ===== 3. QUIZ ===== */}
         <section id="strefa-gra" className="kids-section kids-section--game">
@@ -672,7 +661,7 @@ export default function DlaDzieci() {
           </div>
         </section>
 
-        <Sep from="#d3f2dd" to="#dbe9fc" />
+        <Wave top="#d3f2dd" bottom="#dbe9fc" />
 
         {/* ===== 4. STREFA RODZICA ===== */}
         <section id="strefa-rodzica" className="kids-section kids-section--parent">
@@ -695,7 +684,7 @@ export default function DlaDzieci() {
           </div>
         </section>
 
-        <Sep from="#dbe9fc" to="#e9defb" />
+        <Wave top="#dbe9fc" bottom="#e9defb" />
 
         {/* ===== 5. MARKI ===== */}
         <section id="strefa-marki" className="kids-section kids-section--alt">
@@ -712,7 +701,7 @@ export default function DlaDzieci() {
           </div>
         </section>
 
-        <Sep from="#e9defb" to="#ff9eb3" />
+        <Wave top="#e9defb" bottom="#ff9eb3" />
 
         {/* ===== 6. CTA ===== */}
         <section className="kids-section kids-section--cta">
