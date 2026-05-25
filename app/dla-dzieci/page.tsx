@@ -172,16 +172,16 @@ export default function DlaDzieci() {
     setQIdx(0); setScore(0); setPicked(null); setDone(false); setCode(null);
   };
 
-  // Po ukonczeniu (wygraniu) gry pobierz losowy kod; serwer wysle go mailem do salonu.
+  // Kod nagrody tylko przy KOMPLECIE poprawnych odpowiedzi; serwer wysle go mailem do salonu.
   useEffect(() => {
-    if (!done || code) return;
+    if (!done || code || score !== QUESTIONS.length) return;
     let active = true;
     fetch("/api/kids-code", { method: "POST" })
       .then((r) => r.json())
       .then((d) => { if (active && d?.code) setCode(d.code); })
       .catch(() => { if (active) setCode("MOTO-" + Math.random().toString(36).slice(2, 8).toUpperCase()); });
     return () => { active = false; };
-  }, [done, code]);
+  }, [done, code, score]);
 
   const q = QUESTIONS[qIdx];
 
