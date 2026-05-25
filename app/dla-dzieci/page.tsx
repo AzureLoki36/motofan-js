@@ -17,16 +17,16 @@ import { useLocale } from "@/components/LocaleProvider";
 ========================================================================= */
 
 /* ===== DANE ===== */
-type Q = { q: string; img: string; answers: string[]; correct: number; tip: string };
+type Q = { q: string; emoji?: string; img?: string; answers: string[]; correct: number; tip: string };
 const QUESTIONS: Q[] = [
-  { q: "Co oznacza znak STOP?", img: "/pics/dzieci/doodle-stop.svg", answers: ["Jedź dalej", "Zatrzymaj się całkowicie", "Skręć w prawo"], correct: 1, tip: "Znak STOP zawsze oznacza, że trzeba się zatrzymać i upewnić, że droga jest wolna!" },
+  { q: "Co oznacza znak STOP?", emoji: "🛑", answers: ["Jedź dalej", "Zatrzymaj się całkowicie", "Skręć w prawo"], correct: 1, tip: "Znak STOP zawsze oznacza, że trzeba się zatrzymać i upewnić, że droga jest wolna!" },
   { q: "Co musisz mieć na głowie jadąc motocyklem?", img: "/pics/dzieci/doodle-helmet.svg", answers: ["Czapkę", "Kapelusz", "Kask motocyklowy"], correct: 2, tip: "Kask chroni głowę. Bez kasku nigdy nie wsiadaj na motocykl!" },
-  { q: "Co oznacza zielone światło na sygnalizatorze?", img: "/pics/dzieci/doodle-traffic-light.svg", answers: ["Stój!", "Możesz jechać", "Uważaj, zaraz zmieni"], correct: 1, tip: "Zielone = jedź, ale zawsze rozejrzyj się najpierw!" },
-  { q: "Jakiego koloru jest znak ostrzegawczy?", img: "/pics/dzieci/doodle-road-sign.svg", answers: ["Niebieski", "Żółty trójkąt", "Zielony okrąg"], correct: 1, tip: "Żółty trójkąt ostrzega przed niebezpieczeństwem na drodze." },
-  { q: "Co robisz przed wjazdem na skrzyżowanie?", img: "/pics/dzieci/doodle-cone.svg", answers: ["Przyspieszam", "Patrzę w lewo i prawo", "Zamykam oczy"], correct: 1, tip: "Zawsze rozglądaj się na boki – bezpieczeństwo jest najważniejsze!" },
-  { q: "Czy dziecko może jeździć motocyklem RXF samo po drodze publicznej?", img: "/pics/dzieci/rxf-mini.svg", answers: ["Tak, zawsze", "Tylko z dorosłym, na specjalnych torach", "Nigdy"], correct: 1, tip: "Pitbike RXF jeździ tylko na zamkniętych torach i pod okiem rodzica." },
-  { q: "Co to jest zbroja motocyklowa?", img: "/pics/dzieci/product-armor.svg", answers: ["Ozdoba", "Ochrona pleców i klatki", "Plecak"], correct: 1, tip: "Zbroja chroni najważniejsze części ciała w razie upadku." },
-  { q: "Po jakiej stronie drogi jeździmy w Polsce?", img: "/pics/dzieci/doodle-route.svg", answers: ["Po prawej", "Po lewej", "Po środku"], correct: 0, tip: "W Polsce zawsze jeździmy prawą stroną jezdni." },
+  { q: "Co oznacza zielone światło na sygnalizatorze?", emoji: "🚦", answers: ["Stój!", "Możesz jechać", "Uważaj, zaraz zmieni"], correct: 1, tip: "Zielone = jedź, ale zawsze rozejrzyj się najpierw!" },
+  { q: "Jakiego koloru jest znak ostrzegawczy?", emoji: "⚠️", answers: ["Niebieski", "Żółty trójkąt", "Zielony okrąg"], correct: 1, tip: "Żółty trójkąt ostrzega przed niebezpieczeństwem na drodze." },
+  { q: "Co robisz przed wjazdem na skrzyżowanie?", emoji: "🚸", answers: ["Przyspieszam", "Patrzę w lewo i prawo", "Zamykam oczy"], correct: 1, tip: "Zawsze rozglądaj się na boki – bezpieczeństwo jest najważniejsze!" },
+  { q: "Czy dziecko może jeździć motocyklem RXF samo po drodze publicznej?", emoji: "🏍️", answers: ["Tak, zawsze", "Tylko z dorosłym, na specjalnych torach", "Nigdy"], correct: 1, tip: "Pitbike RXF jeździ tylko na zamkniętych torach i pod okiem rodzica." },
+  { q: "Co to jest zbroja motocyklowa?", emoji: "🦺", answers: ["Ozdoba", "Ochrona pleców i klatki", "Plecak"], correct: 1, tip: "Zbroja chroni najważniejsze części ciała w razie upadku." },
+  { q: "Po jakiej stronie drogi jeździmy w Polsce?", emoji: "🛣️", answers: ["Po prawej", "Po lewej", "Po środku"], correct: 0, tip: "W Polsce zawsze jeździmy prawą stroną jezdni." },
 ];
 
 const PRODUCTS = [
@@ -492,6 +492,7 @@ export default function DlaDzieci() {
           border: 3px solid var(--k-ink);
         }
         .quiz-progress-fill { height: 100%; background: var(--ac-quiz); transition: width .4s; }
+        .quiz-emoji { font-size: 5rem; text-align: center; display: block; }
         .quiz-img-wrap {
           width: 150px; height: 150px; margin: 0 auto 10px;
           border-radius: 50%;
@@ -732,7 +733,11 @@ export default function DlaDzieci() {
                   <div className="quiz-progress-bar">
                     <div className="quiz-progress-fill" style={{ width: `${((qIdx) / QUESTIONS.length) * 100}%` }} />
                   </div>
-                  <div className="quiz-img-wrap"><img src={q.img} alt="" aria-hidden /></div>
+                  {q.img ? (
+                    <div className="quiz-img-wrap"><img src={q.img} alt="" aria-hidden /></div>
+                  ) : (
+                    <span className="quiz-emoji">{q.emoji}</span>
+                  )}
                   <p className="quiz-q">{q.q}</p>
                   <div className="quiz-answers">
                     {q.answers.map((a, i) => {
