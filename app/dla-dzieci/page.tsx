@@ -38,12 +38,13 @@ const PRODUCTS = [
   { img: "/pics/dzieci/produkty/citybike-rekawice.webp", name: "Rękawice", brand: "City Bike", cat: "Motocyklowe" },
 ];
 
-/* Cztery rownomiernie rozlozone odcienie kola barw */
+/* Piec modeli RXF (prawdziwe zdjecia); odcienie z kola barw */
 const RXF_MOTOS = [
-  { img: "/pics/dzieci/rxf-mini.svg", name: "RXF Mini 60", cc: "60 cm³", age: "4–7 lat", color: "#ff6f91" },
-  { img: "/pics/dzieci/rxf-open.svg", name: "RXF Open 90", cc: "90 cm³", age: "7–10 lat", color: "#ffb02e" },
-  { img: "/pics/dzieci/rxf-freeride.svg", name: "RXF Freeride 125", cc: "125 cm³", age: "10–14 lat", color: "#2bbf6f" },
-  { img: "/pics/dzieci/rxf-racing.svg", name: "RXF Racing 150", cc: "150 cm³", age: "14+ lat", color: "#4d9bf0" },
+  { img: "/pics/dzieci/rxf/rxf-mini-50.jpg", name: "RXF Mini 50", cc: "50 cm³", age: "4–7 lat", color: "#ff6f91" },
+  { img: "/pics/dzieci/rxf/rxf-junior-100.jpg", name: "RXF Junior 100", cc: "100 cm³", age: "7–10 lat", color: "#ffb02e" },
+  { img: "/pics/dzieci/rxf/rxf-open-125.jpg", name: "RXF Open 125", cc: "125 cm³", age: "10–13 lat", color: "#2bbf6f" },
+  { img: "/pics/dzieci/rxf/rxf-open-140.jpg", name: "RXF Open 140", cc: "140 cm³", age: "12–15 lat", color: "#4d9bf0" },
+  { img: "/pics/dzieci/rxf/rxf-freeride-140.jpg", name: "RXF Freeride 140", cc: "140 cm³", age: "14+ lat", color: "#9b7af0" },
 ];
 
 const PARENT_TIPS = [
@@ -414,8 +415,8 @@ export default function DlaDzieci() {
 
         /* ===== RXF ===== */
         .rxf-grid {
-          display: grid; grid-template-columns: repeat(4, minmax(220px, 1fr));
-          gap: 22px; max-width: 1100px; margin: 0 auto; justify-content: center;
+          display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          gap: 22px; max-width: 1150px; margin: 0 auto; justify-content: center;
         }
         .rxf-card {
           background: #fff;
@@ -427,11 +428,13 @@ export default function DlaDzieci() {
           position: relative;
         }
         .rxf-card-img-wrap {
-          width: 130px; height: 130px; margin: 0 auto 12px; border-radius: 50%;
+          width: 100%; height: 150px; margin: 0 0 14px; border-radius: 16px;
           display: flex; align-items: center; justify-content: center;
           border: 3px solid var(--k-ink);
+          overflow: hidden;
+          background: #fff;
         }
-        .rxf-card-img-wrap img { width: 92px; height: 92px; }
+        .rxf-card-img-wrap img { width: 100%; height: 100%; object-fit: contain; padding: 8px; }
         .rxf-card-name { font-family: 'Outfit',sans-serif; font-weight: 900; font-size: 1.25rem; color: var(--k-ink); margin: 8px 0 10px; }
         .rxf-card-spec { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
         .rxf-card-spec span { padding: 5px 12px; border-radius: 100px; font-size: .8rem;
@@ -702,7 +705,7 @@ export default function DlaDzieci() {
             <div className="rxf-grid">
               {RXF_MOTOS.map((m, i) => (
                 <div className="rxf-card" key={i}>
-                  <div className="rxf-card-img-wrap" style={{ background: m.color + "33" }}>
+                  <div className="rxf-card-img-wrap">
                     <img src={m.img} alt={m.name} />
                   </div>
                   <h3 className="rxf-card-name">{m.name}</h3>
