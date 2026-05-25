@@ -29,13 +29,13 @@ const QUESTIONS: Q[] = [
   { q: "Po jakiej stronie drogi jeździmy w Polsce?", emoji: "🛣️", answers: ["Po prawej", "Po lewej", "Po środku"], correct: 0, tip: "W Polsce zawsze jeździmy prawą stroną jezdni." },
 ];
 
-const PRODUCTS: { img: string; name: string; brand: string; cat: string; fit?: "cover" }[] = [
+const PRODUCTS: { img: string; name: string; brand: string; cat: string; bg?: string }[] = [
   { img: "/pics/dzieci/produkty/blexx-kask-crossowy.jpg", name: "Kask crossowy", brand: "Blexx", cat: "MD-911 Junior" },
   { img: "/pics/dzieci/produkty/blexx-kask-zamkniety.jpg", name: "Kask zamknięty", brand: "Blexx", cat: "YA-201 Junior" },
   { img: "/pics/dzieci/produkty/zbroja-ochraniacze.webp", name: "Zbroja / ochraniacze", brand: "Junior", cat: "Plecy i klatka" },
   { img: "/pics/dzieci/produkty/alpinestars-spodnie.jpg", name: "Spodnie crossowe", brand: "Alpinestars", cat: "Rozmiar junior" },
   { img: "/pics/dzieci/produkty/kenny-buty-track-t2.jpg", name: "Buty crossowe", brand: "Kenny", cat: "Track T2 Junior" },
-  { img: "/pics/dzieci/produkty/citybike-rekawice-2.webp", name: "Rękawice", brand: "City Bike", cat: "Motocyklowe", fit: "cover" },
+  { img: "/pics/dzieci/produkty/citybike-rekawice-2.webp", name: "Rękawice", brand: "City Bike", cat: "Motocyklowe", bg: "#efefef" },
 ];
 
 /* Piec modeli RXF (prawdziwe zdjecia); odcienie z kola barw */
@@ -697,8 +697,8 @@ export default function DlaDzieci() {
             <div className="kids-grid">
               {PRODUCTS.map((p, i) => (
                 <div className="kids-card" key={i}>
-                  <div className="kids-card-img-wrap">
-                    <img src={p.img} alt={p.name} style={p.fit === "cover" ? { objectFit: "cover", padding: 0 } : undefined} />
+                  <div className="kids-card-img-wrap" style={p.bg ? { background: p.bg } : undefined}>
+                    <img src={p.img} alt={p.name} />
                   </div>
                   <h3 className="kids-card-name">{p.name}</h3>
                   <span className="kids-card-brand">{p.brand}</span>
