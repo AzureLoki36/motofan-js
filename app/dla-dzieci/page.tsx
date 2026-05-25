@@ -83,7 +83,7 @@ function Sep({ from, to }: { from: string; to: string }) {
 type SpotShape = { src: string; size: number; rot: number; pos: React.CSSProperties };
 const SHAPE_LAYOUTS: SpotShape[][] = [
   [ /* 0 produkty */
-    { src: "/pics/latajace/helmet-moto.svg",  size: 110, rot: -8, pos: { left: "3%", top: "8%" } },
+    { src: "/pics/latajace/motorcycle3.svg",  size: 150, rot: -8, pos: { left: "3%", top: "8%" } },
     { src: "/pics/latajace/motorcycle.svg",   size: 160, rot: 5,  pos: { right: "3%", bottom: "10%" } },
     { src: "/pics/latajace/helmet.svg",       size: 88,  rot: 10, pos: { right: "8%", top: "10%" } },
     { src: "/pics/latajace/motorbike.svg",    size: 128, rot: -6, pos: { left: "5%", bottom: "12%" } },
