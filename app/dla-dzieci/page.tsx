@@ -35,7 +35,7 @@ const PRODUCTS: { img: string; name: string; brand: string; cat: string; bg?: st
   { img: "/pics/dzieci/produkty/zbroja-ochraniacze.webp", name: "Zbroja / ochraniacze", brand: "Junior", cat: "Plecy i klatka" },
   { img: "/pics/dzieci/produkty/alpinestars-spodnie.jpg", name: "Spodnie crossowe", brand: "Alpinestars", cat: "Rozmiar junior" },
   { img: "/pics/dzieci/produkty/kenny-buty-track-t2.jpg", name: "Buty crossowe", brand: "Kenny", cat: "Track T2 Junior" },
-  { img: "/pics/dzieci/produkty/citybike-rekawice-2.webp", name: "Rękawice", brand: "City Bike", cat: "Motocyklowe", bg: "#efefef" },
+  { img: "/pics/dzieci/produkty/citybike-rekawice-2.webp", name: "Rękawice", brand: "City Bike", cat: "Motocyklowe", bg: "#f8f8f8" },
 ];
 
 /* Piec modeli RXF (prawdziwe zdjecia); odcienie z kola barw */
