@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import SubpageFooter from "@/components/SubpageFooter";
@@ -53,16 +53,16 @@ const PARENT_TIPS = [
   { icon: "🏪", title: "Doradzimy w salonie", text: "Zapraszamy do salonu w Opolu – pomożemy dobrać kask, zbroję i motocykl idealny dla Twojej pociechy." },
 ];
 
-/* Marki rozlozone rownomiernie wokol kola barw (8 odcieni co 45 stopni) */
+/* Marki w pastelowych odcieniach rozlozonych wokol kola barw */
 const BRAND_LOGOS = [
-  { name: "LS2", color: "#ff6b6b" },        /* czerwony 0 */
-  { name: "HJC", color: "#ffa53d" },        /* pomaranczowy 45 */
-  { name: "Givi", color: "#e7c93a" },       /* zolto-zielony 90 */
-  { name: "SECA", color: "#4ecb71" },       /* zielony 135 */
-  { name: "Acerbis", color: "#3fc9c2" },    /* turkus 180 */
-  { name: "Alpinestars", color: "#4d9bf0" },/* niebieski 225 */
-  { name: "Five", color: "#9b7af0" },       /* fioletowy 270 */
-  { name: "RXF", color: "#f072c4" },        /* magenta 315 */
+  { name: "LS2", color: "#ffb3b3" },        /* pastelowy czerwony */
+  { name: "HJC", color: "#ffd2a6" },        /* pastelowy pomaranczowy */
+  { name: "Givi", color: "#fff0a6" },       /* pastelowy zolty */
+  { name: "SECA", color: "#b8e8c6" },       /* pastelowy zielony */
+  { name: "Acerbis", color: "#b3e7e2" },    /* pastelowy turkus */
+  { name: "Alpinestars", color: "#bcd8f7" },/* pastelowy niebieski */
+  { name: "Five", color: "#d6c6f5" },       /* pastelowy fiolet */
+  { name: "RXF", color: "#f6c3e4" },        /* pastelowy magenta */
 ];
 
 /* ===== Gradient + lekka linia graniczna miedzy panelami ===== */
@@ -77,26 +77,48 @@ function Sep({ from, to }: { from: string; to: string }) {
 }
 
 /* ===== Ksztalty moto w tle paneli (z folderu latajace) =====
-   Sylwetki uzyte jako maski CSS, wypelnione kolorem dopasowanym do sekcji
-   (var(--spot)) - tono-w-ton, nie szare. */
-const SPOT_ICONS = [
-  { src: "/pics/latajace/goggles.svg",     left: "6%",  top: "9%",  size: 120, rot: -8 },
-  { src: "/pics/latajace/helmet-moto.svg", left: "80%", top: "4%",  size: 132, rot: 10 },
-  { src: "/pics/latajace/cogwheel.svg",    left: "85%", top: "58%", size: 120, rot: 16 },
-  { src: "/pics/latajace/motorcycle.svg",  left: "0%",  top: "56%", size: 210, rot: -5 },
-  { src: "/pics/latajace/motorbike.svg",   left: "45%", top: "64%", size: 156, rot: 4 },
+   Tylko motocykle i kaski, jako maski CSS wypelnione kolorem sekcji
+   (var(--spot)). Kazda sekcja ma inny uklad (variant) i inne sylwetki,
+   pozycjonowane od krawedzi (inset), zeby nie byly dziwnie obciete. */
+type SpotShape = { src: string; size: number; rot: number; pos: React.CSSProperties };
+const SHAPE_LAYOUTS: SpotShape[][] = [
+  [ /* 0 produkty */
+    { src: "/pics/latajace/helmet-moto.svg", size: 120, rot: -8, pos: { left: "4%", top: "10%" } },
+    { src: "/pics/latajace/motorcycle.svg",  size: 170, rot: 5,  pos: { right: "3%", bottom: "12%" } },
+  ],
+  [ /* 1 rxf */
+    { src: "/pics/latajace/motorcycle2.svg", size: 150, rot: -6, pos: { right: "4%", top: "12%" } },
+    { src: "/pics/latajace/helmet.svg",      size: 108, rot: 8,  pos: { left: "4%", bottom: "14%" } },
+  ],
+  [ /* 2 quiz */
+    { src: "/pics/latajace/helmet-moto2.svg", size: 116, rot: -10, pos: { left: "5%", top: "12%" } },
+    { src: "/pics/latajace/motorbike.svg",    size: 160, rot: 6,  pos: { right: "3%", bottom: "12%" } },
+  ],
+  [ /* 3 strefa rodzica */
+    { src: "/pics/latajace/motorcycle3.svg", size: 150, rot: 7,  pos: { right: "5%", top: "14%" } },
+    { src: "/pics/latajace/helmet-moto.svg", size: 106, rot: -8, pos: { left: "4%", bottom: "16%" } },
+  ],
+  [ /* 4 marki */
+    { src: "/pics/latajace/motorbike-moto.svg", size: 150, rot: -6, pos: { left: "4%", top: "12%" } },
+    { src: "/pics/latajace/helmet-moto2.svg",   size: 112, rot: 9,  pos: { right: "5%", bottom: "14%" } },
+    { src: "/pics/latajace/motorcycle.svg",     size: 116, rot: 4,  pos: { right: "40%", top: "8%" } },
+  ],
+  [ /* 5 cta */
+    { src: "/pics/latajace/helmet-moto.svg",  size: 120, rot: -8, pos: { left: "4%", top: "12%" } },
+    { src: "/pics/latajace/motorcycle2.svg",  size: 150, rot: 6,  pos: { right: "3%", bottom: "16%" } },
+  ],
 ];
 
-function SpotShapes({ flip = false }: { flip?: boolean }) {
+function SpotShapes({ variant = 0 }: { variant?: number }) {
+  const shapes = SHAPE_LAYOUTS[variant] ?? SHAPE_LAYOUTS[0];
   return (
-    <div className={`spot-uv${flip ? " flip" : ""}`} aria-hidden>
-      {SPOT_ICONS.map((s, i) => (
+    <div className="spot-uv" aria-hidden>
+      {shapes.map((s, i) => (
         <span
           key={i}
           className="spot-shape"
           style={{
-            left: s.left,
-            top: s.top,
+            ...s.pos,
             width: s.size,
             height: s.size,
             transform: `rotate(${s.rot}deg)`,
@@ -118,6 +140,7 @@ export default function DlaDzieci() {
   const [score, setScore] = useState(0);
   const [picked, setPicked] = useState<number | null>(null);
   const [done, setDone] = useState(false);
+  const [code, setCode] = useState<string | null>(null);
 
   const pick = (i: number) => {
     if (picked !== null) return;
@@ -130,8 +153,20 @@ export default function DlaDzieci() {
     else setQIdx(qIdx + 1);
   };
   const restart = () => {
-    setQIdx(0); setScore(0); setPicked(null); setDone(false);
+    setQIdx(0); setScore(0); setPicked(null); setDone(false); setCode(null);
   };
+
+  // Po ukonczeniu (wygraniu) gry pobierz losowy kod; serwer wysle go mailem do salonu.
+  useEffect(() => {
+    if (!done || code) return;
+    let active = true;
+    fetch("/api/kids-code", { method: "POST" })
+      .then((r) => r.json())
+      .then((d) => { if (active && d?.code) setCode(d.code); })
+      .catch(() => { if (active) setCode("MOTO-" + Math.random().toString(36).slice(2, 8).toUpperCase()); });
+    return () => { active = false; };
+  }, [done, code]);
+
   const q = QUESTIONS[qIdx];
 
   return (
@@ -167,16 +202,17 @@ export default function DlaDzieci() {
         .kids-hero {
           position: relative;
           overflow: hidden;
-          height: clamp(320px, 46vw, 640px);
+          height: clamp(340px, 52vw, 880px);
           background: linear-gradient(180deg, #8fc1f2 0%, #d3e8ff 100%);
           z-index: 2;
         }
-        /* Wygaszenie dolu wideo w neutralny krem - brak niebieskiego paska */
+        /* Wygaszenie dolu wideo w neutralny krem - skaluje sie z wysokoscia hero,
+           wiec przykrywa watermark takze na duzych monitorach */
         .kids-hero::after {
           content: "";
           position: absolute;
           left: 0; right: 0; bottom: 0;
-          height: 90px;
+          height: clamp(90px, 16%, 180px);
           background: linear-gradient(to bottom, rgba(255,243,227,0) 0%, var(--hero-fade) 100%);
           z-index: 3;
           pointer-events: none;
@@ -265,8 +301,7 @@ export default function DlaDzieci() {
         :global([data-theme="dark"]) .kids-sep { display: none; }
 
         /* ===== KSZTALTY MOTO W TLE (dopasowane kolorem do sekcji) ===== */
-        .spot-uv { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; opacity: .32; }
-        .spot-uv.flip { transform: scaleX(-1); }
+        .spot-uv { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; opacity: .3; }
         .spot-shape {
           position: absolute;
           background: var(--spot, #1b2748);
@@ -408,13 +443,16 @@ export default function DlaDzieci() {
         :global([data-theme="dark"]) .parent-card-text { color: #b6bfd6; }
 
         /* ===== MARKI ===== */
-        .brand-bubbles { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; margin-top: 10px; }
+        .brand-bubbles {
+          display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+          max-width: 900px; margin: 20px auto 0;
+        }
         .brand-bubble {
-          padding: 12px 22px; border-radius: 100px; color: var(--k-ink);
-          font-family: 'Outfit',sans-serif; font-weight: 900; font-size: 1rem;
-          border: 3px solid var(--k-ink);
-          box-shadow: 4px 4px 0 var(--k-ink);
-          letter-spacing: .03em;
+          padding: 26px 16px; border-radius: 22px; color: var(--k-ink);
+          font-family: 'Outfit',sans-serif; font-weight: 900; font-size: 1.35rem;
+          border: 4px solid var(--k-ink);
+          box-shadow: 0 7px 0 var(--k-ink);
+          letter-spacing: .03em; text-align: center;
         }
 
         /* ===== QUIZ ===== */
@@ -474,6 +512,17 @@ export default function DlaDzieci() {
           -webkit-text-stroke: 2px var(--k-ink);
         }
         .quiz-final-msg { color: var(--k-ink); font-size: 1.05rem; max-width: 480px; margin: 0 auto 24px; font-weight: 600; }
+        .quiz-code {
+          margin: 6px auto 22px; max-width: 360px;
+          background: var(--k-sun); border: 3px solid var(--k-ink);
+          border-radius: 16px; padding: 16px; box-shadow: 0 6px 0 var(--k-ink);
+        }
+        .quiz-code-label { display: block; font-family: 'Outfit',sans-serif; font-weight: 800;
+          font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; color: var(--k-ink); }
+        .quiz-code-value { display: block; font-family: 'Outfit',sans-serif; font-weight: 900;
+          font-size: 1.9rem; letter-spacing: .14em; color: var(--ac-rxf);
+          -webkit-text-stroke: 1px var(--k-ink); margin: 4px 0; }
+        .quiz-code-note { display: block; font-size: .8rem; color: var(--k-ink); font-weight: 600; }
 
         /* ===== CTA (komiksowa chmurka) ===== */
         .kids-cta-card {
@@ -485,17 +534,6 @@ export default function DlaDzieci() {
           text-align: center;
           box-shadow: 0 12px 0 rgba(27,39,72,.22);
           position: relative;
-        }
-        /* Ogonek dymka komiksowego (obrys + wypelnienie) */
-        .kids-cta-card::before {
-          content: ""; position: absolute; left: 56px; bottom: -32px;
-          width: 0; height: 0; border: 20px solid transparent;
-          border-top-color: var(--k-ink); border-bottom: 0;
-        }
-        .kids-cta-card::after {
-          content: ""; position: absolute; left: 61px; bottom: -23px;
-          width: 0; height: 0; border: 15px solid transparent;
-          border-top-color: #d8ecff; border-bottom: 0;
         }
         .cta-emoji-badge {
           display: inline-flex; align-items: center; justify-content: center;
@@ -531,6 +569,7 @@ export default function DlaDzieci() {
           .kids-grid { grid-template-columns: repeat(2, 1fr); }
           .rxf-grid  { grid-template-columns: repeat(2, 1fr); }
           .kids-quicknav { grid-template-columns: repeat(3, 1fr); }
+          .brand-bubbles { grid-template-columns: repeat(2, 1fr); }
         }
         @media (max-width: 560px) {
           .kids-section { padding: 60px 0 56px; }
@@ -599,7 +638,7 @@ export default function DlaDzieci() {
 
         {/* ===== 1. PRODUKTY ===== */}
         <section id="strefa-produkty" className="kids-section kids-section--products">
-          <SpotShapes />
+          <SpotShapes variant={0} />
           <div className="container">
             <EditableHTML id="kids.gear.h2" as="h2" className="kids-h2" defaultHtml='<span class="h2-banner c-gear"><img src="/pics/dzieci/helmet-motorcycle.svg" alt="" class="h2-helmet" /> Kaski, zbroje i kurtki</span>' />
             <Editable id="kids.gear.lead" as="p" className="kids-lead" multiline>
@@ -624,7 +663,7 @@ export default function DlaDzieci() {
 
         {/* ===== 2. RXF ===== */}
         <section id="strefa-rxf" className="kids-section kids-section--rxf">
-          <SpotShapes flip />
+          <SpotShapes variant={1} />
           <div className="container">
             <EditableHTML id="kids.rxf.h2" as="h2" className="kids-h2" defaultHtml='<span class="h2-banner c-rxf alt">🏍️ Motocykle RXF</span>' />
             <Editable id="kids.rxf.lead" as="p" className="kids-lead" multiline>
@@ -651,7 +690,7 @@ export default function DlaDzieci() {
 
         {/* ===== 3. QUIZ ===== */}
         <section id="strefa-gra" className="kids-section kids-section--game">
-          <SpotShapes />
+          <SpotShapes variant={2} />
           <div className="container">
             <EditableHTML id="kids.quiz.h2" as="h2" className="kids-h2" defaultHtml='<span class="h2-banner c-quiz">🎮 Mini-gra: Bezpieczna jazda</span>' />
             <Editable id="kids.quiz.lead" as="p" className="kids-lead" multiline>
@@ -706,6 +745,13 @@ export default function DlaDzieci() {
                       ? "Bardzo dobrze! Już sporo wiesz o bezpiecznej jeździe. 🏍️"
                       : "Brawo, że spróbowałeś! Spróbuj jeszcze raz i ucz się przepisów! 📖"}
                   </p>
+                  {code && (
+                    <div className="quiz-code">
+                      <span className="quiz-code-label">Twój kod nagrody 🎁</span>
+                      <span className="quiz-code-value">{code}</span>
+                      <span className="quiz-code-note">Pokaż ten kod w salonie MotoFun!</span>
+                    </div>
+                  )}
                   <button className="quiz-next-btn" onClick={restart}>🔁 Zagraj jeszcze raz!</button>
                 </div>
               )}
@@ -717,7 +763,7 @@ export default function DlaDzieci() {
 
         {/* ===== 4. STREFA RODZICA ===== */}
         <section id="strefa-rodzica" className="kids-section kids-section--parent">
-          <SpotShapes flip />
+          <SpotShapes variant={3} />
           <div className="container">
             <EditableHTML id="kids.parent.h2" as="h2" className="kids-h2" defaultHtml='<span class="h2-banner c-parent alt">👨‍👩‍👧 Strefa rodzica</span>' />
             <Editable id="kids.parent.lead" as="p" className="kids-lead" multiline>
@@ -741,7 +787,7 @@ export default function DlaDzieci() {
 
         {/* ===== 5. MARKI ===== */}
         <section id="strefa-marki" className="kids-section kids-section--alt">
-          <SpotShapes />
+          <SpotShapes variant={4} />
           <div className="container">
             <EditableHTML id="kids.brands.h2" as="h2" className="kids-h2" defaultHtml='<span class="h2-banner c-marki">⭐ Współpracujemy z najlepszymi</span>' />
             <Editable id="kids.brands.lead" as="p" className="kids-lead" multiline>
@@ -759,7 +805,7 @@ export default function DlaDzieci() {
 
         {/* ===== 6. CTA ===== */}
         <section className="kids-section kids-section--cta">
-          <SpotShapes flip />
+          <SpotShapes variant={5} />
           <div className="container">
             <div className="kids-cta-card">
               <span className="cta-emoji-badge" aria-hidden>📞</span>
