@@ -65,47 +65,43 @@ const BRAND_LOGOS = [
   { name: "RXF", color: "#f072c4" },        /* magenta 315 */
 ];
 
-/* ===== Gladkie przejscie koloru miedzy panelami ===== */
-function Sep({ from, to }: { from: string; to: string }) {
+/* ===== Falujaca linia miedzy panelami (bez gradientu) =====
+   Solidny kolor sekcji powyzej (top) i ponizej (bottom), rozdzielone
+   wyrazista falista linia atramentowa na granicy. */
+function Wave({ top, bottom }: { top: string; bottom: string }) {
+  const d = "M0,45 C180,90 360,8 540,38 C720,68 900,12 1080,44 C1260,76 1380,28 1440,46";
   return (
-    <div
-      className="kids-sep"
-      aria-hidden
-      style={{ background: `linear-gradient(180deg, ${from} 0%, ${to} 100%)` }}
-    />
+    <div className="kids-wave" aria-hidden style={{ background: top }}>
+      <svg viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d={`${d} L1440,90 L0,90 Z`} fill={bottom} />
+        <path d={d} fill="none" stroke="#1b2748" strokeWidth="3" vectorEffect="non-scaling-stroke" />
+      </svg>
+    </div>
   );
 }
 
-/* ===== Ksztalty moto w stylu spot UV =====
-   Sylwetki z folderu latajace (motocykl, motorower, kask, gogle, zebatka)
-   uzyte jako maski CSS i wypelnione ciemnym, diagonalnym polyskiem - czytelne
-   na jasnych panelach (w trybie ciemnym przelaczane na jasne). */
-const SPOT_ICONS = [
-  { src: "/pics/latajace/goggles.svg",     left: "6%",  top: "9%",  size: 120, rot: -8 },
-  { src: "/pics/latajace/helmet-moto.svg", left: "80%", top: "4%",  size: 132, rot: 10 },
-  { src: "/pics/latajace/cogwheel.svg",    left: "85%", top: "58%", size: 120, rot: 16 },
-  { src: "/pics/latajace/motorcycle.svg",  left: "0%",  top: "56%", size: 210, rot: -5 },
-  { src: "/pics/latajace/motorbike.svg",   left: "45%", top: "64%", size: 156, rot: 4 },
-];
-
+/* ===== Ksztalty "dla dzieci" w tle paneli =====
+   Gwiazdki, blyskawice, serca i kola - plaskie, tono-w-ton, wyrazne
+   (bez gradientu). Ciemne na jasnych panelach, jasne w trybie ciemnym. */
 function SpotShapes({ flip = false }: { flip?: boolean }) {
+  const star = "M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z";
+  const bolt = "M13 2L3 14h7l-1 8 10-12h-7l1-8z";
+  const heart = "M12 21s-7.5-4.6-10-9.2C.6 8.8 2 5 5.5 5c2 0 3.3 1.2 4.5 2.6C11.2 6.2 12.5 5 14.5 5 18 5 19.4 8.8 22 11.8 19.5 16.4 12 21 12 21z";
   return (
     <div className={`spot-uv${flip ? " flip" : ""}`} aria-hidden>
-      {SPOT_ICONS.map((s, i) => (
-        <span
-          key={i}
-          className="spot-shape"
-          style={{
-            left: s.left,
-            top: s.top,
-            width: s.size,
-            height: s.size,
-            transform: `rotate(${s.rot}deg)`,
-            WebkitMaskImage: `url(${s.src})`,
-            maskImage: `url(${s.src})`,
-          }}
-        />
-      ))}
+      <svg viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <g className="spot-fill">
+          <path transform="translate(80,80) scale(4)" d={star} />
+          <path transform="translate(1010,60) scale(3.7)" d={bolt} />
+          <path transform="translate(140,510) scale(4.1)" d={heart} />
+          <path transform="translate(650,64) scale(2.5)" d={star} />
+          <path transform="translate(465,552) scale(2.9)" d={bolt} />
+        </g>
+        <g className="spot-stroke">
+          <circle cx="1046" cy="556" r="68" />
+          <circle cx="336" cy="166" r="42" />
+        </g>
+      </svg>
     </div>
   );
 }
@@ -261,26 +257,19 @@ export default function DlaDzieci() {
         .qnav-tile.t4 { background: #c4dbf7; } /* -> strefa rodzica */
         .qnav-tile.t5 { background: #d8c7f6; } /* -> marki */
 
-        /* ===== PRZEJSCIE KOLORU (gradient) ===== */
-        .kids-sep { display: block; width: 100%; height: 80px; position: relative; z-index: 1; }
-        :global([data-theme="dark"]) .kids-sep { display: none; }
+        /* ===== FALUJACA LINIA MIEDZY PANELAMI (bez gradientu) ===== */
+        .kids-wave { display: block; width: 100%; height: clamp(40px, 6vw, 80px); line-height: 0; position: relative; z-index: 1; margin-bottom: -1px; }
+        .kids-wave svg { display: block; width: 100%; height: 100%; }
+        :global([data-theme="dark"]) .kids-wave { display: none; }
 
-        /* ===== SPOT UV: sylwetki moto (z folderu latajace) w tle paneli ===== */
-        .spot-uv { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
-        .spot-uv.flip { transform: scaleX(-1); }
-        .spot-shape {
-          position: absolute;
-          -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
-          -webkit-mask-size: contain; mask-size: contain;
-          -webkit-mask-position: center; mask-position: center;
-          background: linear-gradient(135deg,
-            rgba(27,39,72,.07) 0%, rgba(27,39,72,.24) 46%,
-            rgba(27,39,72,.24) 60%, rgba(27,39,72,.09) 100%);
-        }
-        :global([data-theme="dark"]) .spot-shape {
-          background: linear-gradient(135deg,
-            rgba(255,255,255,.06) 0%, rgba(255,255,255,.18) 50%, rgba(255,255,255,.06) 100%);
-        }
+        /* ===== KSZTALTY W TLE PANELI (plaskie, wyrazne) ===== */
+        .spot-uv { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+        .spot-uv svg { width: 100%; height: 100%; display: block; }
+        .spot-uv.flip svg { transform: scaleX(-1); }
+        .spot-fill { fill: rgba(27,39,72,.15); }
+        .spot-stroke { fill: none; stroke: rgba(27,39,72,.15); stroke-width: 8; }
+        :global([data-theme="dark"]) .spot-fill { fill: rgba(255,255,255,.13); }
+        :global([data-theme="dark"]) .spot-stroke { stroke: rgba(255,255,255,.13); }
 
         /* ===== SEKCJE ===== */
         .kids-section { position: relative; padding: 76px 0 80px; overflow: hidden; z-index: 2; }
@@ -602,7 +591,7 @@ export default function DlaDzieci() {
           </div>
         </div>
 
-        <Sep from="#fff3e3" to="#ffe8cc" />
+        <Wave top="#fff3e3" bottom="#ffe8cc" />
 
         {/* ===== 1. PRODUKTY ===== */}
         <section id="strefa-produkty" className="kids-section kids-section--products">
@@ -627,7 +616,7 @@ export default function DlaDzieci() {
           </div>
         </section>
 
-        <Sep from="#ffe8cc" to="#ffd9e6" />
+        <Wave top="#ffe8cc" bottom="#ffd9e6" />
 
         {/* ===== 2. RXF ===== */}
         <section id="strefa-rxf" className="kids-section kids-section--rxf">
@@ -654,7 +643,7 @@ export default function DlaDzieci() {
           </div>
         </section>
 
-        <Sep from="#ffd9e6" to="#d3f2dd" />
+        <Wave top="#ffd9e6" bottom="#d3f2dd" />
 
         {/* ===== 3. QUIZ ===== */}
         <section id="strefa-gra" className="kids-section kids-section--game">
@@ -720,7 +709,7 @@ export default function DlaDzieci() {
           </div>
         </section>
 
-        <Sep from="#d3f2dd" to="#dbe9fc" />
+        <Wave top="#d3f2dd" bottom="#dbe9fc" />
 
         {/* ===== 4. STREFA RODZICA ===== */}
         <section id="strefa-rodzica" className="kids-section kids-section--parent">
@@ -744,7 +733,7 @@ export default function DlaDzieci() {
           </div>
         </section>
 
-        <Sep from="#dbe9fc" to="#e9defb" />
+        <Wave top="#dbe9fc" bottom="#e9defb" />
 
         {/* ===== 5. MARKI ===== */}
         <section id="strefa-marki" className="kids-section kids-section--alt">
@@ -762,7 +751,7 @@ export default function DlaDzieci() {
           </div>
         </section>
 
-        <Sep from="#e9defb" to="#ff9eb3" />
+        <Wave top="#e9defb" bottom="#ff9eb3" />
 
         {/* ===== 6. CTA ===== */}
         <section className="kids-section kids-section--cta">
