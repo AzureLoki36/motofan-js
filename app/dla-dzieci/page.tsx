@@ -65,16 +65,24 @@ const BRAND_LOGOS = [
   { name: "RXF", color: "#f072c4" },        /* magenta 315 */
 ];
 
-/* ===== Falujaca linia miedzy panelami (bez gradientu) =====
-   Solidny kolor sekcji powyzej (top) i ponizej (bottom), rozdzielone
-   wyrazista falista linia atramentowa na granicy. */
+/* ===== Festony / chmurki miedzy panelami (bez gradientu) =====
+   Rzad polokregow koloru sekcji powyzej (top) "zwisajacych" w dol nad
+   kolorem sekcji ponizej (bottom), z atramentowa obwodka. Wzor SVG o stalym
+   rozmiarze (pattern) -> rowne polokregi na kazdej szerokosci. */
 function Wave({ top, bottom }: { top: string; bottom: string }) {
-  const d = "M0,45 C180,90 360,8 540,38 C720,68 900,12 1080,44 C1260,76 1380,28 1440,46";
+  const id = `scal-${top}${bottom}`.replace(/#/g, "");
+  const SW = 56, R = 28, TOP = 3, H = TOP + R + 2;
   return (
-    <div className="kids-wave" aria-hidden style={{ background: top }}>
-      <svg viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <path d={`${d} L1440,90 L0,90 Z`} fill={bottom} />
-        <path d={d} fill="none" stroke="#1b2748" strokeWidth="3" vectorEffect="non-scaling-stroke" />
+    <div className="kids-wave" aria-hidden>
+      <svg width="100%" height={H} xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id={id} width={SW} height={H} patternUnits="userSpaceOnUse">
+            <path d={`M0 0 H${SW} V${TOP} A ${R} ${R} 0 0 1 0 ${TOP} Z`} fill={top} />
+            <path d={`M${SW} ${TOP} A ${R} ${R} 0 0 1 0 ${TOP}`} fill="none" stroke="#1b2748" strokeWidth="3" />
+          </pattern>
+        </defs>
+        <rect width="100%" height={H} fill={bottom} />
+        <rect width="100%" height={H} fill={`url(#${id})`} />
       </svg>
     </div>
   );
@@ -257,9 +265,9 @@ export default function DlaDzieci() {
         .qnav-tile.t4 { background: #c4dbf7; } /* -> strefa rodzica */
         .qnav-tile.t5 { background: #d8c7f6; } /* -> marki */
 
-        /* ===== FALUJACA LINIA MIEDZY PANELAMI (bez gradientu) ===== */
-        .kids-wave { display: block; width: 100%; height: clamp(40px, 6vw, 80px); line-height: 0; position: relative; z-index: 1; margin-bottom: -1px; }
-        .kids-wave svg { display: block; width: 100%; height: 100%; }
+        /* ===== FESTONY / CHMURKI MIEDZY PANELAMI (bez gradientu) ===== */
+        .kids-wave { display: block; width: 100%; line-height: 0; position: relative; z-index: 1; margin-bottom: -1px; }
+        .kids-wave svg { display: block; width: 100%; }
         :global([data-theme="dark"]) .kids-wave { display: none; }
 
         /* ===== KSZTALTY W TLE PANELI (plaskie, wyrazne) ===== */
