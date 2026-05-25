@@ -76,38 +76,36 @@ function Sep({ from, to }: { from: string; to: string }) {
   );
 }
 
-/* ===== Ksztalty "dla dzieci" w stylu spot UV =====
-   Tono-w-ton ksztalty (gwiazdki, blyskawice, serca, kola) wypelnione
-   diagonalnym polyskiem (bialy gradient o niskim kryciu) - widoczne tylko
-   dzieki refleksowi, jak lakier spot UV na matowym druku. */
-function SpotShapes({ idx = 0, flip = false }: { idx?: number; flip?: boolean }) {
-  const gid = `spotGloss-${idx}`;
-  const star = "M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z";
-  const bolt = "M13 2L3 14h7l-1 8 10-12h-7l1-8z";
-  const heart = "M12 21s-7.5-4.6-10-9.2C.6 8.8 2 5 5.5 5c2 0 3.3 1.2 4.5 2.6C11.2 6.2 12.5 5 14.5 5 18 5 19.4 8.8 22 11.8 19.5 16.4 12 21 12 21z";
+/* ===== Ksztalty moto w stylu spot UV =====
+   Sylwetki z folderu latajace (motocykl, motorower, kask, gogle, zebatka)
+   uzyte jako maski CSS i wypelnione ciemnym, diagonalnym polyskiem - czytelne
+   na jasnych panelach (w trybie ciemnym przelaczane na jasne). */
+const SPOT_ICONS = [
+  { src: "/pics/latajace/goggles.svg",     left: "6%",  top: "9%",  size: 120, rot: -8 },
+  { src: "/pics/latajace/helmet-moto.svg", left: "80%", top: "4%",  size: 132, rot: 10 },
+  { src: "/pics/latajace/cogwheel.svg",    left: "85%", top: "58%", size: 120, rot: 16 },
+  { src: "/pics/latajace/motorcycle.svg",  left: "0%",  top: "56%", size: 210, rot: -5 },
+  { src: "/pics/latajace/motorbike.svg",   left: "45%", top: "64%", size: 156, rot: 4 },
+];
+
+function SpotShapes({ flip = false }: { flip?: boolean }) {
   return (
     <div className={`spot-uv${flip ? " flip" : ""}`} aria-hidden>
-      <svg viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id={gid} x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#fff" stopOpacity="0.02" />
-            <stop offset="48%" stopColor="#fff" stopOpacity="0.17" />
-            <stop offset="60%" stopColor="#fff" stopOpacity="0.17" />
-            <stop offset="100%" stopColor="#fff" stopOpacity="0.03" />
-          </linearGradient>
-        </defs>
-        <g fill={`url(#${gid})`}>
-          <path transform="translate(90,86) scale(3.5)" d={star} />
-          <path transform="translate(1006,66) scale(3.3)" d={bolt} />
-          <path transform="translate(150,520) scale(3.7)" d={heart} />
-          <path transform="translate(648,70) scale(2.2)" d={star} />
-          <path transform="translate(470,556) scale(2.5)" d={bolt} />
-        </g>
-        <g fill="none" stroke={`url(#${gid})`} strokeWidth="6">
-          <circle cx="1044" cy="556" r="66" />
-          <circle cx="338" cy="168" r="40" />
-        </g>
-      </svg>
+      {SPOT_ICONS.map((s, i) => (
+        <span
+          key={i}
+          className="spot-shape"
+          style={{
+            left: s.left,
+            top: s.top,
+            width: s.size,
+            height: s.size,
+            transform: `rotate(${s.rot}deg)`,
+            WebkitMaskImage: `url(${s.src})`,
+            maskImage: `url(${s.src})`,
+          }}
+        />
+      ))}
     </div>
   );
 }
@@ -267,10 +265,22 @@ export default function DlaDzieci() {
         .kids-sep { display: block; width: 100%; height: 80px; position: relative; z-index: 1; }
         :global([data-theme="dark"]) .kids-sep { display: none; }
 
-        /* ===== SPOT UV: ksztalty z polyskiem w tle paneli ===== */
-        .spot-uv { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
-        .spot-uv svg { width: 100%; height: 100%; display: block; }
-        .spot-uv.flip svg { transform: scaleX(-1); }
+        /* ===== SPOT UV: sylwetki moto (z folderu latajace) w tle paneli ===== */
+        .spot-uv { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+        .spot-uv.flip { transform: scaleX(-1); }
+        .spot-shape {
+          position: absolute;
+          -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+          -webkit-mask-size: contain; mask-size: contain;
+          -webkit-mask-position: center; mask-position: center;
+          background: linear-gradient(135deg,
+            rgba(27,39,72,.07) 0%, rgba(27,39,72,.24) 46%,
+            rgba(27,39,72,.24) 60%, rgba(27,39,72,.09) 100%);
+        }
+        :global([data-theme="dark"]) .spot-shape {
+          background: linear-gradient(135deg,
+            rgba(255,255,255,.06) 0%, rgba(255,255,255,.18) 50%, rgba(255,255,255,.06) 100%);
+        }
 
         /* ===== SEKCJE ===== */
         .kids-section { position: relative; padding: 76px 0 80px; overflow: hidden; z-index: 2; }
@@ -596,7 +606,7 @@ export default function DlaDzieci() {
 
         {/* ===== 1. PRODUKTY ===== */}
         <section id="strefa-produkty" className="kids-section kids-section--products">
-          <SpotShapes idx={1} />
+          <SpotShapes />
           <div className="container">
             <EditableHTML id="kids.gear.h2" as="h2" className="kids-h2" defaultHtml='<span class="h2-banner c-gear"><img src="/pics/dzieci/helmet-motorcycle.svg" alt="" class="h2-helmet" /> Kaski, zbroje i kurtki</span>' />
             <Editable id="kids.gear.lead" as="p" className="kids-lead" multiline>
@@ -621,7 +631,7 @@ export default function DlaDzieci() {
 
         {/* ===== 2. RXF ===== */}
         <section id="strefa-rxf" className="kids-section kids-section--rxf">
-          <SpotShapes idx={2} flip />
+          <SpotShapes flip />
           <div className="container">
             <EditableHTML id="kids.rxf.h2" as="h2" className="kids-h2" defaultHtml='<span class="h2-banner c-rxf alt">🏍️ Motocykle RXF</span>' />
             <Editable id="kids.rxf.lead" as="p" className="kids-lead" multiline>
@@ -648,7 +658,7 @@ export default function DlaDzieci() {
 
         {/* ===== 3. QUIZ ===== */}
         <section id="strefa-gra" className="kids-section kids-section--game">
-          <SpotShapes idx={3} />
+          <SpotShapes />
           <div className="container">
             <EditableHTML id="kids.quiz.h2" as="h2" className="kids-h2" defaultHtml='<span class="h2-banner c-quiz">🎮 Mini-gra: Bezpieczna jazda</span>' />
             <Editable id="kids.quiz.lead" as="p" className="kids-lead" multiline>
@@ -714,7 +724,7 @@ export default function DlaDzieci() {
 
         {/* ===== 4. STREFA RODZICA ===== */}
         <section id="strefa-rodzica" className="kids-section kids-section--parent">
-          <SpotShapes idx={4} flip />
+          <SpotShapes flip />
           <div className="container">
             <EditableHTML id="kids.parent.h2" as="h2" className="kids-h2" defaultHtml='<span class="h2-banner c-parent alt">👨‍👩‍👧 Strefa rodzica</span>' />
             <Editable id="kids.parent.lead" as="p" className="kids-lead" multiline>
@@ -738,7 +748,7 @@ export default function DlaDzieci() {
 
         {/* ===== 5. MARKI ===== */}
         <section id="strefa-marki" className="kids-section kids-section--alt">
-          <SpotShapes idx={5} />
+          <SpotShapes />
           <div className="container">
             <EditableHTML id="kids.brands.h2" as="h2" className="kids-h2" defaultHtml='<span class="h2-banner c-marki">⭐ Współpracujemy z najlepszymi</span>' />
             <Editable id="kids.brands.lead" as="p" className="kids-lead" multiline>
@@ -756,7 +766,7 @@ export default function DlaDzieci() {
 
         {/* ===== 6. CTA ===== */}
         <section className="kids-section kids-section--cta">
-          <SpotShapes idx={6} flip />
+          <SpotShapes flip />
           <div className="container">
             <div className="kids-cta-card">
               <span className="cta-emoji-badge" aria-hidden>📞</span>
