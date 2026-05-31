@@ -258,17 +258,13 @@ export default function DlaDzieci() {
           font-family: 'Outfit',sans-serif;
           font-size: clamp(2.2rem, 7vw, 4.6rem);
           font-weight: 900;
-          color: #fff;
+          color: #ffe9a8; /* fallback */
           background: linear-gradient(120deg, #ffe9a8 0%, #ffc6d4 50%, #cfe1ff 100%);
           -webkit-background-clip: text;
           background-clip: text;
           -webkit-text-fill-color: transparent;
-          text-shadow:
-            4px 4px 0 var(--k-ink),
-            -1px -1px 0 var(--k-ink),
-            1px -1px 0 var(--k-ink),
-            -1px 1px 0 var(--k-ink),
-            1px 1px 0 var(--k-ink);
+          -webkit-text-stroke: 2px var(--k-ink);
+          filter: drop-shadow(3px 3px 0 var(--k-ink));
           text-align: center; line-height: 1.05; margin: 0;
           letter-spacing: -.01em;
         }
