@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import SubpageFooter from "@/components/SubpageFooter";
-import { Editable, EditableHTML } from "@/components/Editable";
+import { Editable, EditableHTML, EditableImage } from "@/components/Editable";
 import { useLocale } from "@/components/LocaleProvider";
 import { useAdmin, useContentValue } from "@/components/AdminProvider";
 
@@ -411,6 +411,9 @@ export default function DlaDzieci() {
           background: #fff;
         }
         .kids-card-img-wrap img { width: 100%; height: 100%; object-fit: contain; padding: 10px; }
+        /* EditableImage opakowuje img w div w trybie edycji - musi wypelnic wrap */
+        .kids-card-img-wrap .editable-image-wrap,
+        .rxf-card-img-wrap .editable-image-wrap { width: 100%; height: 100%; display: flex; }
         .kids-card-name { font-family: 'Outfit',sans-serif; font-weight: 900; font-size: 1.1rem; color: var(--k-ink); margin: 0 0 8px; }
         .kids-card-brand { display: inline-block; background: var(--k-ink); color: #fff;
           padding: 4px 12px; border-radius: 100px; font-size: .7rem; font-weight: 900;
@@ -747,11 +750,11 @@ export default function DlaDzieci() {
               {PRODUCTS.map((p, i) => (
                 <div className="kids-card" key={i}>
                   <div className="kids-card-img-wrap" style={p.bg ? { background: p.bg } : undefined}>
-                    <img src={p.img} alt={p.name} />
+                    <EditableImage id={`kids.product.${i}.img`} src={p.img} alt={p.name} />
                   </div>
-                  <h3 className="kids-card-name">{p.name}</h3>
-                  <span className="kids-card-brand">{p.brand}</span>
-                  <p className="kids-card-cat">{p.cat}</p>
+                  <Editable id={`kids.product.${i}.name`} as="h3" className="kids-card-name">{p.name}</Editable>
+                  <Editable id={`kids.product.${i}.brand`} as="span" className="kids-card-brand">{p.brand}</Editable>
+                  <Editable id={`kids.product.${i}.cat`} as="p" className="kids-card-cat">{p.cat}</Editable>
                 </div>
               ))}
             </div>
@@ -772,12 +775,12 @@ export default function DlaDzieci() {
               {RXF_MOTOS.map((m, i) => (
                 <div className="rxf-card" key={i}>
                   <div className="rxf-card-img-wrap">
-                    <img src={m.img} alt={m.name} />
+                    <EditableImage id={`kids.rxf.${i}.img`} src={m.img} alt={m.name} />
                   </div>
-                  <h3 className="rxf-card-name">{m.name}</h3>
+                  <Editable id={`kids.rxf.${i}.name`} as="h3" className="rxf-card-name">{m.name}</Editable>
                   <div className="rxf-card-spec">
-                    <span style={{ background: m.color }}>{m.cc}</span>
-                    <span style={{ background: "var(--k-ink)" }}>{m.age}</span>
+                    <Editable id={`kids.rxf.${i}.cc`} as="span" style={{ background: m.color }}>{m.cc}</Editable>
+                    <Editable id={`kids.rxf.${i}.age`} as="span" style={{ background: "var(--k-ink)" }}>{m.age}</Editable>
                   </div>
                 </div>
               ))}
@@ -926,7 +929,7 @@ export default function DlaDzieci() {
             </Editable>
             <div className="brand-bubbles">
               {BRAND_LOGOS.map((b, i) => (
-                <div key={i} className="brand-bubble" style={{ background: b.color }}>{b.name}</div>
+                <Editable key={i} id={`kids.brand.${i}.name`} as="div" className="brand-bubble" style={{ background: b.color }}>{b.name}</Editable>
               ))}
             </div>
           </div>
