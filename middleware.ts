@@ -41,6 +41,21 @@ export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const method = req.method;
 
+  // ── "/<podstrona>/login" -> przekierowanie na logowanie admina ─────
+  // Wpisanie /login na koncu dowolnej podstrony otwiera logowanie i po
+  // sukcesie wraca na te sama podstrone z trybem edycji.
+  if (
+    pathname.endsWith("/login") &&
+    pathname !== "/login" &&
+    !pathname.startsWith("/api/") &&
+    !pathname.startsWith("/sklep-online/")
+  ) {
+    const back = pathname.slice(0, -"/login".length) || "/";
+    const url = new URL("/login", req.url);
+    url.searchParams.set("next", back);
+    return NextResponse.redirect(url);
+  }
+
   // ── Existing admin routes ─────────────────────────────────
 
   // Protect upload (all methods)
@@ -97,5 +112,7 @@ export const config = {
     "/api/motorcycles/:path*",
     "/sklep-online/adm",
     "/sklep-online/adm/:path*",
+    // Lapie "/<podstrona>/login" (1+ segmentow przed /login) na dowolnej podstronie
+    "/:slug+/login",
   ],
 };

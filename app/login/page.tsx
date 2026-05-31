@@ -1,14 +1,15 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 
-export default function LoginPage() {
+function LoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
+  const params = useSearchParams();
+  const next = params.get("next") || "/";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,7 +23,10 @@ export default function LoginPage() {
     });
 
     if (res.ok) {
-      window.location.href = "/";
+      // Wracaj na "?next" (z domyslna /) i dolacz ?edit=1 - AdminProvider
+      // na stronie docelowej wlaczy tryb edycji i wyczysci ten parametr.
+      const sep = next.includes("?") ? "&" : "?";
+      window.location.href = `${next}${sep}edit=1`;
     } else {
       const data = await res.json();
       setError(data.error || "Błąd logowania");
@@ -106,5 +110,13 @@ export default function LoginPage() {
         }
       `}</style>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={null}>
+      <LoginForm />
+    </Suspense>
   );
 }

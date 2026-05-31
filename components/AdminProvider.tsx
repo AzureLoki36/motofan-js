@@ -90,6 +90,16 @@ export function AdminProvider({ children }: { children: ReactNode }) {
       setContent(data || {});
       setSavedContent(data || {});
       setChecked(true);
+      // Po powrocie z /login z ?edit=1 (i bedac adminem) wlacz tryb edycji
+      // automatycznie i usun parametr z URL.
+      if (auth.admin === true && typeof window !== "undefined") {
+        const url = new URL(window.location.href);
+        if (url.searchParams.get("edit") === "1") {
+          setEditMode(true);
+          url.searchParams.delete("edit");
+          window.history.replaceState({}, "", url.toString());
+        }
+      }
     });
   }, []);
 
