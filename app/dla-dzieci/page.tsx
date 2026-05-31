@@ -259,6 +259,10 @@ export default function DlaDzieci() {
           font-size: clamp(2.2rem, 7vw, 4.6rem);
           font-weight: 900;
           color: #fff;
+          background: linear-gradient(120deg, #ffe9a8 0%, #ffc6d4 50%, #cfe1ff 100%);
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
           text-shadow:
             4px 4px 0 var(--k-ink),
             -1px -1px 0 var(--k-ink),
