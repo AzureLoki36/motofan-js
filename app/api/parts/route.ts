@@ -4,13 +4,20 @@ import { readParts, writeParts, Part, PartCategory, PartCondition } from "@/lib/
 import { PARTS_SEED } from "@/lib/parts-seed";
 
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
+export const fetchCache = "force-no-store";
 
 export async function GET() {
   const parts = await readParts();
   // Jeśli magazyn pusty (np. pierwsze uruchomienie / brak konfiguracji blob)
   // serwujemy przykładowe dane, żeby strona była użyteczna od razu.
-  if (parts.length === 0) return NextResponse.json(PARTS_SEED);
-  return NextResponse.json(parts);
+  const body = parts.length === 0 ? PARTS_SEED : parts;
+  return NextResponse.json(body, {
+    headers: {
+      "Cache-Control": "no-store, no-cache, must-revalidate",
+      Pragma: "no-cache",
+    },
+  });
 }
 
 export async function POST(req: NextRequest) {

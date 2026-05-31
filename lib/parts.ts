@@ -34,9 +34,17 @@ export async function readParts(): Promise<Part[]> {
   try {
     const { blobs } = await list({ prefix: BLOB_PREFIX });
     if (!blobs.length) return [];
-    const res = await fetch(blobs[0].url, {
+    // Bierz najnowszy + cache-bust na URL, zeby pominac CDN cache
+    const newest = [...blobs].sort((a, b) =>
+      new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime()
+    )[0];
+    const url = newest.url + (newest.url.includes("?") ? "&" : "?") + "_t=" + Date.now();
+    const res = await fetch(url, {
       cache: "no-store",
-      headers: { Authorization: `Bearer ${process.env.BLOB_READ_WRITE_TOKEN}` },
+      headers: {
+        Authorization: `Bearer ${process.env.BLOB_READ_WRITE_TOKEN}`,
+        "Cache-Control": "no-cache",
+      },
     });
     if (!res.ok) return [];
     return res.json();
@@ -52,6 +60,7 @@ export async function writeParts(data: Part[]): Promise<void> {
     access: "private",
     addRandomSuffix: false,
     contentType: "application/json",
+    cacheControlMaxAge: 0, // wymus aby CDN nie trzymal starej wersji
   });
 }
 
