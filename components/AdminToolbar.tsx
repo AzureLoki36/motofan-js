@@ -14,6 +14,13 @@ export default function AdminToolbar() {
   const [restoreOpen, setRestoreOpen] = useState(false);
   const [busy, setBusy] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const [accountOpen, setAccountOpen] = useState(false);
+  const [acctCurrent, setAcctCurrent] = useState("");
+  const [acctNewUser, setAcctNewUser] = useState("");
+  const [acctNewPass, setAcctNewPass] = useState("");
+  const [acctNewPass2, setAcctNewPass2] = useState("");
+  const [acctMsg, setAcctMsg] = useState<{ kind: "ok" | "err"; text: string } | null>(null);
+  const [acctSaving, setAcctSaving] = useState(false);
 
   // Zamknij menu przy klikniciu poza nim
   useEffect(() => {
@@ -133,11 +140,123 @@ export default function AdminToolbar() {
             )}
           </div>
 
+          <button
+            className="admin-toolbar-btn account"
+            onClick={() => { setAccountOpen(true); setAcctMsg(null); }}
+            title="Zmiana loginu / hasla"
+          >
+            🔑 Konto
+          </button>
           <button className="admin-toolbar-btn logout" onClick={logout}>
             {t("admin.logout")}
           </button>
         </div>
       </div>
+
+      {/* Modal: zmiana loginu/hasla */}
+      {accountOpen && (
+        <div className="acct-overlay" onClick={(e) => { if (e.target === e.currentTarget) setAccountOpen(false); }}>
+          <div className="acct-card">
+            <div className="acct-head">
+              <h3>Zmiana danych logowania</h3>
+              <button className="acct-x" onClick={() => setAccountOpen(false)} aria-label="Zamknij">✕</button>
+            </div>
+            <p className="acct-info">
+              Dla bezpieczeństwa najpierw podaj <strong>aktualne hasło</strong>. Możesz zmienić sam login,
+              samo hasło albo oba naraz. Po zapisie zostaniesz wylogowany i musisz zalogować się nowymi danymi.
+            </p>
+            <form
+              className="acct-form"
+              onSubmit={async (e) => {
+                e.preventDefault();
+                setAcctMsg(null);
+                if (acctNewPass && acctNewPass !== acctNewPass2) {
+                  setAcctMsg({ kind: "err", text: "Nowe hasła nie pasują do siebie" });
+                  return;
+                }
+                if (!acctCurrent) {
+                  setAcctMsg({ kind: "err", text: "Podaj aktualne hasło" });
+                  return;
+                }
+                setAcctSaving(true);
+                try {
+                  const payload: { currentPassword: string; newUsername?: string; newPassword?: string } = {
+                    currentPassword: acctCurrent,
+                  };
+                  if (acctNewUser.trim()) payload.newUsername = acctNewUser.trim();
+                  if (acctNewPass) payload.newPassword = acctNewPass;
+                  const res = await fetch("/api/auth/change-credentials", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload),
+                  });
+                  const data = await res.json().catch(() => ({}));
+                  if (res.ok) {
+                    setAcctMsg({ kind: "ok", text: data?.message || "Zapisano. Za chwilę przeniesiemy do logowania." });
+                    setTimeout(() => { window.location.href = "/login"; }, 1500);
+                  } else {
+                    setAcctMsg({ kind: "err", text: data?.error || `Błąd (${res.status})` });
+                  }
+                } finally {
+                  setAcctSaving(false);
+                }
+              }}
+            >
+              <label className="acct-field">
+                <span>Aktualne hasło *</span>
+                <input
+                  type="password"
+                  value={acctCurrent}
+                  onChange={(e) => setAcctCurrent(e.target.value)}
+                  autoComplete="current-password"
+                  required
+                />
+              </label>
+              <div className="acct-sep">Nowe dane (zostaw puste, by nie zmieniać)</div>
+              <label className="acct-field">
+                <span>Nowy login</span>
+                <input
+                  type="text"
+                  value={acctNewUser}
+                  onChange={(e) => setAcctNewUser(e.target.value)}
+                  autoComplete="username"
+                  placeholder="3–64 znaków: litery, cyfry, . _ - @"
+                />
+              </label>
+              <label className="acct-field">
+                <span>Nowe hasło</span>
+                <input
+                  type="password"
+                  value={acctNewPass}
+                  onChange={(e) => setAcctNewPass(e.target.value)}
+                  autoComplete="new-password"
+                  placeholder="Min. 8 znaków; zalecane 12+ z różnymi znakami"
+                />
+              </label>
+              <label className="acct-field">
+                <span>Powtórz nowe hasło</span>
+                <input
+                  type="password"
+                  value={acctNewPass2}
+                  onChange={(e) => setAcctNewPass2(e.target.value)}
+                  autoComplete="new-password"
+                />
+              </label>
+              {acctMsg && (
+                <div className={`acct-msg ${acctMsg.kind}`}>{acctMsg.text}</div>
+              )}
+              <div className="acct-actions">
+                <button type="button" className="acct-btn cancel" onClick={() => setAccountOpen(false)} disabled={acctSaving}>
+                  Anuluj
+                </button>
+                <button type="submit" className="acct-btn primary" disabled={acctSaving || !acctCurrent || (!acctNewUser.trim() && !acctNewPass)}>
+                  {acctSaving ? "Zapisuję…" : "Zapisz i wyloguj"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
       <style>{`
         .admin-toolbar {
           position: fixed;
@@ -199,11 +318,72 @@ export default function AdminToolbar() {
           border-color: rgba(251,191,36,.3);
           color: #fbbf24;
         }
+        .admin-toolbar-btn.account {
+          background: rgba(168,85,247,.18);
+          border-color: rgba(168,85,247,.35);
+          color: #c4b5fd;
+        }
+        .admin-toolbar-btn.account:hover { background: rgba(168,85,247,.3); }
         .admin-toolbar-btn.logout {
           background: rgba(255,255,255,.05);
           border-color: rgba(255,255,255,.1);
           color: rgba(255,255,255,.6);
         }
+
+        /* === Modal zmiany danych logowania === */
+        .acct-overlay {
+          position: fixed; inset: 0; z-index: 10100;
+          background: rgba(15,17,23,.72);
+          display: flex; align-items: center; justify-content: center;
+          padding: 24px;
+        }
+        .acct-card {
+          background: #fff; color: var(--text);
+          border-radius: 16px; padding: 28px;
+          width: 100%; max-width: 460px;
+          box-shadow: 0 20px 60px rgba(0,0,0,.4);
+          font-family: 'Inter', sans-serif;
+        }
+        :global([data-theme="dark"]) .acct-card { background: #1f283c; color: #e8ecf5; }
+        .acct-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+        .acct-head h3 { font-family: 'Outfit', sans-serif; font-size: 1.25rem; margin: 0; }
+        .acct-x {
+          background: transparent; border: none; cursor: pointer; font-size: 1.2rem;
+          color: var(--text-m); width: 32px; height: 32px; border-radius: 8px;
+        }
+        .acct-x:hover { background: rgba(0,0,0,.06); }
+        .acct-info { font-size: .88rem; color: var(--text-m); line-height: 1.5; margin: 4px 0 16px; }
+        .acct-info strong { color: var(--text); }
+        .acct-form { display: flex; flex-direction: column; gap: 12px; }
+        .acct-field { display: flex; flex-direction: column; gap: 5px; }
+        .acct-field > span { font-size: .82rem; font-weight: 700; color: var(--text-m); }
+        .acct-field input {
+          padding: 10px 12px; font-size: .95rem;
+          background: var(--bg); border: 1.5px solid var(--border); border-radius: 8px;
+          color: var(--text); font-family: 'Inter',sans-serif;
+        }
+        .acct-field input:focus { outline: none; border-color: var(--primary); }
+        .acct-sep {
+          margin: 6px 0 2px; padding-top: 12px;
+          border-top: 1px dashed var(--border);
+          font-size: .78rem; color: var(--text-dim); font-weight: 700;
+          text-transform: uppercase; letter-spacing: .04em;
+        }
+        .acct-msg {
+          padding: 10px 12px; border-radius: 8px;
+          font-size: .88rem; font-weight: 600;
+        }
+        .acct-msg.ok { background: #d1fae5; color: #065f46; }
+        .acct-msg.err { background: #fee2e2; color: #7f1d1d; }
+        .acct-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 8px; }
+        .acct-btn {
+          padding: 10px 18px; border-radius: 8px; cursor: pointer;
+          font-weight: 700; font-size: .9rem; border: none;
+          font-family: 'Inter', sans-serif;
+        }
+        .acct-btn.cancel { background: var(--bg); border: 1.5px solid var(--border); color: var(--text); }
+        .acct-btn.primary { background: var(--grad); color: #fff; }
+        .acct-btn:disabled { opacity: .55; cursor: not-allowed; }
         .admin-toolbar-btn.logout:hover {
           color: #ff6b6b;
           border-color: rgba(230,57,70,.3);

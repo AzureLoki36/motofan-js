@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createToken, getAdminUsername, getAdminPassword, safeCompare, COOKIE_NAME } from "@/lib/auth";
+import { createToken, verifyCredentialsPlain, COOKIE_NAME } from "@/lib/auth";
 
 /* ── In-memory rate limiter (per Vercel serverless instance) ── */
 const attempts = new Map<string, { count: number; resetAt: number }>();
@@ -44,12 +44,7 @@ export async function POST(req: NextRequest) {
 
   const { username, password } = body;
 
-  if (
-    !username ||
-    !password ||
-    !safeCompare(username, getAdminUsername()) ||
-    !safeCompare(password, getAdminPassword())
-  ) {
+  if (!username || !password || !(await verifyCredentialsPlain(username, password))) {
     return NextResponse.json(
       { error: "Nieprawidłowa nazwa użytkownika lub hasło" },
       { status: 401 }

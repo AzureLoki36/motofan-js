@@ -1,5 +1,9 @@
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
+import {
+  readStoredCredentials,
+  comparePassword,
+} from "./auth-credentials";
 
 function getSecret() {
   const secret = process.env.ADMIN_SECRET;
@@ -31,7 +35,49 @@ export async function isAdmin(): Promise<boolean> {
   const token = cookieStore.get(COOKIE_NAME)?.value;
   if (!token) return false;
   const payload = await verifyToken(token);
-  return payload?.role === "admin";
+  if (payload?.role !== "admin") return false;
+  // Uniewaznij token wystawiony PRZED zmiana danych logowania: jezeli admin
+  // zmienil login/haslo, stare ciasteczko traci waznosc natychmiast.
+  const stored = await readStoredCredentials();
+  if (stored) {
+    const iat = typeof payload.iat === "number" ? payload.iat : 0;
+    const updatedAt = Math.floor(new Date(stored.updatedAt).getTime() / 1000);
+    if (iat < updatedAt) return false;
+  }
+  return true;
+}
+
+/**
+ * Zwraca aktualnego usera admina:
+ * - jesli zapisany w blob -> z blob
+ * - inaczej fallback na env ADMIN_USERNAME (oryginalne dane "fabryczne")
+ */
+export async function getCurrentAdminUsername(): Promise<string> {
+  const stored = await readStoredCredentials();
+  if (stored?.username) return stored.username;
+  return getAdminUsername();
+}
+
+/**
+ * Weryfikuje (username, password). Bcrypt na hashu z blob, w przeciwnym
+ * razie safeCompare wobec env. Zawsze stalo-czasowo (bcrypt jest stalo-czasowy).
+ */
+export async function verifyCredentialsPlain(
+  username: string,
+  password: string
+): Promise<boolean> {
+  if (!username || !password) return false;
+  const stored = await readStoredCredentials();
+  if (stored) {
+    const userOk = safeCompare(username, stored.username);
+    // Zawsze wykonaj bcrypt zeby wyrownac czas i nie ujawniac istnienia loginu
+    const passOk = await comparePassword(password, stored.passwordHash);
+    return userOk && passOk;
+  }
+  return (
+    safeCompare(username, getAdminUsername()) &&
+    safeCompare(password, getAdminPassword())
+  );
 }
 
 export function getAdminUsername(): string {
