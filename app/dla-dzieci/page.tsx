@@ -6,6 +6,7 @@ import Navbar from "@/components/Navbar";
 import SubpageFooter from "@/components/SubpageFooter";
 import { Editable, EditableHTML } from "@/components/Editable";
 import { useLocale } from "@/components/LocaleProvider";
+import { useAdmin, useContentValue } from "@/components/AdminProvider";
 
 /* =========================================================================
    STRONA DLA DZIECI - "Komiksowa plansza"
@@ -156,6 +157,12 @@ export default function DlaDzieci() {
   const [done, setDone] = useState(false);
   const [code, setCode] = useState<string | null>(null);
 
+  // Admin: panel ustawien mini-gry (przelacznik kodu + tekst promocji)
+  const { editMode, updateContent } = useAdmin();
+  const codeEnabled = useContentValue("kids.win.codeEnabled", "tak") === "tak";
+  const promo = useContentValue("kids.win.promo", "");
+  const promoSet = promo.trim().length > 0;
+
   const pick = (i: number) => {
     if (picked !== null) return;
     setPicked(i);
@@ -170,16 +177,17 @@ export default function DlaDzieci() {
     setQIdx(0); setScore(0); setPicked(null); setDone(false); setCode(null);
   };
 
-  // Kod nagrody tylko przy KOMPLECIE poprawnych odpowiedzi; serwer wysle go mailem do salonu.
+  // Kod nagrody tylko przy KOMPLECIE poprawnych odpowiedzi i gdy admin go wlaczyl;
+  // serwer wysle go mailem do salonu.
   useEffect(() => {
-    if (!done || code || score !== QUESTIONS.length) return;
+    if (!done || code || score !== QUESTIONS.length || !codeEnabled) return;
     let active = true;
     fetch("/api/kids-code", { method: "POST" })
       .then((r) => r.json())
       .then((d) => { if (active && d?.code) setCode(d.code); })
       .catch(() => { if (active) setCode("MOTO-" + Math.random().toString(36).slice(2, 8).toUpperCase()); });
     return () => { active = false; };
-  }, [done, code, score]);
+  }, [done, code, score, codeEnabled]);
 
   const q = QUESTIONS[qIdx];
 
@@ -555,6 +563,47 @@ export default function DlaDzieci() {
           -webkit-text-stroke: 1px var(--k-ink); margin: 4px 0; }
         .quiz-code-note { display: block; font-size: .8rem; color: var(--k-ink); font-weight: 600; }
 
+        /* ===== PANEL ADMINA dla mini-gry (widoczny tylko w trybie edycji) ===== */
+        .quiz-admin-panel {
+          max-width: 680px; margin: 0 auto 22px;
+          background: #fff6c2;
+          border: 3px dashed #c19200;
+          border-radius: 16px;
+          padding: 18px 20px;
+          font-family: 'Outfit', sans-serif;
+        }
+        .quiz-admin-panel h4 { margin: 0 0 14px; font-weight: 800; color: #5a4500; font-size: 1rem; }
+        .qap-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+        .qap-row.qap-col { flex-direction: column; align-items: stretch; gap: 8px; }
+        .qap-label { font-weight: 700; color: #5a4500; font-size: .9rem; }
+        .qap-toggle {
+          padding: 8px 18px; border-radius: 100px;
+          border: 2px solid var(--k-ink); font-weight: 800; cursor: pointer;
+          font-family: 'Outfit', sans-serif; font-size: .9rem;
+          box-shadow: 0 4px 0 var(--k-ink);
+        }
+        .qap-toggle:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--k-ink); }
+        .qap-toggle.on { background: var(--ac-quiz); color: #fff; }
+        .qap-toggle.off { background: #f0f0f0; color: var(--k-ink); }
+        .qap-input {
+          min-height: 56px; padding: 12px 14px;
+          background: #fff; border: 2px dashed #c19200; border-radius: 10px;
+          color: var(--k-ink); font-size: .95rem; line-height: 1.4;
+          font-family: 'Inter', sans-serif; font-weight: 500;
+        }
+        .qap-input.editable-active { border-style: solid; }
+        /* PROMOCJA na ekranie wygranej */
+        .quiz-promo {
+          margin: 10px auto 18px; max-width: 480px;
+          background: var(--ac-rxf); color: #fff;
+          border: 3px solid var(--k-ink); border-radius: 16px;
+          padding: 14px 18px;
+          font-family: 'Outfit', sans-serif;
+          font-weight: 800; font-size: 1.05rem;
+          box-shadow: 0 6px 0 var(--k-ink);
+          line-height: 1.4;
+        }
+
         /* ===== CTA (komiksowa chmurka) ===== */
         .kids-cta-card {
           max-width: 660px; margin: 0 auto;
@@ -663,23 +712,23 @@ export default function DlaDzieci() {
           <div className="kids-quicknav">
             <a href="#strefa-produkty" className="qnav-tile t1">
               <img className="qnav-icon" src="/pics/dzieci/helmet-motorcycle.svg" alt="" aria-hidden />
-              <span className="qnav-label">Kaski i zbroje</span>
+              <Editable id="kids.qnav.gear" as="span" className="qnav-label">Kaski i zbroje</Editable>
             </a>
             <a href="#strefa-rxf" className="qnav-tile t2">
               <span className="qnav-emoji">🏍️</span>
-              <span className="qnav-label">Motocykle RXF</span>
+              <Editable id="kids.qnav.rxf" as="span" className="qnav-label">Motocykle RXF</Editable>
             </a>
             <a href="#strefa-gra" className="qnav-tile t3">
               <span className="qnav-emoji">🎮</span>
-              <span className="qnav-label">Mini-gra</span>
+              <Editable id="kids.qnav.quiz" as="span" className="qnav-label">Mini-gra</Editable>
             </a>
             <a href="#strefa-rodzica" className="qnav-tile t4">
               <span className="qnav-emoji">👨‍👩‍👧</span>
-              <span className="qnav-label">Strefa rodzica</span>
+              <Editable id="kids.qnav.parent" as="span" className="qnav-label">Strefa rodzica</Editable>
             </a>
             <a href="#strefa-marki" className="qnav-tile t5">
               <span className="qnav-emoji">⭐</span>
-              <span className="qnav-label">Marki</span>
+              <Editable id="kids.qnav.brands" as="span" className="qnav-label">Marki</Editable>
             </a>
           </div>
         </div>
@@ -746,6 +795,25 @@ export default function DlaDzieci() {
             <Editable id="kids.quiz.lead" as="p" className="kids-lead" multiline>
               Sprawdź swoją wiedzę o przepisach i bezpieczeństwie. Każda dobra odpowiedź to punkt!
             </Editable>
+            {editMode && (
+              <div className="quiz-admin-panel" aria-label="Ustawienia mini-gry (tylko admin)">
+                <h4>⚙️ Ustawienia mini-gry <span style={{ fontWeight: 600, opacity: .7 }}>(widoczne tylko w trybie edycji)</span></h4>
+                <div className="qap-row">
+                  <span className="qap-label">Kod nagrody przy 100%:</span>
+                  <button
+                    type="button"
+                    className={`qap-toggle ${codeEnabled ? "on" : "off"}`}
+                    onClick={(e) => { e.preventDefault(); updateContent("kids.win.codeEnabled", codeEnabled ? "nie" : "tak"); }}
+                  >
+                    {codeEnabled ? "✅ Włączony" : "❌ Wyłączony"}
+                  </button>
+                </div>
+                <div className="qap-row qap-col">
+                  <span className="qap-label">Promocja na ekranie wygranej (zostaw puste, żeby nie pokazywać):</span>
+                  <Editable id="kids.win.promo" as="div" className="qap-input" multiline>{promo}</Editable>
+                </div>
+              </div>
+            )}
             <div className="quiz-wrap">
               {!done ? (
                 <>
@@ -792,19 +860,28 @@ export default function DlaDzieci() {
                     {score === QUESTIONS.length ? "🏆" : score >= QUESTIONS.length / 2 ? "🎉" : "💪"}
                   </span>
                   <div className="quiz-final-score">{score} / {QUESTIONS.length}</div>
-                  <p className="quiz-final-msg">
-                    {score === QUESTIONS.length
-                      ? "Super! Jesteś prawdziwym ekspertem przepisów drogowych! 🚦"
-                      : score >= QUESTIONS.length / 2
-                      ? "Bardzo dobrze! Już sporo wiesz o bezpiecznej jeździe. 🏍️"
-                      : "Brawo, że spróbowałeś! Spróbuj jeszcze raz i ucz się przepisów! 📖"}
-                  </p>
+                  {score === QUESTIONS.length ? (
+                    <Editable id="kids.win.msg.perfect" as="p" className="quiz-final-msg" multiline>
+                      Super! Jesteś prawdziwym ekspertem przepisów drogowych! 🚦
+                    </Editable>
+                  ) : score >= QUESTIONS.length / 2 ? (
+                    <Editable id="kids.win.msg.good" as="p" className="quiz-final-msg" multiline>
+                      Bardzo dobrze! Już sporo wiesz o bezpiecznej jeździe. 🏍️
+                    </Editable>
+                  ) : (
+                    <Editable id="kids.win.msg.try" as="p" className="quiz-final-msg" multiline>
+                      Brawo, że spróbowałeś! Spróbuj jeszcze raz i ucz się przepisów! 📖
+                    </Editable>
+                  )}
                   {code && (
                     <div className="quiz-code">
-                      <span className="quiz-code-label">Twój kod nagrody 🎁</span>
+                      <Editable id="kids.win.code.label" as="span" className="quiz-code-label">Twój kod nagrody 🎁</Editable>
                       <span className="quiz-code-value">{code}</span>
-                      <span className="quiz-code-note">Pokaż ten kod w salonie MotoFun!</span>
+                      <Editable id="kids.win.code.note" as="span" className="quiz-code-note" multiline>Pokaż ten kod w salonie MotoFun!</Editable>
                     </div>
+                  )}
+                  {score === QUESTIONS.length && promoSet && (
+                    <div className="quiz-promo">{promo}</div>
                   )}
                   <button className="quiz-next-btn" onClick={restart}>🔁 Zagraj jeszcze raz!</button>
                 </div>
@@ -828,8 +905,8 @@ export default function DlaDzieci() {
                 <div className="parent-card" key={i}>
                   <span className="parent-card-icon" aria-hidden>{p.icon}</span>
                   <div>
-                    <h3 className="parent-card-title">{p.title}</h3>
-                    <p className="parent-card-text">{p.text}</p>
+                    <Editable id={`kids.parent.tip${i}.title`} as="h3" className="parent-card-title">{p.title}</Editable>
+                    <Editable id={`kids.parent.tip${i}.text`} as="p" className="parent-card-text" multiline>{p.text}</Editable>
                   </div>
                 </div>
               ))}
@@ -880,7 +957,7 @@ export default function DlaDzieci() {
                   referrerPolicy="no-referrer-when-downgrade"
                 ></iframe>
               </div>
-              <p className="cta-address">📍 ul. Partyzancka 85, 45-801 Opole</p>
+              <Editable id="kids.cta.address" as="p" className="cta-address">📍 ul. Partyzancka 85, 45-801 Opole</Editable>
             </div>
           </div>
         </section>
