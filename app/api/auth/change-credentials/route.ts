@@ -85,26 +85,21 @@ export async function POST(req: NextRequest) {
 
   // Pobierz biezace stored creds (do zachowania hash hasla jesli nie zmieniany)
   const stored = await readStoredCredentials();
-  const currentForKeeping = stored ?? {
-    username: currentUsername,
-    // Brak hashu env-vars w blob - jesli admin nie zmienia hasla a uzywa env,
-    // to musimy zhashowac biezace haslo (ktore wlasnie podal i potwierdzilismy).
-    passwordHash: "",
-  };
 
-  // Jezeli admin nie zmienia hasla a my nie mamy hashu, zhashujemy aktualne
-  // (ktore juz wlasnie zweryfikowalismy).
-  let effectiveNewPassword = newPassword;
-  if (!effectiveNewPassword && !currentForKeeping.passwordHash) {
-    effectiveNewPassword = currentPassword;
-  }
+  // Finalny login: nowy jesli podano, inaczej biezacy (z bloba lub env)
+  const finalUsername = newUsername ?? currentUsername;
+
+  // Czy musimy hashowac (jest nowe haslo LUB brak blobu z hashem - migracja z env)
+  const needsHashing = !!newPassword || !stored;
+  // Jakie haslo hashujemy: nowe jesli podano, inaczej aktualne (juz zweryfikowane)
+  const plainToHash = newPassword || currentPassword;
 
   try {
     await updateCredentials({
-      newUsername,
-      newPlainPassword: effectiveNewPassword,
-      currentForKeeping: currentForKeeping.passwordHash
-        ? { username: currentForKeeping.username, passwordHash: currentForKeeping.passwordHash }
+      newUsername: finalUsername,
+      newPlainPassword: needsHashing ? plainToHash : undefined,
+      currentForKeeping: stored
+        ? { username: stored.username, passwordHash: stored.passwordHash }
         : undefined,
     });
   } catch (e: unknown) {
