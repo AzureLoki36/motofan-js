@@ -17,8 +17,18 @@ async function readJsonBlob<T>(name: string, fallback: T): Promise<T> {
   try {
     const { blobs } = await list({ prefix: name });
     if (blobs.length > 0) {
-      const res = await fetch(blobs[0].url, {
-        headers: { Authorization: `Bearer ${process.env.BLOB_READ_WRITE_TOKEN}` },
+      // wybierz najnowszy (gdy zostal jakis stary nieuduskuniety)
+      const newest = [...blobs].sort((a, b) =>
+        new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime()
+      )[0];
+      // cache-bust + Authorization, zeby ominac CDN
+      const url = newest.url + (newest.url.includes("?") ? "&" : "?") + "_t=" + Date.now();
+      const res = await fetch(url, {
+        cache: "no-store",
+        headers: {
+          Authorization: `Bearer ${process.env.BLOB_READ_WRITE_TOKEN}`,
+          "Cache-Control": "no-cache",
+        },
       });
       if (res.ok) return (await res.json()) as T;
     }
@@ -35,6 +45,7 @@ async function writeJsonBlob(name: string, data: unknown): Promise<void> {
     access: "private",
     contentType: "application/json",
     addRandomSuffix: false,
+    cacheControlMaxAge: 0, // nie cachuj na CDN — admin musi widziec swiezy stan
   });
 }
 
