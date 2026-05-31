@@ -7,6 +7,9 @@ import {
   pushHistory,
 } from "@/lib/content";
 
+// Bez tego Next/Vercel cache'uje GET na edge'u i admin nie widzi swiezej tresci
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   const data = await readContent();
   // Pierwszy GET (po deploy'u) lapi obecny stan jako "domyslny" snapshot,
